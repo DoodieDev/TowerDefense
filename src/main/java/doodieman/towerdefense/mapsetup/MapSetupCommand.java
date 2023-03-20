@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -15,8 +16,9 @@ public class MapSetupCommand implements CommandExecutor {
     private final MapSetupHandler handler;
 
     public void sendHelpMessage(Player player) {
-        player.sendMessage("§c/mapsetup createmap <map navn>");
-        player.sendMessage("§c/mapsetup deletemap <map navn>");
+        player.sendMessage("§c/mapsetup create <map navn>");
+        player.sendMessage("§c/mapsetup delete <map navn>");
+        player.sendMessage("§c/mapsetup list <map navn>");
     }
 
     @Override
@@ -35,10 +37,10 @@ public class MapSetupCommand implements CommandExecutor {
         String subcommand = args[0].toUpperCase();
 
         switch (subcommand) {
-            case "CREATEMAP":
+            case "CREATE":
 
                 if (args.length < 2) {
-                    player.sendMessage("§cSkriv /mapsetup createmap <map navn>");
+                    player.sendMessage("§cSkriv /mapsetup create <map navn>");
                     break;
                 }
 
@@ -51,10 +53,10 @@ public class MapSetupCommand implements CommandExecutor {
                 player.sendMessage("§aMappet er nu blevet oprettet. Se alle maps med /mapsetup list");
                 break;
 
-            case "DELETEMAP":
+            case "DELETE":
 
                 if (args.length < 2) {
-                    player.sendMessage("§cSkriv /mapsetup deletemap <map navn>");
+                    player.sendMessage("§cSkriv /mapsetup delete <map navn>");
                     break;
                 }
 
@@ -65,6 +67,16 @@ public class MapSetupCommand implements CommandExecutor {
                 TowerDefense.getInstance().saveConfig();
 
                 player.sendMessage("§aMappet er nu blevet slettet.");
+                break;
+
+            case "LIST":
+
+                ConfigurationSection section = config.getConfigurationSection("maps");
+                player.sendMessage("§aListe af alle maps:");
+                for (String key : section.getKeys(false)) {
+                    player.sendMessage("§a- §7"+key);
+                }
+                
                 break;
 
             default:

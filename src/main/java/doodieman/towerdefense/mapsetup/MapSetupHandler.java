@@ -1,9 +1,14 @@
 package doodieman.towerdefense.mapsetup;
 
+import lombok.Getter;
+
 public class MapSetupHandler {
 
-    public MapSetupHandler() {
+    @Getter
+    private final MapSetupListener listener;
 
+    public MapSetupHandler() {
+        this.listener = new MapSetupListener(this);
     }
 
 }
