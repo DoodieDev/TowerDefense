@@ -1,0 +1,4 @@
+name: TowerDefense
+version: '${project.version}'
+main: doodieman.towerdefense.TowerDefense
+authors: [DoodieMan]
