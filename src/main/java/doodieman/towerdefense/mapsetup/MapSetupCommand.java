@@ -19,6 +19,7 @@ public class MapSetupCommand implements CommandExecutor {
         player.sendMessage("§c/mapsetup create <map navn>");
         player.sendMessage("§c/mapsetup delete <map navn>");
         player.sendMessage("§c/mapsetup list <map navn>");
+        player.sendMessage("§c/mapsetup setregion <map navn>");
     }
 
     @Override
@@ -61,8 +62,6 @@ public class MapSetupCommand implements CommandExecutor {
                 }
 
                 mapName = args[1].toLowerCase();
-
-                //Create the map in the config with useless data ('creator')
                 config.set("maps."+mapName, null);
                 TowerDefense.getInstance().saveConfig();
 
@@ -76,7 +75,11 @@ public class MapSetupCommand implements CommandExecutor {
                 for (String key : section.getKeys(false)) {
                     player.sendMessage("§a- §7"+key);
                 }
-                
+
+                break;
+
+            case "SETREGION":
+
                 break;
 
             default:

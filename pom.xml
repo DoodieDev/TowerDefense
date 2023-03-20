@@ -76,5 +76,12 @@
             <version>1.18.24</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.boydti</groupId>
+            <artifactId>fawe-api</artifactId>
+            <version>19.11.13-5505943-1282-22.3.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/FastAsyncWorldEdit.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
