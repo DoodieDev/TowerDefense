@@ -1,7 +1,9 @@
 package doodieman.towerdefense;
 
+import doodieman.towerdefense.mapsetup.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class TowerDefense extends JavaPlugin {
@@ -16,11 +18,20 @@ public final class TowerDefense extends JavaPlugin {
     public void onEnable() {
         instance = this;
         this.saveDefaultConfig();
+
+        //Initialize handlers and commands
+        this.loadHandlers();
+        this.loadCommands();
     }
 
     @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public void onDisable() {}
+
+    private void loadHandlers() {
+        this.mapSetupHandler = new MapSetupHandler();
     }
 
+    private void loadCommands() {
+        Bukkit.getPluginCommand("mapsetup").setExecutor(new MapSetupCommand(this.mapSetupHandler));
+    }
 }

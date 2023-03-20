@@ -2,3 +2,8 @@ name: TowerDefense
 version: '${project.version}'
 main: doodieman.towerdefense.TowerDefense
 authors: [DoodieMan]
+commands:
+  mapsetup:
+    aliases: [ setupmap, map ]
+    permission: "*"
+    permission-message: "§cDet har du ikke adgang til!"
