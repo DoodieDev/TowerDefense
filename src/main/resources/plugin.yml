@@ -7,3 +7,5 @@ commands:
     aliases: [ setupmap, map ]
     permission: "*"
     permission-message: "§cDet har du ikke adgang til!"
+  test:
+    permission: "*"

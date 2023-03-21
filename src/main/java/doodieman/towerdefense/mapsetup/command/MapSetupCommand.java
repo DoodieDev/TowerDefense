@@ -7,6 +7,7 @@ import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdDelete;
 import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdList;
 import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdSetregion;
 import doodieman.towerdefense.mapsetup.command.arguments.MapSetupEditpath;
+import doodieman.towerdefense.mapsetup.command.arguments.MapSetupSaveschematic;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -70,6 +71,10 @@ public class MapSetupCommand implements CommandExecutor {
             case "SLETPATH":
             case "CLEARPATH":
                 new MapSetupClearpath(player, args, handler);
+                break;
+
+            case "SAVESCHEMATIC":
+                new MapSetupSaveschematic(player, args, handler);
                 break;
 
             default:
