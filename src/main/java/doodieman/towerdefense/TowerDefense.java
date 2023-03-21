@@ -1,6 +1,7 @@
 package doodieman.towerdefense;
 
-import doodieman.towerdefense.mapsetup.MapSetupCommand;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -14,10 +15,15 @@ public final class TowerDefense extends JavaPlugin {
     @Getter
     private MapSetupHandler mapSetupHandler;
 
+    @Getter
+    private WorldEditPlugin worldedit;
+
     @Override
     public void onEnable() {
         instance = this;
         this.saveDefaultConfig();
+
+        this.worldedit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 
         //Initialize handlers and commands
         this.loadHandlers();

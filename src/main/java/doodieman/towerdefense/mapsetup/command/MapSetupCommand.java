@@ -1,8 +1,16 @@
-package doodieman.towerdefense.mapsetup;
+package doodieman.towerdefense.mapsetup.command;
 
+import com.sk89q.worldedit.bukkit.selections.Selection;
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.mapsetup.MapSetupHandler;
+import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdCreate;
+import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdDelete;
+import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdList;
+import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdSetregion;
+import doodieman.towerdefense.utils.LocationUtil;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,7 +32,6 @@ public class MapSetupCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (!(sender instanceof Player))
             return true;
 
@@ -34,52 +41,23 @@ public class MapSetupCommand implements CommandExecutor {
             return true;
         }
 
-        FileConfiguration config = TowerDefense.getInstance().getConfig();
         String subcommand = args[0].toUpperCase();
 
         switch (subcommand) {
             case "CREATE":
-
-                if (args.length < 2) {
-                    player.sendMessage("§cSkriv /mapsetup create <map navn>");
-                    break;
-                }
-
-                String mapName = args[1].toLowerCase();
-
-                //Create the map in the config with useless data ('creator')
-                config.set("maps."+mapName+".creator", player.getName());
-                TowerDefense.getInstance().saveConfig();
-
-                player.sendMessage("§aMappet er nu blevet oprettet. Se alle maps med /mapsetup list");
+                new MapSetupCmdCreate(player, args, handler);
                 break;
 
             case "DELETE":
-
-                if (args.length < 2) {
-                    player.sendMessage("§cSkriv /mapsetup delete <map navn>");
-                    break;
-                }
-
-                mapName = args[1].toLowerCase();
-                config.set("maps."+mapName, null);
-                TowerDefense.getInstance().saveConfig();
-
-                player.sendMessage("§aMappet er nu blevet slettet.");
+                new MapSetupCmdDelete(player, args, handler);
                 break;
 
             case "LIST":
-
-                ConfigurationSection section = config.getConfigurationSection("maps");
-                player.sendMessage("§aListe af alle maps:");
-                for (String key : section.getKeys(false)) {
-                    player.sendMessage("§a- §7"+key);
-                }
-
+                new MapSetupCmdList(player, args, handler);
                 break;
 
             case "SETREGION":
-
+                new MapSetupCmdSetregion(player, args, handler);
                 break;
 
             default:
