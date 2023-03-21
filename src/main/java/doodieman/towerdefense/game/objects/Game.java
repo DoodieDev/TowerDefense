@@ -73,7 +73,10 @@ public class Game {
             @Override
             public void run() {
                 mob.move();
-                if (mob.isInGoal()) this.cancel();
+                if (mob.isInGoal()) {
+                    this.cancel();
+                    mob.kill();
+                }
             }
         }.runTaskTimer(TowerDefense.getInstance(), 0L, 1L);
     }

@@ -19,7 +19,7 @@ public class GameUtil {
     }
 
     public void startGame(OfflinePlayer player) {
-        Map map = MapUtil.getInstance().getMap("test");
+        Map map = MapUtil.getInstance().getMap("afrotest");
         Game game = new Game(player, map);
         handler.getActiveGames().put(player, game);
         game.prepare();

@@ -1,17 +1,14 @@
 package doodieman.towerdefense.game.objects;
 
-import lombok.Generated;
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityHeadRotation;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -27,35 +24,41 @@ public class GameMob {
     @Getter
     private final List<Location> path;
 
-    final double speed;
-    final double pathLength;
-    double currentLength;
-
-    int pointIndex;
-    Location currentPoint;
-    Location nextPoint;
+    //Variables used for the pathfinding
+    final double speed; //How fast the Mob moves
+    final double pathLength; //How long the whole path is on the map, from start to finish
+    double currentLength; //How long has the mob traveled so far
+    int pointIndex; //Index in the 'path' list of locations
+    Location currentPoint; //Current path location
+    Location nextPoint; //Next path location (The one it's moving towards)
 
     @Getter
     private Entity entity;
+
+    //Health stuff
+    @Getter
+    private double health;
 
     public GameMob(Game game, MobType mobType) {
         this.game = game;
         this.mobType = mobType;
         this.path = game.getMobPath();
-
         this.speed = mobType.getSpeed();
         this.pathLength = game.getMap().getPathLength();
         this.currentLength = 0;
-
         this.pointIndex = 0;
         this.currentPoint = path.get(pointIndex);
         this.nextPoint = path.get(pointIndex+1);
+
+        this.health = mobType.getHealth();
     }
 
+    //Spawn the entity at the first path location
     public void spawn() {
+        //Spawn the actual entity
         this.entity = game.getWorld().spawnEntity(path.get(0), mobType.getEntityType());
-        //NO AI
 
+        //Remove AI from the entity
         net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) this.entity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if (tag == null) tag = new NBTTagCompound();
@@ -64,24 +67,40 @@ public class GameMob {
         nmsEntity.f(tag);
     }
 
+    public void kill() {
+        this.entity.remove();
+    }
+
+    //Updates the health bar, and teleports it to the Entity
+    public void updateHealthBar() {
+        this.entity.setCustomName("§7"+health+" §c❤");
+    }
+
+    //Moves the entity on the path, it moves (speed) blocks
     public void move() {
         currentLength += speed;
         double distanceLeft = entity.getLocation().distance(nextPoint);
         Location closerLocation;
 
-        //Distance left to move is less than the speed.
+        //Turn on the path
         if (distanceLeft < speed) {
-            this.setNextPoint();
+            pointIndex++;
+            if (pointIndex >= path.size()-1) return;
+            this.currentPoint = path.get(pointIndex);
+            this.nextPoint = path.get(pointIndex+1);
+
             closerLocation = moveCloser(entity.getLocation(), nextPoint, speed - distanceLeft);
             this.fixHeadRotation();
-        } else {
-            closerLocation = moveCloser(entity.getLocation(), nextPoint, speed);
-        }
+
+        } else closerLocation = moveCloser(entity.getLocation(), nextPoint, speed);
 
         closerLocation.setYaw(currentPoint.getYaw());
         entity.teleport(closerLocation);
+
+        this.updateHealthBar();
     }
 
+    //Fixes the head rotation, it bugs just teleporting to yaw
     private void fixHeadRotation() {
         PacketPlayOutEntityHeadRotation Rotation = new PacketPlayOutEntityHeadRotation();
         try {
@@ -95,30 +114,18 @@ public class GameMob {
         }
     }
 
-    private void setNextPoint() {
-        pointIndex++;
-        if (pointIndex >= path.size()-1) return;
-        this.currentPoint = path.get(pointIndex);
-        this.nextPoint = path.get(pointIndex+1);
-    }
-
+    //Check if the mob is in goal
     public boolean isInGoal() {
         return currentLength >= pathLength;
     }
 
-
+    //Moves location1 closer towards location2
     private Location moveCloser(Location loc1, Location loc2, double distance) {
-        double dx = loc2.getX() - loc1.getX(); // Calculate the difference on the X-Axis
-        double dy = loc2.getY() - loc1.getY(); // Calculate the difference on the Y-Axis
-        double dz = loc2.getZ() - loc1.getZ(); // Calculate the difference on the Z-Axis
-
-        double length = Math.sqrt(dx * dx + dy * dy + dz * dz); // Calculate the length of the vector between the two points
-
-        if (length <= distance) { // If the distance is greater than or equal to the distance we want to move
-            return loc2.clone(); // Return a copy of the second location
-        }
-
-        // Calculate the new coordinates
+        double dx = loc2.getX() - loc1.getX();
+        double dy = loc2.getY() - loc1.getY();
+        double dz = loc2.getZ() - loc1.getZ();
+        double length = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (length <= distance) return loc2.clone();
         double newX = loc1.getX() + dx * (distance / length);
         double newY = loc1.getY() + dy * (distance / length);
         double newZ = loc1.getZ() + dz * (distance / length);
