@@ -87,6 +87,56 @@ public class Map {
         }
     }
 
+    //Gets the path length
+    public double getPathLength() {
+        double length = 0d;
+        for (int i = 0; i < path.size()-1; i++) {
+            Location location = path.get(i);
+            Location next = path.get(i+1);
+            length += location.distance(next);
+        }
+        return length;
+    }
+
+    public Location getPathLocationAt(double targetLength) {
+        double length = 0d;
+        Location selected = path.get(0);
+
+        for (int i = 0; i < path.size()-1; i++) {
+            Location location = path.get(i);
+            Location next = path.get(i+1);
+
+            //It will exceed the target length
+            if (location.distance(next) + length > targetLength) {
+                double lengthLeft = (targetLength - length);
+                selected = location.clone();
+                selected.add(moveCloser(location,next,length));
+            }
+
+            length += location.distance(next);
+        }
+        return selected;
+    }
+
+    public Location moveCloser(Location loc1, Location loc2, double distance) {
+        double dx = loc2.getX() - loc1.getX(); // Calculate the difference on the X-Axis
+        double dy = loc2.getY() - loc1.getY(); // Calculate the difference on the Y-Axis
+        double dz = loc2.getZ() - loc1.getZ(); // Calculate the difference on the Z-Axis
+
+        double length = Math.sqrt(dx * dx + dy * dy + dz * dz); // Calculate the length of the vector between the two points
+
+        if (length <= distance) { // If the distance is greater than or equal to the distance we want to move
+            return loc2.clone(); // Return a copy of the second location
+        }
+
+        // Calculate the new coordinates
+        double newX = loc1.getX() + dx * (distance / length);
+        double newY = loc1.getY() + dy * (distance / length);
+        double newZ = loc1.getZ() + dz * (distance / length);
+
+        return new Location(loc1.getWorld(), newX, newY, newZ); // Return a new location with the new coordinates
+    }
+
     public String getSchematicPath() {
         return TowerDefense.getInstance().getDataFolder() + "/maps/" + mapName + ".schematic";
     }

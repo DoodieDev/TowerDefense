@@ -1,6 +1,7 @@
 package doodieman.towerdefense;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import doodieman.towerdefense.game.GameHandler;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.maps.MapHandler;
 import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
@@ -21,6 +22,8 @@ public final class TowerDefense extends JavaPlugin {
     private MapSetupHandler mapSetupHandler;
     @Getter
     private MapHandler mapHandler;
+    @Getter
+    private GameHandler gameHandler;
 
     @Getter
     private WorldEditPlugin worldedit;
@@ -44,6 +47,7 @@ public final class TowerDefense extends JavaPlugin {
         this.mapGridHandler = new MapGridHandler();
         this.mapSetupHandler = new MapSetupHandler();
         this.mapHandler = new MapHandler();
+        this.gameHandler = new GameHandler();
     }
 
     private void loadCommands() {

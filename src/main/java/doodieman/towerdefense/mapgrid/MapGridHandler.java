@@ -19,7 +19,7 @@ public class MapGridHandler {
     private static MapGridHandler instance;
 
     public MapGridHandler() {
-        this.scale = 1;
+        this.scale = 1000;
         this.gridLocations = new ArrayList<>();
         instance = this;
     }
