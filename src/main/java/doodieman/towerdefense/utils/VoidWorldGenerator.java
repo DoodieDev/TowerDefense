@@ -1,4 +1,4 @@
-package doodieman.towerdefense.maps;
+package doodieman.towerdefense.utils;
 
 import org.bukkit.World;
 import org.bukkit.block.Biome;
