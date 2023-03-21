@@ -13,9 +13,6 @@ public class MapSetupHandler {
     @Getter
     private final MapSetupListener listener;
 
-    @Getter
-    private final Map<Player, String> editingPath = new HashMap<>();
-
     public MapSetupHandler() {
         this.listener = new MapSetupListener(this);
     }
