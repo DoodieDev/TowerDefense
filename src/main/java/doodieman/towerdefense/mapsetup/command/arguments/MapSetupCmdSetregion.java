@@ -36,7 +36,7 @@ public class MapSetupCmdSetregion {
         Location corner2 = selection.getMaximumPoint();
 
         config.set("maps."+mapName+".corner1", LocationUtil.locationToString(corner1));
-        config.set("maps."+mapName+".corner2", LocationUtil.locationToString(corner1));
+        config.set("maps."+mapName+".corner2", LocationUtil.locationToString(corner2));
         TowerDefense.getInstance().saveConfig();
 
         player.sendMessage("§aDu har sat mappets region!");
