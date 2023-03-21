@@ -1,6 +1,7 @@
 package doodieman.towerdefense.maps;
 
 import lombok.Getter;
+import org.bukkit.World;
 
 public class MapUtil {
 
@@ -12,6 +13,10 @@ public class MapUtil {
     public MapUtil(MapHandler handler) {
         this.handler = handler;
         instance = this;
+    }
+
+    public World getGameWorld() {
+        return handler.getWorld();
     }
 
 }
