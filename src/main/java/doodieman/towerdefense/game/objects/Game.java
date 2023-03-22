@@ -1,21 +1,16 @@
 package doodieman.towerdefense.game.objects;
 
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.game.values.MobType;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;

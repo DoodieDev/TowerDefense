@@ -1,6 +1,9 @@
 package doodieman.towerdefense.game.objects;
 
+import doodieman.towerdefense.game.values.MobType;
 import lombok.Getter;
+import net.minecraft.server.v1_8_R3.MojangsonParseException;
+import net.minecraft.server.v1_8_R3.MojangsonParser;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityHeadRotation;
 import org.apache.commons.lang.reflect.FieldUtils;
@@ -8,9 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -58,10 +60,18 @@ public class GameMob {
         //Spawn the actual entity
         this.entity = game.getWorld().spawnEntity(path.get(0), mobType.getEntityType());
 
-        //Remove AI from the entity
+        //Equipment
+        ((LivingEntity) entity).getEquipment().setHelmet(mobType.getHelmet());
+        ((LivingEntity) entity).getEquipment().setChestplate(mobType.getChestplate());
+        ((LivingEntity) entity).getEquipment().setLeggings(mobType.getLeggings());
+        ((LivingEntity) entity).getEquipment().setBoots(mobType.getBoots());
+        ((LivingEntity) entity).getEquipment().setItemInHand(mobType.getWeapon());
+
+        //Add NBT values to the entity
         net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) this.entity).getHandle();
-        NBTTagCompound tag = nmsEntity.getNBTTag();
-        if (tag == null) tag = new NBTTagCompound();
+        NBTTagCompound tag;
+        try { tag = MojangsonParser.parse(mobType.getNbt()); }
+        catch (MojangsonParseException e) { tag = new NBTTagCompound(); }
         nmsEntity.c(tag);
         tag.setInt("NoAI", 1);
         nmsEntity.f(tag);
