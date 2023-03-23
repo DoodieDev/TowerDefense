@@ -76,7 +76,7 @@ public class Game {
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop() {
         gridLocation.unregister();
-        //TODO delete schematic, teleport player to spawn, save current game progress
+
 
         //Remove schematic
         TowerDefense.runAsync(new BukkitRunnable() {

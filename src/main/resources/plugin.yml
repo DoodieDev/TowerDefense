@@ -1,6 +1,7 @@
 name: TowerDefense
 version: '${project.version}'
 main: doodieman.towerdefense.TowerDefense
+depend: [HolographicDisplays, Citizens]
 authors: [DoodieMan]
 commands:
   mapsetup:
@@ -9,3 +10,8 @@ commands:
     permission-message: "§cDet har du ikke adgang til!"
   test:
     permission: "*"
+  setspawn:
+    permission: "*"
+    permission-message: "§cDet har du ikke adgang til!"
+  spawn:
+    aliases: [ lobby, leave ]

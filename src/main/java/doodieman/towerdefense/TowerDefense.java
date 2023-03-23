@@ -5,6 +5,8 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import doodieman.towerdefense.game.GameHandler;
 import doodieman.towerdefense.lobby.mapselector.MapSelectorHandler;
+import doodieman.towerdefense.lobby.spawn.SetspawnCommand;
+import doodieman.towerdefense.lobby.spawn.SpawnCommand;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.maps.MapHandler;
 import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
@@ -69,6 +71,8 @@ public final class TowerDefense extends JavaPlugin {
     private void loadCommands() {
         Bukkit.getPluginCommand("mapsetup").setExecutor(new MapSetupCommand(this.mapSetupHandler));
         Bukkit.getPluginCommand("test").setExecutor(new TestCommand());
+        Bukkit.getPluginCommand("setspawn").setExecutor(new SetspawnCommand());
+        Bukkit.getPluginCommand("spawn").setExecutor(new SpawnCommand());
     }
 
     public static void runSync(Runnable runnable) {
