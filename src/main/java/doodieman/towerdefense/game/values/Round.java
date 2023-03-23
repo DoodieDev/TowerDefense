@@ -8,37 +8,12 @@ import java.util.List;
 
 public enum Round {
 
-    ROUND_1(1, 20L, Arrays.asList(
-        MobType.ZOMBIE1,
-        MobType.ZOMBIE1,
+    ROUND_1(1, 5L, Arrays.asList(
         MobType.ZOMBIE1,
         MobType.ZOMBIE1,
         MobType.ZOMBIE1,
         MobType.ZOMBIE1,
         MobType.ZOMBIE1
-    )),
-    ROUND_2(2, 20L, Arrays.asList(
-        MobType.ZOMBIE2,
-        MobType.ZOMBIE2,
-        MobType.ZOMBIE2,
-        MobType.ZOMBIE2,
-        MobType.ZOMBIE2,
-        MobType.ZOMBIE2
-    )),
-    ROUND_3(3, 20L, Arrays.asList(
-        MobType.ZOMBIE1,
-        MobType.ZOMBIE1,
-        MobType.ZOMBIE1,
-        MobType.ZOMBIE1,
-        MobType.ZOMBIE2,
-        MobType.ZOMBIE2
-    )),
-    ROUND_4(4, 20L, Arrays.asList(
-        MobType.ZOMBIE1,
-        MobType.ZOMBIE1,
-        MobType.ZOMBIE2,
-        MobType.ZOMBIE2,
-        MobType.ZOMBIE2
     ));
 
     @Getter

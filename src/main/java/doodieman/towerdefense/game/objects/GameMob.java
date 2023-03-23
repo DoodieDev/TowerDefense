@@ -60,21 +60,14 @@ public class GameMob {
         //Spawn the actual entity
         this.entity = game.getWorld().spawnEntity(path.get(0), mobType.getEntityType());
 
-        //Equipment
-        ((LivingEntity) entity).getEquipment().setHelmet(mobType.getHelmet());
-        ((LivingEntity) entity).getEquipment().setChestplate(mobType.getChestplate());
-        ((LivingEntity) entity).getEquipment().setLeggings(mobType.getLeggings());
-        ((LivingEntity) entity).getEquipment().setBoots(mobType.getBoots());
-        ((LivingEntity) entity).getEquipment().setItemInHand(mobType.getWeapon());
-
         //Add NBT values to the entity
         net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) this.entity).getHandle();
-        NBTTagCompound tag;
-        try { tag = MojangsonParser.parse(mobType.getNbt()); }
-        catch (MojangsonParseException e) { tag = new NBTTagCompound(); }
+        NBTTagCompound tag = new NBTTagCompound();
         nmsEntity.c(tag);
         tag.setInt("NoAI", 1);
         nmsEntity.f(tag);
+
+        mobType.getRunnable().run(entity);
     }
 
     public void kill() {
