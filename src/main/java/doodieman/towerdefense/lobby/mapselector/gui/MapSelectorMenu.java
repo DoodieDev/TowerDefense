@@ -46,6 +46,7 @@ public class MapSelectorMenu extends GUI {
 
         if (slot == 12) {
             new MapSelectorMenuSingleplayer(player).open();
+            this.playClickSound();
         }
 
     }

@@ -78,6 +78,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
     public void click(int slot, ItemStack clickedItem, ClickType clickType, InventoryType inventoryType) {
         if (slot == 49) {
             new MapSelectorMenu(player).open();
+            this.playClickSound();
             return;
         }
 
@@ -88,6 +89,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
             Map map = MapUtil.getInstance().getMap(mapSlot.getMapID());
 
             new MapSelectorMenuDifficulty(player, map).open();
+            this.playClickSound();
         }
 
     }

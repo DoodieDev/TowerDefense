@@ -3,6 +3,7 @@ package doodieman.towerdefense.utils;
 import doodieman.towerdefense.TowerDefense;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -88,6 +89,10 @@ public class GUI implements Listener {
         HandlerList.unregisterAll(this); // Unregister events while re-opening
         player.openInventory(menu);
         TowerDefense.getInstance().getServer().getPluginManager().registerEvents(this, TowerDefense.getInstance());
+    }
+
+    public void playClickSound() {
+        player.playSound(player.getLocation(), Sound.CLICK,0.5f,1.2f);
     }
 
     //EVENT LISTENERS

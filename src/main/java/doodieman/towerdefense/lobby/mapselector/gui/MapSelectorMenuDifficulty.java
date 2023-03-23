@@ -66,12 +66,14 @@ public class MapSelectorMenuDifficulty extends GUI {
     public void click(int slot, ItemStack clickedItem, ClickType clickType, InventoryType inventoryType) {
         if (slot == 31) {
             new MapSelectorMenuSingleplayer(player).open();
+            this.playClickSound();
             return;
         }
 
         if (difficultySlots.containsKey(slot)) {
             Difficulty difficulty = difficultySlots.get(slot);
             GameUtil.getInstance().startGame(player, map, difficulty);
+            this.playClickSound();
         }
     }
 
