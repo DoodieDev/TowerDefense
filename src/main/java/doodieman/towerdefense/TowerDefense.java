@@ -11,6 +11,8 @@ import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.maps.MapHandler;
 import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
+import doodieman.towerdefense.playerdata.PlayerDataHandler;
+import doodieman.towerdefense.playerdata.objects.PlayerData;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.MemoryNPCDataStore;
@@ -34,6 +36,8 @@ public final class TowerDefense extends JavaPlugin {
     private GameHandler gameHandler;
     @Getter
     private MapSelectorHandler mapSelectorHandler;
+    @Getter
+    private PlayerDataHandler playerDataHandler;
 
     @Getter
     private WorldEditPlugin worldedit;
@@ -61,6 +65,7 @@ public final class TowerDefense extends JavaPlugin {
     }
 
     private void loadHandlers() {
+        this.playerDataHandler = new PlayerDataHandler();
         this.mapGridHandler = new MapGridHandler();
         this.mapSetupHandler = new MapSetupHandler();
         this.mapHandler = new MapHandler();
