@@ -77,7 +77,6 @@ public class Game {
     public void stop() {
         gridLocation.unregister();
 
-
         //Remove schematic
         TowerDefense.runAsync(new BukkitRunnable() {
             @Override

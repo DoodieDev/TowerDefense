@@ -2,9 +2,12 @@ package doodieman.towerdefense.game;
 
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.values.Difficulty;
+import doodieman.towerdefense.lobby.spawn.SpawnUtil;
 import doodieman.towerdefense.maps.objects.Map;
 import lombok.Getter;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 public class GameUtil {
 
@@ -26,6 +29,21 @@ public class GameUtil {
         this.handler.getActiveGames().put(player, game);
         game.prepare();
         game.start();
+
+        Player onlinePlayer = player.getPlayer();
+        onlinePlayer.setHealth(20);
+        onlinePlayer.setFoodLevel(20);
+        onlinePlayer.setGameMode(GameMode.SURVIVAL);
+        onlinePlayer.getInventory().clear();
+    }
+
+    //Exit and save the game
+    public void exitGame(OfflinePlayer player) {
+        if (!this.isInGame(player)) return;
+        Game game = this.getActiveGame(player);
+        game.stop();
+        handler.getActiveGames().remove(game.getPlayer());
+        player.getPlayer().teleport(SpawnUtil.getSpawn());
     }
 
     //Stop an active game

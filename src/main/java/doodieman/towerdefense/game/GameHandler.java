@@ -12,10 +12,14 @@ public class GameHandler {
     @Getter
     private final GameUtil gameUtil;
     @Getter
+    private final GameListener gameListener;
+
+    @Getter
     private final Map<OfflinePlayer, Game> activeGames = new HashMap<>();
 
     public GameHandler() {
         this.gameUtil = new GameUtil(this);
+        this.gameListener = new GameListener(this);
     }
 
 }
