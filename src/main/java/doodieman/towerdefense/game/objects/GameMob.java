@@ -100,12 +100,13 @@ public class GameMob {
             this.nextPoint = path.get(pointIndex+1);
 
             closerLocation = moveCloser(entity.getLocation(), nextPoint, speed - distanceLeft);
-            this.fixHeadRotation();
 
         } else closerLocation = moveCloser(entity.getLocation(), nextPoint, speed);
 
         closerLocation.setYaw(currentPoint.getYaw());
         entity.teleport(closerLocation);
+        if (Math.round(currentLength) % 3 == 0)
+            this.fixHeadRotation();
 
         this.updateHealthBar();
     }
