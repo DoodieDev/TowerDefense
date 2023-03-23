@@ -4,6 +4,7 @@ import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.interactive.settings.SettingsMenu;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.utils.ItemBuilder;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -23,11 +24,14 @@ public class GameInteractive implements Listener {
     private final OfflinePlayer offlinePlayer;
     private final Player player;
     private final Game game;
+    @Getter
+    private final GameAnimations gameAnimations;
 
     public GameInteractive(OfflinePlayer player, Game game) {
         this.offlinePlayer = player;
         this.player = offlinePlayer.getPlayer();
         this.game = game;
+        this.gameAnimations = new GameAnimations(game);
     }
 
     //Sets op the interactive board. (Give player items, etc)

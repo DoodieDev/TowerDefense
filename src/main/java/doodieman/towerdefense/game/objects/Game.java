@@ -135,6 +135,7 @@ public class Game {
 
                 //Remove mobs in goal
                 for (GameMob mob : mobsToRemove) {
+                    gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation());
                     mob.kill();
                     aliveMobs.remove(mob);
                 }
@@ -154,11 +155,13 @@ public class Game {
         GameMob mob = new GameMob(this, mobType);
         mob.spawn();
         aliveMobs.add(mob);
+        gameInteractive.getGameAnimations().mobSpawned(mob.getEntity().getLocation());
     }
 
     //Starts the round
     public void startRound() {
         this.roundActive = true;
+        this.gameInteractive.getGameAnimations().newRoundStarted();
 
         Round round = Round.getRound(currentRound);
 

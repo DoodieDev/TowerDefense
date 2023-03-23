@@ -8,7 +8,7 @@ import java.util.List;
 
 public enum Round {
 
-    ROUND_1(1, 5L, Arrays.asList(
+    ROUND_1(1, 40L, Arrays.asList(
         MobType.ZOMBIE1,
         MobType.ZOMBIE1,
         MobType.ZOMBIE1,

@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 public enum MobType {
 
-    ZOMBIE1(EntityType.ZOMBIE, 1.25, 1, entity -> {
+    ZOMBIE1(EntityType.ZOMBIE, 3.25, 1, entity -> {
         Zombie zombie = (Zombie) entity;
         zombie.getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET));
         zombie.setBaby(false);
@@ -24,7 +24,6 @@ public enum MobType {
     private final double speed;
     @Getter
     private final double health;
-
 
     MobType(EntityType entityType, double speed, double health, MobRunnable runnable) {
         this.entityType = entityType;
