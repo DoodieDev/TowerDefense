@@ -1,6 +1,10 @@
 package doodieman.towerdefense;
 
 import doodieman.towerdefense.game.GameUtil;
+import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.values.Difficulty;
+import doodieman.towerdefense.maps.MapUtil;
+import doodieman.towerdefense.maps.objects.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -18,11 +22,13 @@ public class TestCommand implements CommandExecutor {
         if (args.length < 1) return true;
 
         if (args[0].equalsIgnoreCase("start")) {
-            GameUtil.getInstance().startGame(player);
+            Map map = MapUtil.getInstance().getMap("afrotest");
+            GameUtil.getInstance().startGame(player, map, Difficulty.BEGINNER);
         }
 
         else if (args[0].equalsIgnoreCase("stop")) {
-            GameUtil.getInstance().stopGame(player);
+            Game game = GameUtil.getInstance().getActiveGame(player);
+            GameUtil.getInstance().stopGame(game);
         }
 
         else if (args[0].equalsIgnoreCase("wave")) {

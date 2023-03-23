@@ -63,7 +63,6 @@ public class Map {
     //Paste the map at specific location
     public void pasteSchematic(Location location) {
         try {
-
             File file = new File(this.getSchematicPath());
             Vector pasteLocation = new Vector(location.getX(), location.getY(), location.getZ());
             com.sk89q.worldedit.world.World pasteWorld = new BukkitWorld(location.getWorld());

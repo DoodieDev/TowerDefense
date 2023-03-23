@@ -54,4 +54,12 @@ public final class TowerDefense extends JavaPlugin {
         Bukkit.getPluginCommand("mapsetup").setExecutor(new MapSetupCommand(this.mapSetupHandler));
         Bukkit.getPluginCommand("test").setExecutor(new TestCommand());
     }
+
+    public static void runSync(Runnable runnable) {
+        Bukkit.getScheduler().runTask(getInstance(), runnable);
+    }
+
+    public static void runAsync(Runnable runnable) {
+        Bukkit.getScheduler().runTaskAsynchronously(getInstance(), runnable);
+    }
 }

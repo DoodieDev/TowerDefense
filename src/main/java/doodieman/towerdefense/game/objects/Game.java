@@ -1,6 +1,13 @@
 package doodieman.towerdefense.game.objects;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.game.values.Difficulty;
 import doodieman.towerdefense.game.values.MobType;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
@@ -22,6 +29,10 @@ public class Game {
     @Getter
     private final Map map;
     @Getter
+    private final Difficulty difficulty;
+    @Getter
+    private double health;
+    @Getter
     private final GridLocation gridLocation;
     @Getter
     private final World world;
@@ -30,9 +41,12 @@ public class Game {
     @Getter
     private final List<Location> mobPath;
 
-    public Game(OfflinePlayer player, Map map) {
+    public Game(OfflinePlayer player, Map map, Difficulty difficulty) {
         this.player = player;
         this.map = map;
+        this.difficulty = difficulty;
+        this.health = difficulty.getHealth();
+
         this.mobPath = new ArrayList<>();
         this.world = MapUtil.getInstance().getGameWorld();
         this.gridLocation = MapGridHandler.getInstance().generateLocation();
@@ -42,20 +56,41 @@ public class Game {
 
     //Prepares the game, pasting schematic, etc
     public void prepare() {
-        map.pasteSchematic(zeroLocation);
+        TowerDefense.runAsync(new BukkitRunnable() {
+            @Override
+            public void run() {
+                map.pasteSchematic(zeroLocation);
+            }
+        });
         for (Location location : map.getPath())
             this.mobPath.add(getRealLocation(location));
     }
 
     //Starts the game. Teleports player, etc.
     public void start() {
-        player.getPlayer().teleport(getCenter());
+        player.getPlayer().teleport(mobPath.get(0));
     }
 
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop() {
         gridLocation.unregister();
-        //TODO delete schematic, teleport player to spawn
+        //TODO delete schematic, teleport player to spawn, save current game progress
+
+        //Remove schematic
+        TowerDefense.runAsync(new BukkitRunnable() {
+            @Override
+            public void run() {
+                com.sk89q.worldedit.world.World editWorld = new BukkitWorld(world);
+                Location corner1 = getRealLocation(map.getCorner1());
+                Location corner2 = getRealLocation(map.getCorner2());
+                Vector pos1 = new Vector(corner1.getX(), corner1.getY(), corner1.getZ());
+                Vector pos2 = new Vector(corner2.getX(), corner2.getY(), corner2.getZ());
+                CuboidRegion region = new CuboidRegion(editWorld, pos1, pos2);
+                EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(editWorld, -1);
+                editSession.setBlocks(region, new BaseBlock(0));
+                editSession.flushQueue();
+            }
+        });
     }
 
     //Starts a wave of monsters

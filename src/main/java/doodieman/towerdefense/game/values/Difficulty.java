@@ -4,16 +4,19 @@ import lombok.Getter;
 
 public enum  Difficulty {
 
-    BEGINNER("Begynder"),
-    EASY("Øvede"),
-    HARD("Avanceret"),
-    EXPERT("Expert");
+    BEGINNER("Begynder", 800),
+    EASY("Øvede", 600),
+    HARD("Avanceret", 400),
+    EXPERT("Expert", 200);
 
     @Getter
-    private String name;
+    private final String name;
+    @Getter
+    private final double health;
 
-    Difficulty(String name) {
+    Difficulty(String name, double health) {
         this.name = name;
+        this.health = health;
     }
 
 
