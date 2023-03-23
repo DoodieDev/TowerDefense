@@ -23,7 +23,7 @@ public class TestCommand implements CommandExecutor {
 
         if (args[0].equalsIgnoreCase("start")) {
             Map map = MapUtil.getInstance().getMap("afrotest");
-            GameUtil.getInstance().startGame(player, map, Difficulty.BEGINNER);
+            GameUtil.getInstance().startGame(player, map, Difficulty.EASY);
         }
 
         else if (args[0].equalsIgnoreCase("stop")) {

@@ -1,12 +1,18 @@
 package doodieman.towerdefense;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import doodieman.towerdefense.game.GameHandler;
+import doodieman.towerdefense.lobby.mapselector.MapSelectorHandler;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.maps.MapHandler;
 import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import lombok.Getter;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.MemoryNPCDataStore;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,9 +30,13 @@ public final class TowerDefense extends JavaPlugin {
     private MapHandler mapHandler;
     @Getter
     private GameHandler gameHandler;
+    @Getter
+    private MapSelectorHandler mapSelectorHandler;
 
     @Getter
     private WorldEditPlugin worldedit;
+    @Getter
+    private NPCRegistry npcRegistry;
 
     @Override
     public void onEnable() {
@@ -34,6 +44,8 @@ public final class TowerDefense extends JavaPlugin {
         this.saveDefaultConfig();
 
         this.worldedit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+        this.npcRegistry = CitizensAPI.createNamedNPCRegistry("towerdefense", new MemoryNPCDataStore());
+
 
         //Initialize handlers and commands
         this.loadHandlers();
@@ -41,13 +53,17 @@ public final class TowerDefense extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        this.npcRegistry.deregisterAll();
+        HologramsAPI.getHolograms(this).forEach(Hologram::delete);
+    }
 
     private void loadHandlers() {
         this.mapGridHandler = new MapGridHandler();
         this.mapSetupHandler = new MapSetupHandler();
         this.mapHandler = new MapHandler();
         this.gameHandler = new GameHandler();
+        this.mapSelectorHandler = new MapSelectorHandler();
     }
 
     private void loadCommands() {

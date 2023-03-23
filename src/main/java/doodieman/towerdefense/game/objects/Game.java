@@ -56,12 +56,14 @@ public class Game {
 
     //Prepares the game, pasting schematic, etc
     public void prepare() {
+        //Paste schematic async
         TowerDefense.runAsync(new BukkitRunnable() {
             @Override
             public void run() {
                 map.pasteSchematic(zeroLocation);
             }
         });
+        //Load the mob path
         for (Location location : map.getPath())
             this.mobPath.add(getRealLocation(location));
     }

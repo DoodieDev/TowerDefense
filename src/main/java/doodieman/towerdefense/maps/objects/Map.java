@@ -36,10 +36,13 @@ public class Map {
     private Location corner2;
     @Getter
     private final List<Location> path;
+    @Getter
+    private List<String> mapVisual;
 
     public Map(String mapName) {
         this.mapName = mapName;
         this.path = new ArrayList<>();
+        this.mapVisual = new ArrayList<>();
     }
 
     //Loads the map from the config
@@ -49,6 +52,7 @@ public class Map {
 
         this.corner1 = LocationUtil.stringToLocation(section.getString("corner1"));
         this.corner2 = LocationUtil.stringToLocation(section.getString("corner2"));
+        this.mapVisual = section.getStringList("map-visual");
 
         //Load the path
         ConfigurationSection pathSection = section.getConfigurationSection("path");

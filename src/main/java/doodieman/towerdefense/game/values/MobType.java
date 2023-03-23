@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 public enum MobType {
 
-    ZOMBIE(EntityType.ZOMBIE, 0.1, 1, "{IsBaby:1,IsVillager:0}", new ItemStack(Material.DIAMOND_HELMET), null, null, new ItemStack(Material.DIAMOND_BOOTS), null),
+    ZOMBIE(EntityType.ENDERMAN, 0.4, 1, "{IsBaby:0,IsVillager:0}", new ItemStack(Material.DIAMOND_HELMET), null, null, new ItemStack(Material.DIAMOND_BOOTS), null),
     TEST(EntityType.ZOMBIE, 0.1, 1, "{isBaby:1,IsVillager:0}", null, null, null, null, null);
 
     @Getter
