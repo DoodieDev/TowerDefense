@@ -7,7 +7,11 @@ import org.bukkit.inventory.ItemStack;
 
 public enum MobType {
 
-    ZOMBIE(EntityType.ENDERMAN, 0.4, 1, "{IsBaby:0,IsVillager:0}", new ItemStack(Material.DIAMOND_HELMET), null, null, new ItemStack(Material.DIAMOND_BOOTS), null),
+    ZOMBIE1(EntityType.ZOMBIE, 10, 1, "{IsBaby:0,IsVillager:0}", null, null, null, null, null),
+    ZOMBIE2(EntityType.ZOMBIE, 15, 3, "{IsBaby:0,IsVillager:0}", new ItemStack(Material.LEATHER_HELMET), null, null, null, null),
+    ZOMBIE3(EntityType.ZOMBIE, 0.5, 5, "{IsBaby:0,IsVillager:0}", null, new ItemStack(Material.LEATHER_CHESTPLATE), null, null, null),
+    ZOMBIE4(EntityType.ZOMBIE, 0.2, 25, "{IsBaby:0,IsVillager:0}", new ItemStack(Material.IRON_HELMET), new ItemStack(Material.LEATHER_CHESTPLATE), new ItemStack(Material.LEATHER_LEGGINGS), new ItemStack(Material.LEATHER_BOOTS), new ItemStack(Material.STONE_SWORD)),
+
     TEST(EntityType.ZOMBIE, 0.1, 1, "{isBaby:1,IsVillager:0}", null, null, null, null, null);
 
     @Getter
@@ -28,7 +32,7 @@ public enum MobType {
 
     MobType(EntityType entityType, double speed, double health, String nbt, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, ItemStack weapon) {
         this.entityType = entityType;
-        this.speed = speed;
+        this.speed = speed/20; //Converts from blocks a tick, to blocks a second
         this.health = health;
         this.nbt = nbt;
 

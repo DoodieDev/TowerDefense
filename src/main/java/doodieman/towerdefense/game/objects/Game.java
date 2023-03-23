@@ -10,6 +10,7 @@ import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.interactive.GameInteractive;
 import doodieman.towerdefense.game.values.Difficulty;
 import doodieman.towerdefense.game.values.MobType;
+import doodieman.towerdefense.game.values.Round;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
@@ -19,6 +20,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,14 @@ public class Game {
     private final Location zeroLocation;
     @Getter
     private final List<Location> mobPath;
+    BukkitTask mobPathLoop;
+
+    @Getter //List of active mobs on the path
+    private final List<GameMob> aliveMobs;
+    @Getter //Check if the round is active
+    private boolean roundActive;
+    @Getter //Current round number
+    private int currentRound;
 
     public Game(OfflinePlayer player, Map map, Difficulty difficulty) {
         this.player = player;
@@ -56,6 +66,9 @@ public class Game {
         this.gridLocation = MapGridHandler.getInstance().generateLocation();
         this.gridLocation.register();
         this.zeroLocation = this.gridLocation.getLocation(this.world);
+        this.aliveMobs = new ArrayList<>();
+        this.roundActive = false;
+        this.currentRound = 1;
     }
 
     //Prepares the game, pasting schematic, etc
@@ -76,10 +89,13 @@ public class Game {
     public void start() {
         this.player.getPlayer().teleport(mobPath.get(0));
         this.gameInteractive.register();
+        this.startLoop();
     }
 
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop() {
+        this.roundActive = false;
+        this.mobPathLoop.cancel();
         this.gridLocation.unregister();
         this.gameInteractive.unregister();
 
@@ -101,24 +117,79 @@ public class Game {
     }
 
     //Starts a wave of monsters
-    public void startRound() {
+    private void startLoop() {
 
-        GameMob mob = new GameMob(this, MobType.ZOMBIE);
-        mob.spawn();
+        List<GameMob> mobsToRemove = new ArrayList<>();
 
-        new BukkitRunnable() {
+        this.mobPathLoop = new BukkitRunnable() {
             @Override
             public void run() {
-                mob.move();
-                if (mob.isInGoal()) {
-                    this.cancel();
-                    mob.kill();
+                if (!roundActive) return;
+
+                //Move all the mobs
+                for (GameMob mob : aliveMobs) {
+                    mob.move();
+                    if (mob.isInGoal())
+                        mobsToRemove.add(mob);
                 }
+
+                //Remove mobs in goal
+                for (GameMob mob : mobsToRemove) {
+                    mob.kill();
+                    aliveMobs.remove(mob);
+                }
+
+                mobsToRemove.clear();
+
+                //Check if round is over
+                if (aliveMobs.size() <= 0)
+                    finishRound();
+
             }
         }.runTaskTimer(TowerDefense.getInstance(), 0L, 1L);
     }
 
+    //Spawns a mob that automatically will go on the path
+    public void spawnMob(MobType mobType) {
+        GameMob mob = new GameMob(this, mobType);
+        mob.spawn();
+        aliveMobs.add(mob);
+    }
 
+    //Starts the round
+    public void startRound() {
+        this.roundActive = true;
+
+        Round round = Round.getRound(currentRound);
+
+        //Spawn the mobs slowly
+        int i = 0;
+        for (MobType mobType : round.getMobs()) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+
+                    if (roundActive)
+                        spawnMob(mobType);
+
+                }
+            }.runTaskLater(TowerDefense.getInstance(), i * round.getSpawnDelay());
+            i++;
+        }
+    }
+
+    public void finishRound() {
+        this.roundActive = false;
+        this.wipeMobs();
+        gameInteractive.updateRoundItemSlot();
+        currentRound++;
+    }
+
+    public void wipeMobs() {
+        for (GameMob mob : aliveMobs)
+            mob.kill();
+        aliveMobs.clear();
+    }
 
 
     //Gets the exact center of the map

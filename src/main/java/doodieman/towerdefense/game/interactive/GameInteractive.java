@@ -15,6 +15,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class GameInteractive implements Listener {
 
     private final OfflinePlayer offlinePlayer;
@@ -35,10 +38,28 @@ public class GameInteractive implements Listener {
         ItemBuilder settings = new ItemBuilder(Material.NETHER_STAR);
         settings.name("§f§nIndstillinger§r §7(Højreklik)");
         player.getInventory().setItem(8, settings.build());
+
+        this.updateRoundItemSlot();
     }
 
     public void unregister() {
         HandlerList.unregisterAll(this);
+    }
+
+    public void updateRoundItemSlot() {
+
+        if (game.isRoundActive()) {
+
+            ItemBuilder builder = new ItemBuilder(Material.BARRIER);
+            builder.name("§c§oRunden er aktiv");
+            player.getInventory().setItem(7, builder.build());
+
+        } else {
+            ItemBuilder builder = new ItemBuilder(Material.EMERALD);
+            builder.name("§a§nStart runde§r §7(Højreklik)");
+            player.getInventory().setItem(7, builder.build());
+        }
+
     }
 
     @EventHandler
@@ -46,8 +67,15 @@ public class GameInteractive implements Listener {
         if (event.getPlayer() != player) return;
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
+        //Open settings
         if (player.getInventory().getHeldItemSlot() == 8) {
             new SettingsMenu(player).open();
+        }
+
+        //Start round
+        if (player.getInventory().getHeldItemSlot() == 7 && !game.isRoundActive()) {
+            game.startRound();
+            this.updateRoundItemSlot();
         }
     }
 
@@ -55,9 +83,9 @@ public class GameInteractive implements Listener {
     public void onClick(InventoryClickEvent event) {
         if (event.getWhoClicked() != player) return;
 
-        if (event.getSlot() == 8 || event.getHotbarButton() == 8) {
+        List<Integer> lockedSlots = Arrays.asList(7, 8);
+        if (lockedSlots.contains(event.getSlot()) || lockedSlots.contains(event.getHotbarButton()))
             event.setCancelled(true);
-        }
     }
 
 }

@@ -3,9 +3,9 @@ package doodieman.towerdefense;
 import doodieman.towerdefense.game.GameUtil;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.values.Difficulty;
+import doodieman.towerdefense.game.values.MobType;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,23 +31,6 @@ public class TestCommand implements CommandExecutor {
             GameUtil.getInstance().stopGame(game);
         }
 
-        else if (args[0].equalsIgnoreCase("wave")) {
-            GameUtil.getInstance().getActiveGame(player).startRound();
-        }
-
-        else if (args[0].equalsIgnoreCase("bigwave")) {
-
-            new BukkitRunnable() {
-                int i = 0;
-                @Override
-                public void run() {
-                    i++;
-                    if (i > 100) this.cancel();
-
-                    GameUtil.getInstance().getActiveGame(player).startRound();
-                }
-            }.runTaskTimer(TowerDefense.getInstance(),0L,1L);
-        }
 
 
         return true;
