@@ -25,24 +25,31 @@ public class GameUtil {
     public void startGame(OfflinePlayer player, Map map, Difficulty difficulty) {
         if (this.isInGame(player)) return;
 
-        Game game = new Game(player, map, difficulty);
-        this.handler.getActiveGames().put(player, game);
-        game.prepare();
-        game.start();
-
+        //Player stuff
         Player onlinePlayer = player.getPlayer();
         onlinePlayer.setHealth(20);
         onlinePlayer.setFoodLevel(20);
         onlinePlayer.setGameMode(GameMode.SURVIVAL);
         onlinePlayer.getInventory().clear();
+
+        //Start game
+        Game game = new Game(player, map, difficulty);
+        this.handler.getActiveGames().put(player, game);
+        game.prepare();
+        game.start();
     }
 
     //Exit and save the game
     public void exitGame(OfflinePlayer player) {
         if (!this.isInGame(player)) return;
+
         Game game = this.getActiveGame(player);
         game.stop();
         handler.getActiveGames().remove(game.getPlayer());
+
+        player.getPlayer().sendMessage("§aSpillet er blevet gemt!");
+        player.getPlayer().sendMessage("§aDu kan altid forsætte fra punktet du forlod.");
+        player.getPlayer().getInventory().clear();
         player.getPlayer().teleport(SpawnUtil.getSpawn());
     }
 

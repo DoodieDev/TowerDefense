@@ -7,6 +7,7 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.game.interactive.GameInteractive;
 import doodieman.towerdefense.game.values.Difficulty;
 import doodieman.towerdefense.game.values.MobType;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
@@ -35,6 +36,8 @@ public class Game {
     @Getter
     private final GridLocation gridLocation;
     @Getter
+    private final GameInteractive gameInteractive;
+    @Getter
     private final World world;
     @Getter
     private final Location zeroLocation;
@@ -46,6 +49,7 @@ public class Game {
         this.map = map;
         this.difficulty = difficulty;
         this.health = difficulty.getHealth();
+        this.gameInteractive = new GameInteractive(player, this);
 
         this.mobPath = new ArrayList<>();
         this.world = MapUtil.getInstance().getGameWorld();
@@ -70,12 +74,14 @@ public class Game {
 
     //Starts the game. Teleports player, etc.
     public void start() {
-        player.getPlayer().teleport(mobPath.get(0));
+        this.player.getPlayer().teleport(mobPath.get(0));
+        this.gameInteractive.register();
     }
 
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop() {
-        gridLocation.unregister();
+        this.gridLocation.unregister();
+        this.gameInteractive.unregister();
 
         //Remove schematic
         TowerDefense.runAsync(new BukkitRunnable() {

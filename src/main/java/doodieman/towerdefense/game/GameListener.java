@@ -67,13 +67,6 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        if (!util.isInGame(player)) return;
-        event.setCancelled(true);
-    }
-
-    @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
