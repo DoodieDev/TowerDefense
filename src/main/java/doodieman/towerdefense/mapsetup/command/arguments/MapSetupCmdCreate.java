@@ -10,15 +10,15 @@ public class MapSetupCmdCreate {
     public MapSetupCmdCreate(Player player, String[] args, MapSetupHandler handler) {
 
         if (args.length < 2) {
-            player.sendMessage("§cSkriv /mapsetup create <map navn>");
+            player.sendMessage("§cSkriv /mapsetup create <map ID>");
             return;
         }
 
         FileConfiguration config = TowerDefense.getInstance().getConfig();
-        String mapName = args[1].toLowerCase();
+        String mapID = args[1].toLowerCase();
 
         //Create the map in the config with useless data ('creator')
-        config.set("maps."+mapName+".creator", player.getName());
+        config.set("maps."+mapID+".creator", player.getName());
         TowerDefense.getInstance().saveConfig();
 
         player.sendMessage("§aMappet er nu blevet oprettet. Se alle maps med /mapsetup list");

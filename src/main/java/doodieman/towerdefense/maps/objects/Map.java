@@ -14,7 +14,6 @@ import com.sk89q.worldedit.world.registry.WorldData;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.utils.LocationUtil;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,7 +27,9 @@ import java.util.List;
 public class Map {
 
     @Getter
-    private final String mapName;
+    private final String mapID;
+    @Getter
+    private String mapName;
 
     @Getter
     private Location corner1;
@@ -40,7 +41,7 @@ public class Map {
     private List<String> mapVisual;
 
     public Map(String mapName) {
-        this.mapName = mapName;
+        this.mapID = mapName;
         this.path = new ArrayList<>();
         this.mapVisual = new ArrayList<>();
     }
@@ -50,6 +51,7 @@ public class Map {
 
         ConfigurationSection section = getSection();
 
+        this.mapName = section.getString("name", mapID);
         this.corner1 = LocationUtil.stringToLocation(section.getString("corner1"));
         this.corner2 = LocationUtil.stringToLocation(section.getString("corner2"));
         this.mapVisual = section.getStringList("map-visual");
@@ -61,7 +63,7 @@ public class Map {
             this.path.add(location);
         }
 
-        System.out.println("[TowerDefense] Succesfully loaded map: '"+mapName+"'");
+        System.out.println("[TowerDefense] Succesfully loaded map: '"+ mapID +"'");
     }
 
     //Paste the map at specific location
@@ -141,11 +143,11 @@ public class Map {
     }
 
     public String getSchematicPath() {
-        return TowerDefense.getInstance().getDataFolder() + "/maps/" + mapName + ".schematic";
+        return TowerDefense.getInstance().getDataFolder() + "/maps/" + mapID + ".schematic";
     }
 
     public ConfigurationSection getSection() {
-        return getConfig().getConfigurationSection("maps."+mapName);
+        return getConfig().getConfigurationSection("maps."+ mapID);
     }
     public FileConfiguration getConfig() {
         return TowerDefense.getInstance().getConfig();

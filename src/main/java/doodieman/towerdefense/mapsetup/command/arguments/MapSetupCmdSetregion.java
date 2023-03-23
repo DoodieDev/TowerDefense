@@ -13,14 +13,14 @@ public class MapSetupCmdSetregion {
     public MapSetupCmdSetregion(Player player, String[] args, MapSetupHandler handler) {
 
         if (args.length < 2) {
-            player.sendMessage("§cSkriv /mapsetup setregion <map navn>");
+            player.sendMessage("§cSkriv /mapsetup setregion <map ID>");
             return;
         }
 
         FileConfiguration config = TowerDefense.getInstance().getConfig();
-        String mapName = args[1].toLowerCase();
+        String mapID = args[1].toLowerCase();
 
-        if (!handler.doesMapExist(mapName)) {
+        if (!handler.doesMapExist(mapID)) {
             player.sendMessage("§cMappet eksisterer ikke.");
             return;
         }
@@ -35,8 +35,8 @@ public class MapSetupCmdSetregion {
         Location corner1 = selection.getMinimumPoint();
         Location corner2 = selection.getMaximumPoint();
 
-        config.set("maps."+mapName+".corner1", LocationUtil.locationToString(corner1));
-        config.set("maps."+mapName+".corner2", LocationUtil.locationToString(corner2));
+        config.set("maps."+mapID+".corner1", LocationUtil.locationToString(corner1));
+        config.set("maps."+mapID+".corner2", LocationUtil.locationToString(corner2));
         TowerDefense.getInstance().saveConfig();
 
         player.sendMessage("§aDu har sat mappets region!");

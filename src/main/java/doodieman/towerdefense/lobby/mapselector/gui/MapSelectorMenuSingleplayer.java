@@ -21,11 +21,11 @@ public class MapSelectorMenuSingleplayer extends GUI {
     public MapSelectorMenuSingleplayer(Player player) {
         super(player, 6, "Vælg et map");
 
-        mapSlots.put(10, new MapSlot("afrotest", "Begynder"));
+        mapSlots.put(10, new MapSlot("eventyr", "Begynder"));
         mapSlots.put(19, new MapSlot(null, "Begynder"));
         mapSlots.put(28, new MapSlot(null, "Begynder"));
 
-        mapSlots.put(12, new MapSlot("Haven", "Øvede"));
+        mapSlots.put(12, new MapSlot("haven", "Øvede"));
         mapSlots.put(21, new MapSlot(null, "Øvede"));
         mapSlots.put(30, new MapSlot(null, "Øvede"));
 
@@ -54,7 +54,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
                 Map map = MapUtil.getInstance().getMap(mapSlot.getMapID());
 
                 itemBuilder = new ItemBuilder(Material.EMPTY_MAP);
-                itemBuilder.name("§f§n"+mapSlot.getMapID());
+                itemBuilder.name("§f§n"+map.getMapName());
                 itemBuilder.lore("§f- §7§o"+mapSlot.getDifficulty(), "", "§fTryk for at spille!");
                 if (map.getMapVisual().size() > 0) {
                     itemBuilder.addLore("");

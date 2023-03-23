@@ -6,7 +6,8 @@ import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdCreate;
 import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdDelete;
 import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdList;
 import doodieman.towerdefense.mapsetup.command.arguments.MapSetupCmdSetregion;
-import doodieman.towerdefense.mapsetup.command.arguments.MapSetupEditpath;
+import doodieman.towerdefense.mapsetup.command.arguments.MapSetupSetname;
+import doodieman.towerdefense.mapsetup.command.arguments.MapSetupSetpath;
 import doodieman.towerdefense.mapsetup.command.arguments.MapSetupSaveschematic;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.command.Command;
@@ -20,12 +21,14 @@ public class MapSetupCommand implements CommandExecutor {
     private final MapSetupHandler handler;
 
     public void sendHelpMessage(Player player) {
-        player.sendMessage("§6/mapsetup create <map navn> §fOpret et map");
-        player.sendMessage("§6/mapsetup delete <map navn> §fSlet et map");
+        player.sendMessage("§6/mapsetup create <map ID> §fOpret et map");
+        player.sendMessage("§6/mapsetup delete <map ID> §fSlet et map");
         player.sendMessage("§6/mapsetup list §fSe alle maps");
-        player.sendMessage("§6/mapsetup setregion <map navn> §fSæt schematic region");
-        player.sendMessage("§6/mapsetup setpath <map navn> <Point> §fSæt points til mob stien");
-        player.sendMessage("§6/mapsetup clearpath <map navn> §fClear mob stien");
+        player.sendMessage("§6/mapsetup setregion <map ID> §fSæt schematic region");
+        player.sendMessage("§6/mapsetup setpath <map ID> <Point> §fSæt points til mob stien");
+        player.sendMessage("§6/mapsetup clearpath <map ID> §fClear mob stien");
+        player.sendMessage("§6/mapsetup setschematic <map ID> §fGem schematic af region");
+        player.sendMessage("§6/mapsetup setname <map ID> <navn> §fSæt mappets navn");
     }
 
     @Override
@@ -65,7 +68,7 @@ public class MapSetupCommand implements CommandExecutor {
                 break;
 
             case "SETPATH":
-                new MapSetupEditpath(player, args, handler);
+                new MapSetupSetpath(player, args, handler);
                 break;
 
             case "SLETPATH":
@@ -75,6 +78,10 @@ public class MapSetupCommand implements CommandExecutor {
 
             case "SAVESCHEMATIC":
                 new MapSetupSaveschematic(player, args, handler);
+                break;
+
+            case "SETNAME":
+                new MapSetupSetname(player, args, handler);
                 break;
 
             default:

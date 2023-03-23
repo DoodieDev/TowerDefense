@@ -9,19 +9,19 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class MapSetupEditpath {
+public class MapSetupSetpath {
 
-    public MapSetupEditpath(Player player, String[] args, MapSetupHandler handler) {
+    public MapSetupSetpath(Player player, String[] args, MapSetupHandler handler) {
 
         if (args.length < 3) {
-            player.sendMessage("§cSkriv /mapsetup setpath <map navn> <Point>");
+            player.sendMessage("§cSkriv /mapsetup setpath <map ID> <Point>");
             return;
         }
 
         FileConfiguration config = TowerDefense.getInstance().getConfig();
-        String mapName = args[1].toLowerCase();
+        String mapID = args[1].toLowerCase();
 
-        if (!handler.doesMapExist(mapName)) {
+        if (!handler.doesMapExist(mapID)) {
             player.sendMessage("§cMappet eksisterer ikke.");
             return;
         }
@@ -29,7 +29,7 @@ public class MapSetupEditpath {
         String point = args[2];
         Location location = player.getLocation();
 
-        config.set("maps."+mapName+".path."+point, LocationUtil.locationToString(location));
+        config.set("maps."+mapID+".path."+point, LocationUtil.locationToString(location));
         TowerDefense.getInstance().saveConfig();
 
         player.sendMessage("§aDu har tilføjet punkt #"+point+" til map path.");

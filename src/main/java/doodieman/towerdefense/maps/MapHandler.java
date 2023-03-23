@@ -35,8 +35,8 @@ public class MapHandler {
         FileConfiguration config = TowerDefense.getInstance().getConfig();
         ConfigurationSection section = config.getConfigurationSection("maps");
 
-        for (String mapName : section.getKeys(false)) {
-            Map map = new Map(mapName);
+        for (String mapID : section.getKeys(false)) {
+            Map map = new Map(mapID);
             map.load();
             this.loadedMaps.add(map);
         }

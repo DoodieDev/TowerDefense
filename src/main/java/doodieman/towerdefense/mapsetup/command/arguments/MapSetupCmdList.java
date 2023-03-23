@@ -15,7 +15,7 @@ public class MapSetupCmdList {
 
         player.sendMessage("§aListe af alle maps:");
         for (String key : section.getKeys(false))
-            player.sendMessage("§a- §7"+key);
+            player.sendMessage("§a- §7ID: §f"+key);
     }
 
 }

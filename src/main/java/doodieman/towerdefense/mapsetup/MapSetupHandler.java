@@ -28,17 +28,17 @@ public class MapSetupHandler {
         this.listener = new MapSetupListener(this);
     }
 
-    public boolean doesMapExist(String mapName) {
-        return TowerDefense.getInstance().getConfig().contains("maps."+mapName);
+    public boolean doesMapExist(String mapID) {
+        return TowerDefense.getInstance().getConfig().contains("maps."+mapID);
     }
 
-    public void saveSchematic(String mapName) {
+    public void saveSchematic(String mapID) {
 
         FileConfiguration config = TowerDefense.getInstance().getConfig();
-        String schematicPath = TowerDefense.getInstance().getDataFolder() + "/maps/" + mapName + ".schematic";
+        String schematicPath = TowerDefense.getInstance().getDataFolder() + "/maps/" + mapID + ".schematic";
 
-        Location corner1 = LocationUtil.stringToLocation(config.getString("maps."+mapName+".corner1"));
-        Location corner2 = LocationUtil.stringToLocation(config.getString("maps."+mapName+".corner2"));
+        Location corner1 = LocationUtil.stringToLocation(config.getString("maps."+mapID+".corner1"));
+        Location corner2 = LocationUtil.stringToLocation(config.getString("maps."+mapID+".corner2"));
         World world = corner1.getWorld();
 
         try {

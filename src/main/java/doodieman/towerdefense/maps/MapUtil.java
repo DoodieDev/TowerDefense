@@ -20,16 +20,16 @@ public class MapUtil {
         return handler.getWorld();
     }
 
-    public boolean doesMapExists(String mapName) {
+    public boolean doesMapExists(String mapID) {
         return handler.getLoadedMaps()
             .stream()
-            .anyMatch(map -> map.getMapName().equalsIgnoreCase(mapName));
+            .anyMatch(map -> map.getMapID().equalsIgnoreCase(mapID));
     }
 
-    public Map getMap(String mapName) {
+    public Map getMap(String mapID) {
         return handler.getLoadedMaps()
             .stream()
-            .filter(map -> map.getMapName().equalsIgnoreCase(mapName))
+            .filter(map -> map.getMapID().equalsIgnoreCase(mapID))
             .findAny().get();
     }
 

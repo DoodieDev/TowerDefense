@@ -10,14 +10,14 @@ public class MapSetupCmdDelete {
     public MapSetupCmdDelete(Player player, String[] args, MapSetupHandler handler) {
 
         if (args.length < 2) {
-            player.sendMessage("§cSkriv /mapsetup delete <map navn>");
+            player.sendMessage("§cSkriv /mapsetup delete <map ID>");
             return;
         }
 
         FileConfiguration config = TowerDefense.getInstance().getConfig();
-        String mapName = args[1].toLowerCase();
+        String mapID = args[1].toLowerCase();
 
-        config.set("maps."+mapName, null);
+        config.set("maps."+mapID, null);
         TowerDefense.getInstance().saveConfig();
 
         player.sendMessage("§aMappet er nu blevet slettet.");
