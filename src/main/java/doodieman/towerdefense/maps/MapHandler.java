@@ -1,15 +1,20 @@
 package doodieman.towerdefense.maps;
 
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.lobby.spawn.SpawnUtil;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.utils.FileUtils;
 import doodieman.towerdefense.utils.VoidWorldGenerator;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,7 @@ public class MapHandler {
     public MapHandler() {
         this.mapUtil = new MapUtil(this);
 
+        this.deleteGameWorld();
         this.createGameWorld();
         this.loadMaps();
     }
@@ -52,6 +58,28 @@ public class MapHandler {
         this.world.setAutoSave(false);
         this.world.setGameRuleValue("doMobSpawning", "false");
         this.world.setGameRuleValue("randomTickSpeed", "0");
+    }
+
+    public void deleteGameWorld() {
+        World gameworld = Bukkit.getWorld("gameworld");
+
+        if (gameworld != null) {
+            for (Player player : gameworld.getPlayers())
+                player.teleport(SpawnUtil.getSpawn());
+        }
+
+        try {
+            Bukkit.unloadWorld("gameworld", false);
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            System.out.println("Failed unloading the world!");
+        }
+
+        FileUtils.deleteDir(new File("gameworld"));
+    }
+
+    private boolean doesWorldExist() {
+        File file = new File("gameworld");
+        return file.exists();
     }
 
 }
