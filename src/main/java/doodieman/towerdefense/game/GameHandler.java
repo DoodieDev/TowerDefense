@@ -22,4 +22,10 @@ public class GameHandler {
         this.gameListener = new GameListener(this);
     }
 
+    public void exitAllGames() {
+        new HashMap<>(activeGames).forEach((player, game) -> {
+           gameUtil.exitGame(player, false);
+        });
+    }
+
 }

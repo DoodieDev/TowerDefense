@@ -40,11 +40,11 @@ public class GameUtil {
     }
 
     //Exit and save the game
-    public void exitGame(OfflinePlayer player) {
+    public void exitGame(OfflinePlayer player, boolean removeSchematic) {
         if (!this.isInGame(player)) return;
 
         Game game = this.getActiveGame(player);
-        game.stop();
+        game.stop(removeSchematic);
         handler.getActiveGames().remove(game.getPlayer());
 
         player.getPlayer().sendMessage("§aSpillet er blevet gemt!");
@@ -55,7 +55,7 @@ public class GameUtil {
 
     //Stop an active game
     public void stopGame(Game game) {
-        game.stop();
+        game.stop(true);
         handler.getActiveGames().remove(game.getPlayer());
     }
 

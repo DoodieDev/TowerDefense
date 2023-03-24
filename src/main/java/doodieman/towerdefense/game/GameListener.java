@@ -1,6 +1,7 @@
 package doodieman.towerdefense.game;
 
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.game.objects.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class GameListener implements Listener {
 
@@ -28,6 +30,14 @@ public class GameListener implements Listener {
         this.handler = handler;
         this.util = handler.getGameUtil();
         Bukkit.getPluginManager().registerEvents(this, TowerDefense.getInstance());
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if (!util.isInGame(player)) return;
+
+        GameUtil.getInstance().exitGame(player, true);
     }
 
     @EventHandler

@@ -2,7 +2,9 @@ package doodieman.towerdefense.game.interactive;
 
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.values.MobType;
 import doodieman.towerdefense.utils.PacketUtil;
+import doodieman.towerdefense.utils.StringUtil;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -54,9 +56,12 @@ public class GameAnimations {
     }
 
     //Particles when a mob gets to the goal
-    public void mobFinished(Location location) {
+    public void mobFinished(Location location, MobType mobType) {
         getPlayer().spigot().playEffect(location, Effect.LAVA_POP,0,0,0.1f,0.1f,0.1f,0.2f,10,40);
+        PacketUtil.sendTitle(getPlayer(), "", "§7"+ StringUtil.formatNum(game.getHealth())+" §c❤", 0, 20, 0);
+        getPlayer().playSound(getPlayer().getLocation(),Sound.ITEM_PICKUP,0.5f,0.8f);
     }
+
 
     public Player getPlayer() {
         return game.getPlayer().getPlayer();

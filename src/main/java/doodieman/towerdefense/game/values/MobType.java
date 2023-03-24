@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 public enum MobType {
 
-    ZOMBIE1(EntityType.ZOMBIE, 3.25, 1, entity -> {
+    ZOMBIE1(EntityType.ZOMBIE, 3.25, 1, 1, entity -> {
         Zombie zombie = (Zombie) entity;
         zombie.getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET));
         zombie.getEquipment().setItemInHand(new ItemStack(Material.AIR));
@@ -25,12 +25,15 @@ public enum MobType {
     private final double speed;
     @Getter
     private final double health;
+    @Getter
+    private final double damage;
 
-    MobType(EntityType entityType, double speed, double health, MobRunnable runnable) {
+    MobType(EntityType entityType, double speed, double health, double damage, MobRunnable runnable) {
         this.entityType = entityType;
         this.speed = speed/20; //Converts from blocks a tick, to blocks a second
         this.health = health;
         this.runnable = runnable;
+        this.damage = damage;
     }
 
     public interface MobRunnable {

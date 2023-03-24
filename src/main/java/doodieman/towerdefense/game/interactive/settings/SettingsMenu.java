@@ -38,7 +38,7 @@ public class SettingsMenu extends GUI {
 
         if (slot == 15) {
             player.closeInventory();
-            GameUtil.getInstance().exitGame(player);
+            GameUtil.getInstance().exitGame(player, true);
         }
 
     }

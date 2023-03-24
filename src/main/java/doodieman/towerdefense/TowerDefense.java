@@ -60,6 +60,7 @@ public final class TowerDefense extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.gameHandler.exitAllGames();
         this.npcRegistry.deregisterAll();
         HologramsAPI.getHolograms(this).forEach(Hologram::delete);
     }

@@ -97,27 +97,29 @@ public class Game {
     }
 
     //Stops the game. Removing schematic, teleport player to spawn, etc.
-    public void stop() {
+    public void stop(boolean removeSchematic) {
         this.roundActive = false;
         this.mobPathLoop.cancel();
         this.gridLocation.unregister();
         this.gameInteractive.unregister();
 
         //Remove schematic
-        TowerDefense.runAsync(new BukkitRunnable() {
-            @Override
-            public void run() {
-                com.sk89q.worldedit.world.World editWorld = new BukkitWorld(world);
-                Location corner1 = getRealLocation(map.getCorner1());
-                Location corner2 = getRealLocation(map.getCorner2());
-                Vector pos1 = new Vector(corner1.getX(), corner1.getY(), corner1.getZ());
-                Vector pos2 = new Vector(corner2.getX(), corner2.getY(), corner2.getZ());
-                CuboidRegion region = new CuboidRegion(editWorld, pos1, pos2);
-                EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(editWorld, -1);
-                editSession.setBlocks(region, new BaseBlock(0));
-                editSession.flushQueue();
-            }
-        });
+        if (removeSchematic) {
+            TowerDefense.runAsync(new BukkitRunnable() {
+                @Override
+                public void run() {
+                    com.sk89q.worldedit.world.World editWorld = new BukkitWorld(world);
+                    Location corner1 = getRealLocation(map.getCorner1());
+                    Location corner2 = getRealLocation(map.getCorner2());
+                    Vector pos1 = new Vector(corner1.getX(), corner1.getY(), corner1.getZ());
+                    Vector pos2 = new Vector(corner2.getX(), corner2.getY(), corner2.getZ());
+                    CuboidRegion region = new CuboidRegion(editWorld, pos1, pos2);
+                    EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(editWorld, -1);
+                    editSession.setBlocks(region, new BaseBlock(0));
+                    editSession.flushQueue();
+                }
+            });
+        }
     }
 
     //Starts a wave of monsters
@@ -139,7 +141,8 @@ public class Game {
 
                 //Remove mobs in goal
                 for (GameMob mob : mobsToRemove) {
-                    gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation());
+                    damage(mob.getMobType().getDamage());
+                    gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation(), mob.getMobType());
                     mob.kill();
                     aliveMobs.remove(mob);
                 }
@@ -185,6 +188,7 @@ public class Game {
         }
     }
 
+    //Called when the round is finished
     public void finishRound() {
         this.roundActive = false;
         this.wipeMobs();
@@ -192,10 +196,19 @@ public class Game {
         currentRound++;
     }
 
+    //Removes all the active mobs
     public void wipeMobs() {
         for (GameMob mob : aliveMobs)
             mob.kill();
         aliveMobs.clear();
+    }
+
+    //When a mobs damages the player
+    public void damage(double amount) {
+        this.health -= amount;
+        if (this.health < 0) {
+            this.health = 0;
+        }
     }
 
 
