@@ -32,10 +32,6 @@ public class Game {
     @Getter
     private final Map map;
     @Getter
-    private final Difficulty difficulty;
-    @Getter
-    private double health;
-    @Getter
     private final GridLocation gridLocation;
     @Getter
     private final GameInteractive gameInteractive;
@@ -47,6 +43,13 @@ public class Game {
     private final List<Location> mobPath;
     BukkitTask mobPathLoop;
 
+    //Normal game values being used globally
+    @Getter
+    private double health;
+    @Getter
+    private double gold;
+    @Getter
+    private final Difficulty difficulty;
     @Getter //List of active mobs on the path
     private final List<GameMob> aliveMobs;
     @Getter //Check if the round is active
@@ -57,15 +60,16 @@ public class Game {
     public Game(OfflinePlayer player, Map map, Difficulty difficulty) {
         this.player = player;
         this.map = map;
-        this.difficulty = difficulty;
-        this.health = difficulty.getHealth();
         this.gameInteractive = new GameInteractive(player, this);
-
         this.mobPath = new ArrayList<>();
         this.world = MapUtil.getInstance().getGameWorld();
         this.gridLocation = MapGridHandler.getInstance().generateLocation();
         this.gridLocation.register();
         this.zeroLocation = this.gridLocation.getLocation(this.world);
+
+        this.difficulty = difficulty;
+        this.health = difficulty.getHealth();
+        this.gold = difficulty.getStartingGold();
         this.aliveMobs = new ArrayList<>();
         this.roundActive = false;
         this.currentRound = 1;

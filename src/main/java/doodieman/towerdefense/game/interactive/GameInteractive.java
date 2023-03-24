@@ -24,19 +24,27 @@ public class GameInteractive implements Listener {
     private final OfflinePlayer offlinePlayer;
     private final Player player;
     private final Game game;
+
     @Getter
     private final GameAnimations gameAnimations;
+    @Getter
+    private final GameScoreboard scoreboard;
 
     public GameInteractive(OfflinePlayer player, Game game) {
         this.offlinePlayer = player;
         this.player = offlinePlayer.getPlayer();
         this.game = game;
+
         this.gameAnimations = new GameAnimations(game);
+        this.scoreboard = new GameScoreboard(game);
     }
 
     //Sets op the interactive board. (Give player items, etc)
     public void register() {
         Bukkit.getPluginManager().registerEvents(this, TowerDefense.getInstance());
+
+        //Scoreboard
+        this.scoreboard.createScoreboard();
 
         //Settings item
         ItemBuilder settings = new ItemBuilder(Material.NETHER_STAR);
@@ -48,6 +56,7 @@ public class GameInteractive implements Listener {
 
     public void unregister() {
         HandlerList.unregisterAll(this);
+        this.scoreboard.deleteScoreboard();
     }
 
     public void updateRoundItemSlot() {
