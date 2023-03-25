@@ -1,9 +1,8 @@
 package doodieman.towerdefense.game.objects;
 
 import doodieman.towerdefense.game.values.MobType;
+import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.MojangsonParseException;
-import net.minecraft.server.v1_8_R3.MojangsonParser;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityHeadRotation;
 import org.apache.commons.lang.reflect.FieldUtils;
@@ -12,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -59,6 +57,8 @@ public class GameMob {
     public void spawn() {
         //Spawn the actual entity
         this.entity = game.getWorld().spawnEntity(path.get(0), mobType.getEntityType());
+        
+        mobType.getRunnable().run(this.entity);
 
         //Add NBT values to the entity
         net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) this.entity).getHandle();
@@ -66,8 +66,6 @@ public class GameMob {
         nmsEntity.c(tag);
         tag.setInt("NoAI", 1);
         nmsEntity.f(tag);
-
-        mobType.getRunnable().run(entity);
     }
 
     public void kill() {
@@ -76,7 +74,7 @@ public class GameMob {
 
     //Updates the health bar, and teleports it to the Entity
     public void updateHealthBar() {
-        this.entity.setCustomName("§7"+health+" §c❤");
+        this.entity.setCustomName("§7"+ StringUtil.formatNum(health) +" §c❤");
     }
 
     //Moves the entity on the path, it moves (speed) blocks

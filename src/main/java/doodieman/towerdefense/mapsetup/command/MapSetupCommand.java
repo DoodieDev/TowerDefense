@@ -27,7 +27,7 @@ public class MapSetupCommand implements CommandExecutor {
         player.sendMessage("§6/mapsetup setregion <map ID> §fSæt schematic region");
         player.sendMessage("§6/mapsetup setpath <map ID> <Point> §fSæt points til mob stien");
         player.sendMessage("§6/mapsetup clearpath <map ID> §fClear mob stien");
-        player.sendMessage("§6/mapsetup setschematic <map ID> §fGem schematic af region");
+        player.sendMessage("§6/mapsetup saveschematic <map ID> §fGem schematic af region");
         player.sendMessage("§6/mapsetup setname <map ID> <navn> §fSæt mappets navn");
     }
 

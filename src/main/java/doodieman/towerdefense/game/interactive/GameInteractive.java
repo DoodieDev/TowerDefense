@@ -2,6 +2,7 @@ package doodieman.towerdefense.game.interactive;
 
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.interactive.settings.SettingsMenu;
+import doodieman.towerdefense.game.interactive.turretstore.TurretStoreMenu;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.utils.ItemBuilder;
 import lombok.Getter;
@@ -51,6 +52,11 @@ public class GameInteractive implements Listener {
         settings.name("§f§nIndstillinger§r §7(Højreklik)");
         player.getInventory().setItem(8, settings.build());
 
+        //Buy turrets item
+        ItemBuilder shop = new ItemBuilder(Material.GOLD_INGOT);
+        shop.name("§e§nKøb tårne§r §7(Højreklik)");
+        player.getInventory().setItem(6, shop.build());
+
         this.updateRoundItemSlot();
     }
 
@@ -90,13 +96,18 @@ public class GameInteractive implements Listener {
             game.startRound();
             this.updateRoundItemSlot();
         }
+
+        //Open turrets store
+        if (player.getInventory().getHeldItemSlot() == 6) {
+            new TurretStoreMenu(player).open();
+        }
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getWhoClicked() != player) return;
 
-        List<Integer> lockedSlots = Arrays.asList(7, 8);
+        List<Integer> lockedSlots = Arrays.asList(6, 7, 8);
         if (lockedSlots.contains(event.getSlot()) || lockedSlots.contains(event.getHotbarButton()))
             event.setCancelled(true);
     }

@@ -32,7 +32,7 @@ public class GameAnimations {
             public void run() {
                 if (spaces <= 0) {
                     PacketUtil.sendTitle(getPlayer(), "§eRunde", "§e§l"+roundNumber, 0, 20, 0);
-                    getPlayer().playSound(getPlayer().getLocation(), Sound.NOTE_BASS, 0.3f, 0.8f);
+                    getPlayer().playSound(getPlayer().getLocation(), Sound.FIREWORK_BLAST2, 1.5f, 0.6f);
                     this.cancel();
                     return;
                 }
@@ -42,8 +42,8 @@ public class GameAnimations {
                     stringBuilder.append(" ");
                 String spacesString = stringBuilder.toString();
                 PacketUtil.sendTitle(getPlayer(), "§aRunde", "§a§l"+roundNumber+spacesString+roundNumber+spacesString+roundNumber+spacesString+roundNumber, 0, 20, 0);
-                float pitch = (((float) spaces / maxSpaces) * 1f)+1.3f;
-                getPlayer().playSound(getPlayer().getLocation(), Sound.NOTE_BASS, 0.1f, pitch);
+                float pitch = ((((float) spaces / maxSpaces) * 1f)) + 1f;
+                getPlayer().playSound(getPlayer().getLocation(), Sound.NOTE_PIANO, 0.1f, pitch);
 
                 spaces--;
             }

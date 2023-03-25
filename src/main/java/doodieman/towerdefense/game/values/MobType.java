@@ -1,6 +1,7 @@
 package doodieman.towerdefense.game.values;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -15,6 +16,7 @@ public enum MobType {
         zombie.getEquipment().setItemInHand(new ItemStack(Material.AIR));
         zombie.setBaby(false);
         zombie.setVillager(false);
+        if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
     });
 
     @Getter
