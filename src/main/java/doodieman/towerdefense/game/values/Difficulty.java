@@ -6,9 +6,9 @@ import org.bukkit.inventory.ItemStack;
 
 public enum Difficulty {
 
-    EASY("Let", 800, 500, 40,"§e", new ItemStack(Material.GOLD_RECORD)),
-    MEDIUM("Medium", 600, 500, 60, "§6", new ItemStack(Material.RECORD_3)),
-    HARD("Svær", 400, 500, 80, "§c", new ItemStack(Material.RECORD_4));
+    EASY("Let", 800, 500, 40, 1, "§e", new ItemStack(Material.GOLD_RECORD)),
+    MEDIUM("Medium", 600, 500, 60, 1.1, "§6", new ItemStack(Material.RECORD_3)),
+    HARD("Svær", 400, 500, 80, 1.3, "§c", new ItemStack(Material.RECORD_4));
 
     @Getter
     private final String name;
@@ -19,14 +19,17 @@ public enum Difficulty {
     @Getter
     private final double startingGold;
     @Getter
+    private final double priceModifier;
+    @Getter
     private final String textColor;
     @Getter
     private final ItemStack item;
 
-    Difficulty(String name, double health, double startingGold, int rounds, String textColor, ItemStack item) {
+    Difficulty(String name, double health, double startingGold, int rounds, double priceModifier, String textColor, ItemStack item) {
         this.name = name;
         this.health = health;
         this.rounds = rounds;
+        this.priceModifier = priceModifier;
         this.startingGold = startingGold;
         this.textColor = textColor;
         this.item = item;

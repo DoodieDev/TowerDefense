@@ -16,6 +16,7 @@ import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -46,7 +47,7 @@ public class Game {
     //Normal game values being used globally
     @Getter
     private double health;
-    @Getter
+    @Getter @Setter
     private double gold;
     @Getter
     private final Difficulty difficulty;

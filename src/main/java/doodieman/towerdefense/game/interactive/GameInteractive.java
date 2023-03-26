@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -89,6 +90,7 @@ public class GameInteractive implements Listener {
         //Open settings
         if (player.getInventory().getHeldItemSlot() == 8) {
             new SettingsMenu(player).open();
+            player.playSound(player.getLocation(), Sound.CHEST_OPEN, 0.2f, 1.2f);
         }
 
         //Start round
@@ -99,7 +101,8 @@ public class GameInteractive implements Listener {
 
         //Open turrets store
         if (player.getInventory().getHeldItemSlot() == 6) {
-            new TurretStoreMenu(player).open();
+            new TurretStoreMenu(player, game).open();
+            player.playSound(player.getLocation(), Sound.CHEST_OPEN, 0.2f, 1.2f);
         }
     }
 
