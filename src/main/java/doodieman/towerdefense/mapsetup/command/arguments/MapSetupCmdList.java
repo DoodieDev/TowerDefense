@@ -14,8 +14,11 @@ public class MapSetupCmdList {
         ConfigurationSection section = config.getConfigurationSection("maps");
 
         player.sendMessage("§aListe af alle maps:");
-        for (String key : section.getKeys(false))
-            player.sendMessage("§a- §7ID: §f"+key);
+        for (String mapID : section.getKeys(false)) {
+            String fancyName = section.getString(mapID+".name");
+            player.sendMessage("§a- §7ID: §f"+mapID+" §7NAME: §f"+fancyName);
+        }
+
     }
 
 }

@@ -21,14 +21,16 @@ public class MapSetupCommand implements CommandExecutor {
     private final MapSetupHandler handler;
 
     public void sendHelpMessage(Player player) {
+        player.sendMessage("");
         player.sendMessage("§6/mapsetup create <map ID> §fOpret et map");
         player.sendMessage("§6/mapsetup delete <map ID> §fSlet et map");
         player.sendMessage("§6/mapsetup list §fSe alle maps");
         player.sendMessage("§6/mapsetup setregion <map ID> §fSæt schematic region");
         player.sendMessage("§6/mapsetup setpath <map ID> <Point> §fSæt points til mob stien");
         player.sendMessage("§6/mapsetup clearpath <map ID> §fClear mob stien");
-        player.sendMessage("§6/mapsetup saveschematic <map ID> §fGem schematic af region");
+        player.sendMessage("§6/mapsetup saveschematic <map ID> §fGem schematic");
         player.sendMessage("§6/mapsetup setname <map ID> <navn> §fSæt mappets navn");
+        player.sendMessage("");
     }
 
     @Override
