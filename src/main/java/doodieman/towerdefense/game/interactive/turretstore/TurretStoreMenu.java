@@ -5,6 +5,7 @@ import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.utils.GUI;
 import doodieman.towerdefense.utils.ItemBuilder;
 import doodieman.towerdefense.utils.StringUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -51,10 +52,13 @@ public class TurretStoreMenu extends GUI {
     public void click(int slot, ItemStack clickedItem, ClickType clickType, InventoryType inventoryType) {
         if (slot == 31) player.closeInventory();
 
+        //Clicked on a turret
         if (turretSlots.containsKey(slot)) {
+
             TurretType turretType = turretSlots.get(slot);
             double price = turretType.getRealPrice(game.getDifficulty());
 
+            //Cannot afford the turret
             if (game.getGold() < price) {
                 double missingGold = price - game.getGold();
                 player.sendMessage("§cDet har du ikke råd til! Du mangler "+StringUtil.formatNum(missingGold)+" guld.");
@@ -62,7 +66,10 @@ public class TurretStoreMenu extends GUI {
                 return;
             }
 
+            //Withdraw gold
             game.setGold(game.getGold() - price);
+
+            //Give the turret item
             player.getInventory().addItem(turretType.getFormattedItem());
             player.playSound(player.getLocation(),Sound.ITEM_PICKUP, 1f, 0.9f);
             player.sendMessage("§fDu har købt et "+turretType.getTextColor()+turretType.getName()+" §ffor §6"+StringUtil.formatNum(price)+" guld§f!");

@@ -41,7 +41,7 @@ public class GameInteractive implements Listener {
         this.scoreboard = new GameScoreboard(game);
     }
 
-    //Sets op the interactive board. (Give player items, etc)
+    //Setups the entire interactive side (Items in inventory, Scoreboard, etc)
     public void register() {
         Bukkit.getPluginManager().registerEvents(this, TowerDefense.getInstance());
 
@@ -61,15 +61,16 @@ public class GameInteractive implements Listener {
         this.updateRoundItemSlot();
     }
 
+    //Unregister the interactive side
     public void unregister() {
         HandlerList.unregisterAll(this);
         this.scoreboard.deleteScoreboard();
     }
 
+    //Sets the 'Round' item, wether round is active or not.
     public void updateRoundItemSlot() {
 
         if (game.isRoundActive()) {
-
             ItemBuilder builder = new ItemBuilder(Material.BARRIER);
             builder.name("§c§oRunden er aktiv");
             player.getInventory().setItem(7, builder.build());
@@ -104,8 +105,10 @@ public class GameInteractive implements Listener {
             new TurretStoreMenu(player, game).open();
             player.playSound(player.getLocation(), Sound.CHEST_OPEN, 0.2f, 1.2f);
         }
+
     }
 
+    //Locks the slots with interactive items
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getWhoClicked() != player) return;

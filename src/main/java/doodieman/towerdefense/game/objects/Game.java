@@ -53,6 +53,8 @@ public class Game {
     private final Difficulty difficulty;
     @Getter //List of active mobs on the path
     private final List<GameMob> aliveMobs;
+    @Getter
+    private final List<GameTurret> turrets;
     @Getter //Check if the round is active
     private boolean roundActive;
     @Getter //Current round number
@@ -72,6 +74,7 @@ public class Game {
         this.health = difficulty.getHealth();
         this.gold = difficulty.getStartingGold();
         this.aliveMobs = new ArrayList<>();
+        this.turrets = new ArrayList<>();
         this.roundActive = false;
         this.currentRound = 1;
     }
@@ -210,16 +213,6 @@ public class Game {
         if (this.health < 0) {
             this.health = 0;
         }
-    }
-
-
-    //Gets the exact center of the map
-    public Location getCenter() {
-        Location corner1 = map.getCorner1();
-        Location corner2 = map.getCorner2();
-        double xDiffer = (corner2.getX() - corner1.getX())/2;
-        double zDiffer = (corner2.getZ() - corner1.getZ())/2;
-        return getRealLocation(new Location(world, corner1.getX() + xDiffer, 10, corner1.getZ() + zDiffer));
     }
 
     //Get real location from location in config.

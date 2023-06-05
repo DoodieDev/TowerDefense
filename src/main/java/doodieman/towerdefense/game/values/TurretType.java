@@ -1,5 +1,7 @@
 package doodieman.towerdefense.game.values;
 
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import doodieman.towerdefense.utils.ItemBuilder;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -40,7 +42,7 @@ public enum TurretType {
     @Getter
     private final double price;
 
-
+    private static final Map<String, TurretType> BY_ID = new HashMap<>();
 
     TurretType(String id, String name, String textColor, String description, ItemStack item, double price) {
         this.id = id;
@@ -51,28 +53,37 @@ public enum TurretType {
         this.price = price;
     }
 
+    //Get the itemstack
     public ItemStack getItem() {
         return item.clone();
     }
 
+    //Get the real itemstack, with name, lore, and NBT formatted
     public ItemStack getFormattedItem() {
         ItemBuilder builder = new ItemBuilder(this.getItem());
+
+        //Set name and lore
         builder.name(textColor+"§n"+name);
         builder.addLore("");
         builder.addLore(description.split("%nl%"));
-        return builder.build();
+
+        //Add NBT
+        NBTItem nbtItem = new NBTItem(builder.build());
+        NBTCompound compound = nbtItem.addCompound("turret");
+        compound.setString("type", id);
+
+        return nbtItem.getItem().clone();
     }
 
+    //Get the price of a turret, in a specific difficulty
     public double getRealPrice(Difficulty difficulty) {
         return difficulty.getPriceModifier() * price;
     }
 
-
-    private static final Map<String, TurretType> BY_ID = new HashMap<>();
-
+    //Get a TurretType by its ID
     public static TurretType getByID(String id) {
         return BY_ID.get(id);
-    } 
+    }
 
     static {
         for (TurretType turret : values())

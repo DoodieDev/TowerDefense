@@ -2,11 +2,15 @@ package doodieman.towerdefense.game;
 
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.values.TurretType;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -20,6 +24,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class GameListener implements Listener {
 
@@ -32,21 +37,42 @@ public class GameListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, TowerDefense.getInstance());
     }
 
+    //Place turret OR cancel the event
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        ItemStack tool = player.getItemInHand();
+        if (!util.isInGame(player)) return;
+
+        event.setCancelled(true);
+
+        //Is not turret item
+        if (!handler.getTurretUtil().isTurretItem(tool))
+            return;
+
+        Location location = event.getBlockPlaced().getLocation();
+        Game game = util.getActiveGame(player);
+        TurretType turretType = handler.getTurretUtil().getTurretFromItem(tool);
+
+        //TODO check if turret can be placed at location
+
+        //Create the turret
+        handler.getTurretUtil().removeTurretItems(player, turretType, 1);
+        handler.getTurretUtil().createTurret(game, turretType, location);
+    }
+
+    //Leave the game
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (!util.isInGame(player)) return;
-
         GameUtil.getInstance().exitGame(player, true);
     }
 
-    @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player)) return;
-        Player player = (Player) event.getDamager();
-        if (!util.isInGame(player)) return;
-        event.setCancelled(true);
-    }
+
+    /*
+        CANCEL EVENTS
+    */
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -56,8 +82,9 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player)) return;
+        Player player = (Player) event.getDamager();
         if (!util.isInGame(player)) return;
         event.setCancelled(true);
     }
@@ -91,10 +118,16 @@ public class GameListener implements Listener {
         event.setFoodLevel(20);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (!util.isInGame(player)) return;
+
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
+            return;
+        if (event.getAction() == Action.LEFT_CLICK_BLOCK)
+            return;
+
         event.setCancelled(true);
     }
 

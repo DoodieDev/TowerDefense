@@ -1,6 +1,7 @@
 package doodieman.towerdefense.game;
 
 import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.utils.TurretUtil;
 import lombok.Getter;
 import org.bukkit.OfflinePlayer;
 
@@ -12,6 +13,8 @@ public class GameHandler {
     @Getter
     private final GameUtil gameUtil;
     @Getter
+    private final TurretUtil turretUtil;
+    @Getter
     private final GameListener gameListener;
 
     @Getter
@@ -19,6 +22,7 @@ public class GameHandler {
 
     public GameHandler() {
         this.gameUtil = new GameUtil(this);
+        this.turretUtil = new TurretUtil(this);
         this.gameListener = new GameListener(this);
     }
 
