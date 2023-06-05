@@ -51,6 +51,12 @@ public class GameListener implements Listener {
             return;
 
         Location location = event.getBlockPlaced().getLocation();
+
+        if (!handler.getTurretUtil().canTurretBePlaced(location)) {
+            player.sendMessage("§cDu kan ikke placere et tårn her!");
+            return;
+        }
+
         Game game = util.getActiveGame(player);
         TurretType turretType = handler.getTurretUtil().getTurretFromItem(tool);
 

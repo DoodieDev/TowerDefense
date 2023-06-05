@@ -19,6 +19,7 @@ import doodieman.towerdefense.game.objects.GameTurret;
 import doodieman.towerdefense.game.values.TurretType;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -57,6 +58,26 @@ public class TurretUtil {
         return turret;
     }
 
+    //Checks for redstone blocks in a 3x3 and down to void
+    public boolean canTurretBePlaced(Location location) {
+        Location corner1 = location.clone().add(-1,0,-1);
+        corner1.setY(0);
+        Location corner2 = location.clone().add(1,0,1);
+
+        for (double y = corner1.getY(); y <= corner2.getY(); y++) {
+            for (double x = corner1.getX(); x <= corner2.getX(); x++) {
+                for (double z = corner1.getZ(); z <= corner2.getZ(); z++) {
+                    Location loc = new Location(corner1.getWorld(),x,y,z);
+                    Block block = corner1.getWorld().getBlockAt(loc);
+                    if (block.getType() == Material.REDSTONE_BLOCK)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    //Remove turret items from player inventory b
     public void removeTurretItems(Player player, TurretType turretType, int amount) {
         for (int i = 0; i < player.getInventory().getSize(); i++) {
             if (amount <= 0) return;
