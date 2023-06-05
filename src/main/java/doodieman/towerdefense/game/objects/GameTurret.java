@@ -48,7 +48,7 @@ public class GameTurret {
     //Get the zero location for pasting schematic
     public Location getZeroLocation() {
         //All turret-schematics are 3x3 and start 2 blocks under the ground.
-        return location.clone().add(-1, -2, -1);
+        return location.clone().add(-1, -4, -1);
     }
 
     //Get the path to turret schematic

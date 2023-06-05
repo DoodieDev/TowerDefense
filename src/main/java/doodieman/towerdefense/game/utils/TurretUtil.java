@@ -17,6 +17,7 @@ import doodieman.towerdefense.game.GameHandler;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.objects.GameTurret;
 import doodieman.towerdefense.game.values.TurretType;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -59,11 +60,16 @@ public class TurretUtil {
     }
 
     //Checks for redstone blocks in a 3x3 and down to void
-    public boolean canTurretBePlaced(Location location) {
+    public boolean canTurretBePlaced(Game game, Location location) {
+        //Step 1 - Check for y-level
+        Location mobSpawnLoc = game.getMobPath().get(0);
+        if (location.getY() < mobSpawnLoc.getBlockY() || location.getY() > mobSpawnLoc.getBlockY())
+            return false;
+
+        //Step 2 - Check for redstone blocks
         Location corner1 = location.clone().add(-1,0,-1);
         corner1.setY(0);
         Location corner2 = location.clone().add(1,0,1);
-
         for (double y = corner1.getY(); y <= corner2.getY(); y++) {
             for (double x = corner1.getX(); x <= corner2.getX(); x++) {
                 for (double z = corner1.getZ(); z <= corner2.getZ(); z++) {
@@ -74,6 +80,8 @@ public class TurretUtil {
                 }
             }
         }
+
+        //All steps passed
         return true;
     }
 
