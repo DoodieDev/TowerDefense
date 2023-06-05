@@ -96,6 +96,8 @@ public class GameMob {
 
         closerLocation.setYaw(currentPoint.getYaw());
         entity.teleport(closerLocation);
+
+        //Only fix head rotation every ~3 blocks, so it doesn't bug
         if (Math.round(currentLength) % 3 == 0)
             this.fixHeadRotation();
 

@@ -13,6 +13,8 @@ import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import doodieman.towerdefense.playerdata.PlayerDataHandler;
 import doodieman.towerdefense.playerdata.objects.PlayerData;
+import doodieman.towerdefense.turretsetup.TurretSetupHandler;
+import doodieman.towerdefense.turretsetup.command.TurretSetupCommand;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.MemoryNPCDataStore;
@@ -36,6 +38,8 @@ public final class TowerDefense extends JavaPlugin {
     private GameHandler gameHandler;
     @Getter
     private MapSelectorHandler mapSelectorHandler;
+    @Getter
+    private TurretSetupHandler turretSetupHandler;
     @Getter
     private PlayerDataHandler playerDataHandler;
 
@@ -69,6 +73,7 @@ public final class TowerDefense extends JavaPlugin {
         this.playerDataHandler = new PlayerDataHandler();
         this.mapGridHandler = new MapGridHandler();
         this.mapSetupHandler = new MapSetupHandler();
+        this.turretSetupHandler = new TurretSetupHandler();
         this.mapHandler = new MapHandler();
         this.gameHandler = new GameHandler();
         this.mapSelectorHandler = new MapSelectorHandler();
@@ -76,6 +81,7 @@ public final class TowerDefense extends JavaPlugin {
 
     private void loadCommands() {
         Bukkit.getPluginCommand("mapsetup").setExecutor(new MapSetupCommand(this.mapSetupHandler));
+        Bukkit.getPluginCommand("turretsetup").setExecutor(new TurretSetupCommand(this.turretSetupHandler));
         Bukkit.getPluginCommand("test").setExecutor(new TestCommand());
         Bukkit.getPluginCommand("setspawn").setExecutor(new SetspawnCommand());
         Bukkit.getPluginCommand("spawn").setExecutor(new SpawnCommand());

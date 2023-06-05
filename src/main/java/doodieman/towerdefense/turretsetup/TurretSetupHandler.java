@@ -1,4 +1,4 @@
-package doodieman.towerdefense.mapsetup;
+package doodieman.towerdefense.turretsetup;
 
 import com.boydti.fawe.object.schematic.Schematic;
 import com.sk89q.worldedit.Vector;
@@ -7,33 +7,26 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.utils.LocationUtil;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 
-public class MapSetupHandler {
+public class TurretSetupHandler {
 
-    @Getter
-    private final MapSetupListener listener;
+    public TurretSetupHandler() {
 
-    public MapSetupHandler() {
-        this.listener = new MapSetupListener(this);
     }
 
-    public boolean doesMapExist(String mapID) {
-        return TowerDefense.getInstance().getConfig().contains("maps."+mapID);
-    }
-
-    public void saveSchematic(String mapID) {
+    public void saveSchematic(String turretID) {
 
         FileConfiguration config = TowerDefense.getInstance().getConfig();
-        String schematicPath = TowerDefense.getInstance().getDataFolder() + "/maps/" + mapID + ".schematic";
+        String schematicPath = TowerDefense.getInstance().getDataFolder() + "/turrets/" + turretID + ".schematic";
 
-        Location corner1 = LocationUtil.stringToLocation(config.getString("maps."+mapID+".corner1"));
-        Location corner2 = LocationUtil.stringToLocation(config.getString("maps."+mapID+".corner2"));
+        Location corner1 = LocationUtil.stringToLocation(config.getString("turrets."+turretID+".corner1"));
+        Location corner2 = LocationUtil.stringToLocation(config.getString("turrets."+turretID+".corner2"));
         World world = corner1.getWorld();
 
         try {
@@ -51,5 +44,6 @@ public class MapSetupHandler {
             exception.printStackTrace();
         }
     }
+
 
 }

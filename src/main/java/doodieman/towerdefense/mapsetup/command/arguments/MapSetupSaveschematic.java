@@ -1,8 +1,6 @@
 package doodieman.towerdefense.mapsetup.command.arguments;
 
-import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class MapSetupSaveschematic {

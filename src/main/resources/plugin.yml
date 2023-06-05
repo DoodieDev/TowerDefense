@@ -8,10 +8,15 @@ commands:
     aliases: [ setupmap, map ]
     permission: "*"
     permission-message: "§cDet har du ikke adgang til!"
-  test:
+  turretsetup:
+    aliases: [ turret, setupturret, towersetup, tower ]
     permission: "*"
+    permission-message: "§cDet har du ikke adgang til!"
   setspawn:
     permission: "*"
     permission-message: "§cDet har du ikke adgang til!"
   spawn:
     aliases: [ lobby, leave ]
+
+  test:
+    permission: "*"
