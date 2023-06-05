@@ -20,3 +20,5 @@ commands:
 
   test:
     permission: "*"
+  discord:
+    aliases: [ discordserver, disc ]

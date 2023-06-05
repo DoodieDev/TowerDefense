@@ -14,6 +14,7 @@ import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import doodieman.towerdefense.playerdata.PlayerDataHandler;
 import doodieman.towerdefense.playerdata.objects.PlayerData;
+import doodieman.towerdefense.simplecommands.discord.DiscordCommand;
 import doodieman.towerdefense.turretsetup.TurretSetupHandler;
 import doodieman.towerdefense.turretsetup.command.TurretSetupCommand;
 import lombok.Getter;
@@ -89,6 +90,7 @@ public final class TowerDefense extends JavaPlugin {
         Bukkit.getPluginCommand("test").setExecutor(new TestCommand());
         Bukkit.getPluginCommand("setspawn").setExecutor(new SetspawnCommand());
         Bukkit.getPluginCommand("spawn").setExecutor(new SpawnCommand());
+        Bukkit.getPluginCommand("discord").setExecutor(new DiscordCommand());
     }
 
     public static void runSync(Runnable runnable) {
