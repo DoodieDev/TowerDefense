@@ -53,9 +53,10 @@ public class TurretUtil {
 
     //Create a brand new turret
     public GameTurret createTurret(Game game, TurretType turretType, Location location) {
+
         GameTurret turret = new GameTurret(game, turretType, location);
-        turret.render();
         game.getTurrets().add(turret);
+
         return turret;
     }
 

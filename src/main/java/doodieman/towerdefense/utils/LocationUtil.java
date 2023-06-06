@@ -38,6 +38,19 @@ public class LocationUtil {
                 && isBetween(Math.floor(loc.getZ()), z1, z2);
     }
 
+    public static double oppositeAngle(double angle) {
+        double oppositeAngle = angle + 180;
+        oppositeAngle = oppositeAngle % 360;
+        if (oppositeAngle < 0) {
+            oppositeAngle += 360;
+        }
+        return oppositeAngle;
+    }
+
+    public static double addAngle(double current, double add) {
+        return (current + add) % 360;
+    }
+
     private static boolean isBetween(double number, double min, double max) {
         return number >= min && number <= max;
     }

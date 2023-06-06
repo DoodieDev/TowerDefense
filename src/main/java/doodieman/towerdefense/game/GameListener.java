@@ -2,9 +2,14 @@ package doodieman.towerdefense.game;
 
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.objects.GameTurret;
+import doodieman.towerdefense.game.utils.TurretUtil;
 import doodieman.towerdefense.game.values.TurretType;
+import doodieman.towerdefense.utils.LocationUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +27,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -50,19 +56,33 @@ public class GameListener implements Listener {
         if (!handler.getTurretUtil().isTurretItem(tool))
             return;
 
-        Location location = event.getBlockPlaced().getLocation();
+        Location blockLocation = event.getBlockPlaced().getLocation();
         Game game = util.getActiveGame(player);
         TurretType turretType = handler.getTurretUtil().getTurretFromItem(tool);
 
         //Check if it can be placed
-        if (!handler.getTurretUtil().canTurretBePlaced(game,location)) {
+        if (!handler.getTurretUtil().canTurretBePlaced(game,blockLocation)) {
             player.sendMessage("§cDu kan ikke placere et tårn her!");
             return;
         }
 
         //Create the turret
-        handler.getTurretUtil().removeTurretItems(player, turretType, 1);
-        handler.getTurretUtil().createTurret(game, turretType, location);
+        TurretUtil turretUtil = handler.getTurretUtil();
+        turretUtil.removeTurretItems(player, turretType, 1);
+        GameTurret turret = turretUtil.createTurret(game, turretType, blockLocation);
+
+        //Add correct rotation
+        //My brain is melting after making this shitty mess. Future me please recode
+        double yaw = player.getLocation().getYaw() + 90;
+        double normalizedYaw = yaw < 0 ? yaw + 360d : yaw;
+        double rotationRounded = Math.round(normalizedYaw / 90) * 90;
+        turret.setRotation(rotationRounded);
+
+        //Render the turret
+        turret.render();
+
+        player.playSound(blockLocation, Sound.ZOMBIE_WOOD,0.8f,0.4f);
+        player.spigot().playEffect(blockLocation.add(0.5,0,0.5), Effect.TILE_BREAK,turretType.getItem().getTypeId(),0,1,2,1,0.1f,150,20);
     }
 
     //Leave the game
