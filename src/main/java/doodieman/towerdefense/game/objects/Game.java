@@ -1,5 +1,8 @@
 package doodieman.towerdefense.game.objects;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.WorldEdit;
@@ -15,6 +18,7 @@ import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -47,7 +51,7 @@ public class Game {
     //Normal game values being used globally
     @Getter
     private double health;
-    @Getter @Setter
+    @Getter
     private double gold;
     @Getter
     private final Difficulty difficulty;
@@ -59,6 +63,13 @@ public class Game {
     private boolean roundActive;
     @Getter //Current round number
     private int currentRound;
+
+
+    private Hologram startHologram;
+    private TextLine roundTextLine;
+    private TextLine goldTextLine;
+    private TextLine healthTextLine;
+
 
     public Game(OfflinePlayer player, Map map, Difficulty difficulty) {
         this.player = player;
@@ -77,6 +88,7 @@ public class Game {
         this.turrets = new ArrayList<>();
         this.roundActive = false;
         this.currentRound = 1;
+        this.startHologram = null;
     }
 
     //Prepares the game, pasting schematic, etc
@@ -91,6 +103,8 @@ public class Game {
         //Load the mob path
         for (Location location : map.getPath())
             this.mobPath.add(getRealLocation(location));
+        //Create the hologram at mob starting point
+        this.updateStartHologram();
     }
 
     //Starts the game. Teleports player, etc.
@@ -106,6 +120,8 @@ public class Game {
         this.mobPathLoop.cancel();
         this.gridLocation.unregister();
         this.gameInteractive.unregister();
+        if (this.startHologram != null)
+            this.startHologram.delete();
 
         //Remove schematic
         if (removeSchematic) {
@@ -132,6 +148,9 @@ public class Game {
         List<GameMob> mobsToRemove = new ArrayList<>();
 
         this.mobPathLoop = new BukkitRunnable() {
+
+            int tick = 0;
+
             @Override
             public void run() {
                 if (!roundActive) return;
@@ -150,13 +169,13 @@ public class Game {
                     mob.kill();
                     aliveMobs.remove(mob);
                 }
-
                 mobsToRemove.clear();
 
                 //Check if round is over
                 if (aliveMobs.size() <= 0)
                     finishRound();
 
+                tick++;
             }
         }.runTaskTimer(TowerDefense.getInstance(), 0L, 1L);
     }
@@ -175,6 +194,7 @@ public class Game {
         this.gameInteractive.getGameAnimations().newRoundStarted();
 
         Round round = Round.getRound(currentRound);
+        this.updateStartHologram();
 
         //Spawn the mobs slowly
         int i = 0;
@@ -210,11 +230,15 @@ public class Game {
     //When a mobs damages the player
     public void damage(double amount) {
         this.health -= amount;
-        if (this.health < 0) {
+        if (this.health < 0)
             this.health = 0;
-        }
+        this.updateStartHologram();
     }
 
+    public void setGold(double amount) {
+        this.gold = amount;
+        this.updateStartHologram();
+    }
     //Get real location from location in config.
     //Example: The map is built and saved with different coordinates in a different world.
     //When its pasted in the real game world. The location varies.
@@ -229,4 +253,25 @@ public class Game {
         return newLocation;
     }
 
+    //Create or update the hologram at the start
+    public void updateStartHologram() {
+        Location location = this.mobPath.get(0).clone().add(0,3,0);
+        //Create the hologram
+        if (this.startHologram == null) {
+            this.startHologram = HologramsAPI.createHologram(TowerDefense.getInstance(),location);
+            startHologram.appendTextLine("§a§nStartlinje");
+            startHologram.appendTextLine("");
+            startHologram.appendTextLine("§7Map: §a"+map.getMapName());
+            startHologram.appendTextLine("§7Sværhedsgrad: "+difficulty.getTextColor()+difficulty.getName());
+            startHologram.appendTextLine("");
+            this.roundTextLine = startHologram.appendTextLine("§7Runde: §f"+currentRound+"§7/§f"+difficulty.getRounds());
+            this.healthTextLine = startHologram.appendTextLine("§7Liv: §f"+StringUtil.formatNum(health)+"§4❤");
+            startHologram.appendTextLine("");
+            this.goldTextLine = startHologram.appendTextLine("§7Guld: §e"+ StringUtil.formatNum(gold) +"g");
+        }
+
+        this.roundTextLine.setText("§7Runde: §f"+currentRound+"§7/§f"+difficulty.getRounds());
+        this.healthTextLine.setText("§7Liv: §f"+StringUtil.formatNum(health)+"§4❤");
+        this.goldTextLine.setText("§7Guld: §e"+ StringUtil.formatNum(gold) +"g");
+    }
 }

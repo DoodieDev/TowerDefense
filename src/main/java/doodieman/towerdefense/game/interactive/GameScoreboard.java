@@ -32,11 +32,11 @@ public class GameScoreboard {
     public void updateScoreboard() {
 
         this.scoreboard.add("§1", 9);
-        this.scoreboard.add("§aRunde: "+game.getCurrentRound()+"/"+game.getDifficulty().getRounds(), 8);
-        this.scoreboard.add("§eMap: "+game.getMap().getMapName(), 7);
+        this.scoreboard.add("§7Map: §a"+game.getMap().getMapName(), 8);
+        this.scoreboard.add("§7Runde: §f"+game.getCurrentRound()+"§7/§f"+game.getDifficulty().getRounds(), 7);
         this.scoreboard.add("§2", 6);
-        this.scoreboard.add("§6Guld: "+StringUtil.formatNum(game.getGold()), 5);
-        this.scoreboard.add("§7Liv: "+ StringUtil.formatNum(game.getHealth())+" §c❤", 4);
+        this.scoreboard.add("§7Liv: §f"+ StringUtil.formatNum(game.getHealth())+" §4❤", 5);
+        this.scoreboard.add("§7Guld: &e"+StringUtil.formatNum(game.getGold())+"g", 4);
         this.scoreboard.add("§3", 3);
 
         this.scoreboard.update();

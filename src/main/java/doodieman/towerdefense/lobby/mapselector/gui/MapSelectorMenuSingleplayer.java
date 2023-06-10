@@ -21,21 +21,21 @@ public class MapSelectorMenuSingleplayer extends GUI {
     public MapSelectorMenuSingleplayer(Player player) {
         super(player, 6, "Vælg et map");
 
-        mapSlots.put(10, new MapSlot("eventyr", "Begynder"));
-        mapSlots.put(19, new MapSlot("træstammen", "Begynder"));
-        mapSlots.put(28, new MapSlot(null, "Begynder"));
+        mapSlots.put(10, new MapSlot("eventyr", "§a§oBegynder"));
+        mapSlots.put(19, new MapSlot("træstammen", "§a§oBegynder"));
+        mapSlots.put(28, new MapSlot(null, "§a§oBegynder"));
 
-        mapSlots.put(12, new MapSlot("haven", "Øvede"));
-        mapSlots.put(21, new MapSlot("grønland", "Øvede"));
-        mapSlots.put(30, new MapSlot(null, "Øvede"));
+        mapSlots.put(12, new MapSlot("haven", "§e§oØvede"));
+        mapSlots.put(21, new MapSlot("grønland", "§e§oØvede"));
+        mapSlots.put(30, new MapSlot(null, "§e§oØvede"));
 
-        mapSlots.put(14, new MapSlot("udflugten", "Avanceret"));
-        mapSlots.put(23, new MapSlot("majsmarken", "Avanceret"));
-        mapSlots.put(32, new MapSlot(null, "Avanceret"));
+        mapSlots.put(14, new MapSlot("udflugten", "§6§oAvanceret"));
+        mapSlots.put(23, new MapSlot("majsmarken", "§6§oAvanceret"));
+        mapSlots.put(32, new MapSlot(null, "§6§oAvanceret"));
 
-        mapSlots.put(16, new MapSlot("skak", "Expert"));
-        mapSlots.put(25, new MapSlot(null, "Expert"));
-        mapSlots.put(34, new MapSlot(null, "Expert"));
+        mapSlots.put(16, new MapSlot("skak", "§c§oExpert"));
+        mapSlots.put(25, new MapSlot(null, "§c§oExpert"));
+        mapSlots.put(34, new MapSlot(null, "§c§oExpert"));
 
     }
 
@@ -64,7 +64,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
             } else {
                 itemBuilder = new ItemBuilder(Material.PAPER);
                 itemBuilder.name("§f§n???");
-                itemBuilder.lore("§f- §7§o"+mapSlot.getDifficulty(), "", "§fKommer snart..");
+                itemBuilder.lore("§f- "+mapSlot.getDifficulty(), "", "§fKommer snart..");
 
             }
 
