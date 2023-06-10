@@ -58,6 +58,7 @@ public class MapHandler {
         this.world.setAutoSave(false);
         this.world.setGameRuleValue("doMobSpawning", "false");
         this.world.setGameRuleValue("randomTickSpeed", "0");
+        this.world.setGameRuleValue("doDaylightCycle", "false");
     }
 
     public void deleteGameWorld() {

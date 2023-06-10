@@ -18,7 +18,7 @@ public enum MobType {
         zombie.setVillager(false);
         if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
     });
-
+    
     @Getter
     private final EntityType entityType;
     @Getter

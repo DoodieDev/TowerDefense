@@ -55,4 +55,17 @@ public class LocationUtil {
         return number >= min && number <= max;
     }
 
+    //Moves location1 closer towards location2
+    public static Location moveCloser(Location loc1, Location loc2, double distance) {
+        double dx = loc2.getX() - loc1.getX();
+        double dy = loc2.getY() - loc1.getY();
+        double dz = loc2.getZ() - loc1.getZ();
+        double length = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (length <= distance) return loc2.clone();
+        double newX = loc1.getX() + dx * (distance / length);
+        double newY = loc1.getY() + dy * (distance / length);
+        double newZ = loc1.getZ() + dz * (distance / length);
+        return new Location(loc1.getWorld(), newX, newY, newZ);
+    }
+
 }

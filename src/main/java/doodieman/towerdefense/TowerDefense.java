@@ -3,6 +3,7 @@ package doodieman.towerdefense;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import doodieman.towerdefense.chat.ChatHandler;
 import doodieman.towerdefense.game.GameHandler;
 import doodieman.towerdefense.lobby.mapselector.MapSelectorHandler;
 import doodieman.towerdefense.lobby.spawn.SetspawnCommand;
@@ -21,7 +22,10 @@ import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.MemoryNPCDataStore;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class TowerDefense extends JavaPlugin {
@@ -35,6 +39,8 @@ public final class TowerDefense extends JavaPlugin {
     @Getter
     private MapSetupHandler mapSetupHandler;
     @Getter
+    private ChatHandler chatHandler;
+    @Getter
     private MapHandler mapHandler;
     @Getter
     private GameHandler gameHandler;
@@ -47,10 +53,15 @@ public final class TowerDefense extends JavaPlugin {
     @Getter
     private SpawnHandler spawnHandler;
 
+    /*
+        external plugin dependencies
+    */
     @Getter
     private WorldEditPlugin worldedit;
     @Getter
     private NPCRegistry npcRegistry;
+    @Getter
+    private LuckPerms luckPerms;
 
     @Override
     public void onEnable() {
@@ -59,7 +70,8 @@ public final class TowerDefense extends JavaPlugin {
 
         this.worldedit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         this.npcRegistry = CitizensAPI.createNamedNPCRegistry("towerdefense", new MemoryNPCDataStore());
-
+        RegisteredServiceProvider<LuckPerms> luckPermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        this.luckPerms = luckPermsProvider.getProvider();
 
         //Initialize handlers and commands
         this.loadHandlers();
@@ -75,6 +87,7 @@ public final class TowerDefense extends JavaPlugin {
 
     private void loadHandlers() {
         this.playerDataHandler = new PlayerDataHandler();
+        this.chatHandler = new ChatHandler();
         this.mapGridHandler = new MapGridHandler();
         this.mapSetupHandler = new MapSetupHandler();
         this.turretSetupHandler = new TurretSetupHandler();
