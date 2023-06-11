@@ -15,7 +15,7 @@ public class DiscordCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         player.sendMessage("");
-        player.sendMessage("§fJoin vores Discord! §9§ndiscord.gg/n4p8nyqrpP");
+        player.sendMessage("§fJoin vores Discord! §9§ndiscord.gg/TurWm7txxs");
         player.sendMessage("");
         return true;
     }
