@@ -95,6 +95,7 @@ public final class TowerDefense extends JavaPlugin {
         this.gameHandler = new GameHandler();
         this.mapSelectorHandler = new MapSelectorHandler();
         this.spawnHandler = new SpawnHandler();
+        //hgello
     }
 
     private void loadCommands() {
