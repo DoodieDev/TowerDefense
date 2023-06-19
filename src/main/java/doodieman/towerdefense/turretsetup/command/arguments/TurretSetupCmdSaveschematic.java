@@ -33,8 +33,10 @@ public class TurretSetupCmdSaveschematic {
             return;
         }
 
-        //Save the schematic
+        //Save the schematic and armorstands
         handler.saveSchematic(turretID);
+        handler.saveArmorstands(turretID);
+
         player.sendMessage("§aSchematic af turret '"+turretID+"' er blevet gemt!");
     }
 

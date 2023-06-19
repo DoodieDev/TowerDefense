@@ -57,6 +57,7 @@ public class GameListener implements Listener {
             return;
 
         Location blockLocation = event.getBlockPlaced().getLocation();
+
         Game game = util.getActiveGame(player);
         TurretType turretType = handler.getTurretUtil().getTurretFromItem(tool);
 
@@ -71,15 +72,15 @@ public class GameListener implements Listener {
         turretUtil.removeTurretItems(player, turretType, 1);
         GameTurret turret = turretUtil.createTurret(game, turretType, blockLocation);
 
-        //Add correct rotation
-        //My brain is melting after making this shitty mess. Future me please recode
-        double yaw = player.getLocation().getYaw() + 90;
-        double normalizedYaw = yaw < 0 ? yaw + 360d : yaw;
-        double rotationRounded = Math.round(normalizedYaw / 90) * 90;
-        turret.setRotation(rotationRounded);
-
         //Render the turret
-        turret.render();
+        TowerDefense.runAsync(() -> {
+            turret.render();
+            TowerDefense.runSync(() -> {
+                turret.pasteArmorStands();
+                turret.setRotation(LocationUtil.getAngleToLocation(player.getLocation(),blockLocation));
+                turret.updateArmorStands();
+            });
+        });
 
         player.playSound(blockLocation, Sound.ZOMBIE_WOOD,0.8f,0.4f);
         player.spigot().playEffect(blockLocation.add(0.5,0,0.5), Effect.TILE_BREAK,turretType.getItem().getTypeId(),0,1,2,1,0.1f,150,20);

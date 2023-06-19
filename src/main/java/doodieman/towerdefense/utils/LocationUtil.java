@@ -3,6 +3,7 @@ package doodieman.towerdefense.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.util.EulerAngle;
 
 public class LocationUtil {
     public static String locationToString(Location loc) {
@@ -22,6 +23,22 @@ public class LocationUtil {
 
         return new Location(world, x, y, z, yaw, pitch);
     }
+
+    public static String eulerAngleToString(EulerAngle eulerAngle) {
+        return eulerAngle.getX()+";"+eulerAngle.getY()+";"+eulerAngle.getZ();
+    }
+
+    public static EulerAngle stringToEulerAngle(String string) {
+        String[] parts = string.split(";");
+        if (parts.length != 3) return new EulerAngle(0,0,0);
+
+        float x = Float.parseFloat(parts[0]);
+        float y = Float.parseFloat(parts[1]);
+        float z = Float.parseFloat(parts[2]);
+
+        return new EulerAngle(x,y,z);
+    }
+
 
     public static boolean isInBoundaries(Location loc, Location corner1, Location corner2) {
         double
@@ -66,6 +83,22 @@ public class LocationUtil {
         double newY = loc1.getY() + dy * (distance / length);
         double newZ = loc1.getZ() + dz * (distance / length);
         return new Location(loc1.getWorld(), newX, newY, newZ);
+    }
+
+    public static Location getLocationInCircle(Location loc, double angle, double radius) {
+        double x = (loc.getX() + radius * Math.cos(angle * Math.PI / 180));
+        double z = (loc.getZ() + radius * Math.sin(angle * Math.PI / 180));
+        return new Location(loc.getWorld(), x, loc.getY(), z);
+    }
+
+    public static double getAngleToLocation(Location center, Location target) {
+        double deltaX = target.getX() - center.getX();
+        double deltaZ = target.getZ() - center.getZ();
+        double angle = Math.atan2(deltaZ, deltaX);
+        angle = Math.toDegrees(angle);
+        if (angle < 0)
+            angle += 360;
+        return angle;
     }
 
 }

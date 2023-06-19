@@ -7,9 +7,13 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.utils.LocationUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,16 +21,15 @@ import java.io.IOException;
 public class TurretSetupHandler {
 
     public TurretSetupHandler() {
-
     }
 
+    //Save the schematic of a turret
     public void saveSchematic(String turretID) {
-
-        FileConfiguration config = TowerDefense.getInstance().getConfig();
+        ConfigurationSection section = this.getSection(turretID);
         String schematicPath = TowerDefense.getInstance().getDataFolder() + "/turrets/" + turretID + ".schematic";
 
-        Location corner1 = LocationUtil.stringToLocation(config.getString("turrets."+turretID+".corner1"));
-        Location corner2 = LocationUtil.stringToLocation(config.getString("turrets."+turretID+".corner2"));
+        Location corner1 = LocationUtil.stringToLocation(section.getString("corner1"));
+        Location corner2 = LocationUtil.stringToLocation(section.getString("corner2"));
         World world = corner1.getWorld();
 
         try {
@@ -38,6 +41,7 @@ public class TurretSetupHandler {
             CuboidRegion region = new CuboidRegion(new BukkitWorld(world), minCorner, maxCorner);
 
             Schematic schematic = new Schematic(region);
+
             schematic.save(file, ClipboardFormat.SCHEMATIC);
 
         } catch (IOException exception) {
@@ -45,5 +49,52 @@ public class TurretSetupHandler {
         }
     }
 
+    //Save all the armorstands of a turret
+    public void saveArmorstands(String turretID) {
+        ConfigurationSection section = this.getSection(turretID);
+        Location corner1 = LocationUtil.stringToLocation(section.getString("corner1"));
+
+        corner1.add(0.5,0,0.5);
+        World world = corner1.getWorld();
+
+        //Clear current armorstands in config
+        section.set("armorstands", null);
+        ConfigurationSection asSection = section.createSection("armorstands");
+
+        int i = 0;
+        for (Entity entity : world.getNearbyEntities(corner1, 1.5,255, 1.5)) {
+            if (!(entity instanceof ArmorStand)) continue;
+            ArmorStand armorStand = (ArmorStand) entity;
+
+            asSection.set(i+".small", armorStand.isSmall());
+
+            //Save location
+            asSection.set(i+".location", LocationUtil.locationToString(armorStand.getLocation()));
+
+            //Save armorstand poses
+            asSection.set(i+".head", LocationUtil.eulerAngleToString(armorStand.getHeadPose()));
+            asSection.set(i+".body", LocationUtil.eulerAngleToString(armorStand.getBodyPose()));
+            asSection.set(i+".rightArm", LocationUtil.eulerAngleToString(armorStand.getRightArmPose()));
+            asSection.set(i+".leftArm", LocationUtil.eulerAngleToString(armorStand.getLeftArmPose()));
+            asSection.set(i+".rightLeg", LocationUtil.eulerAngleToString(armorStand.getRightLegPose()));
+            asSection.set(i+".leftLeg", LocationUtil.eulerAngleToString(armorStand.getLeftLegPose()));
+
+            //Save equipment
+            asSection.set(i+".equipment.helmet",armorStand.getHelmet());
+            asSection.set(i+".equipment.chestplate",armorStand.getChestplate());
+            asSection.set(i+".equipment.leggings",armorStand.getLeggings());
+            asSection.set(i+".equipment.boots",armorStand.getBoots());
+            asSection.set(i+".equipment.tool",armorStand.getItemInHand());
+
+            i++;
+        }
+
+        TowerDefense.getInstance().saveConfig();
+    }
+
+    private ConfigurationSection getSection(String turretID) {
+        FileConfiguration config = TowerDefense.getInstance().getConfig();
+        return config.getConfigurationSection("turrets."+turretID);
+    }
 
 }
