@@ -17,6 +17,22 @@ public enum MobType {
         zombie.setBaby(false);
         zombie.setVillager(false);
         if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
+    }),
+
+    ZOMBIE2(EntityType.ZOMBIE, 3.25, 1, 1, entity -> {
+        Zombie zombie = (Zombie) entity;
+        zombie.getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET));
+        zombie.getEquipment().setItemInHand(new ItemStack(Material.AIR));
+        zombie.setBaby(false);
+        zombie.setVillager(false);
+        if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
+    }),
+
+    SKELETON1(EntityType.SKELETON, 3.25, 1, 1, entity -> {
+        Skeleton skeleton = (Skeleton) entity;
+        skeleton.getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET));
+        skeleton.getEquipment().setItemInHand(new ItemStack(Material.AIR));
+        if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
     });
     
     @Getter
