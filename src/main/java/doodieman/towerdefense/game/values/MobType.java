@@ -10,10 +10,9 @@ import org.bukkit.inventory.ItemStack;
 
 public enum MobType {
 
-    ZOMBIE1(EntityType.ZOMBIE, 3.25, 1, 1, entity -> {
+    ZOMBIE1(EntityType.ZOMBIE, 1, 1, 1, entity -> {
         Zombie zombie = (Zombie) entity;
-        zombie.getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET));
-        zombie.getEquipment().setItemInHand(new ItemStack(Material.AIR));
+        zombie.getEquipment().setItemInHand(new ItemStack(Material.STICK));
         zombie.setBaby(false);
         zombie.setVillager(false);
         if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
