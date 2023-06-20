@@ -73,6 +73,8 @@ public final class TowerDefense extends JavaPlugin {
         RegisteredServiceProvider<LuckPerms> luckPermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         this.luckPerms = luckPermsProvider.getProvider();
 
+        Bukkit.getPluginManager().registerEvents(new GlobalListener(),this);
+
         //Initialize handlers and commands
         this.loadHandlers();
         this.loadCommands();

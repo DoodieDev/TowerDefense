@@ -13,7 +13,11 @@ import java.util.UUID;
 public class LuckPermsUtil {
 
 
-
+    public static String getRankColor(OfflinePlayer player) {
+        User user = getLuckPermsUser(player.getUniqueId());
+        String prefix = user.getCachedData().getMetaData().getPrefix();
+        return ChatColor.translateAlternateColorCodes('&',prefix.substring(0, 2));
+    }
 
     public static String getPrefix(String username) {
         return getPrefix(Bukkit.getOfflinePlayer(username));
