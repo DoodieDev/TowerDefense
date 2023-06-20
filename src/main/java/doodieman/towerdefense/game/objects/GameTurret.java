@@ -37,7 +37,7 @@ public abstract class GameTurret {
     private final TurretType turretType;
     @Getter
     private final Location location;
-    @Getter @Setter
+    @Getter
     private double rotation;
     @Getter
     private final List<GameTurretArmorstand> armorStandList = new ArrayList<>();
@@ -56,6 +56,8 @@ public abstract class GameTurret {
     //Call the entire tower cycle of shooting mobs
     public abstract void update(long roundTick);
 
+
+
     public GameMob getClosestMob() {
         List<GameMob> detected = this.detect();
         if (detected.size() == 0) return null;
@@ -72,12 +74,18 @@ public abstract class GameTurret {
     }
 
     public void shootClosestMob() {
-        this.shoot(this.getClosestMob());
+        GameMob closestMob = this.getClosestMob();
+        if (closestMob == null) return;
+        this.shoot(closestMob);
     }
 
     public void rotateTowardsMob(GameMob gameMob) {
         this.setRotation(LocationUtil.getAngleToLocation(this.getLocation(),gameMob.getLocation()));
         this.updateArmorStands();
+    }
+
+    public void setRotation(double value) {
+        this.rotation = value + 180d;
     }
 
     //Render the turret. (Schematic, hologram, etc)

@@ -72,7 +72,7 @@ public class GameListener implements Listener {
         turretUtil.removeTurretItems(player, turretType, 1);
         GameTurret turret = turretUtil.createTurret(game, turretType, blockLocation);
 
-        turret.setRotation(LocationUtil.getAngleToLocation(player.getLocation(),blockLocation));
+        turret.setRotation(LocationUtil.getAngleToLocation(blockLocation,player.getLocation()));
         turret.render();
 
         player.playSound(blockLocation, Sound.ZOMBIE_WOOD,0.8f,0.4f);

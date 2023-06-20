@@ -21,9 +21,15 @@ import doodieman.towerdefense.maps.objects.Map;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.server.v1_8_R3.EnumParticle;
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -151,29 +157,39 @@ public class Game {
         this.mobPathLoop = new BukkitRunnable() {
 
             int tick = 0;
+            double displayPathOffset = 0;
 
             @Override
             public void run() {
-                if (!roundActive) return;
 
-                //Move all the mobs
-                for (GameMob mob : aliveMobs) {
-                    mob.move();
-                    if (mob.isInGoal())
-                        mobsToRemove.add(mob);
+                //While round is inactive - Display path
+                if (!roundActive) {
+                    showPathParticles(displayPathOffset,15);
+                    displayPathOffset += 0.15;
                 }
 
-                //Remove mobs in goal
-                for (GameMob mob : mobsToRemove) {
-                    damage(mob.getMobType().getDamage());
-                    gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation(), mob.getMobType());
-                    mob.kill();
-                }
-                mobsToRemove.clear();
+                //While round is active
+                if (roundActive) {
 
-                //Check if round is over
-                if (aliveMobs.size() <= 0)
-                    finishRound();
+                    //Move all the mobs on path
+                    for (GameMob mob : aliveMobs) {
+                        mob.move();
+                        if (mob.isInGoal())
+                            mobsToRemove.add(mob);
+                    }
+
+                    //Remove mobs in goal
+                    for (GameMob mob : mobsToRemove) {
+                        damage(mob.getMobType().getDamage());
+                        gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation(), mob.getMobType());
+                        mob.kill();
+                    }
+                    mobsToRemove.clear();
+
+                    //Check if round is over
+                    if (aliveMobs.size() <= 0)
+                        finishRound();
+                }
 
                 tick++;
             }
@@ -270,6 +286,30 @@ public class Game {
         newLocation.setYaw(location.getYaw());
         newLocation.setPitch(location.getPitch());
         return newLocation;
+    }
+
+    private void showPathParticles(double offset, double distance) {
+        double pathLength = map.getPathLength();
+        int pathPoints = (int) Math.floor(pathLength / distance);
+        double lengthPerPoint = pathLength / pathPoints;
+
+        offset = offset % lengthPerPoint;
+
+        for (int i = 0; i < pathPoints; i++) {
+            double placement = i * lengthPerPoint + offset;
+            Location loc = getRealLocation(map.getPathLocationAt(placement));
+            loc.add(0, 0.5, 0);
+
+            Color color = Color.fromRGB((int) (placement / pathLength * 255) , (int) ((1-(placement / pathLength)) * 255), 0);
+            PacketPlayOutWorldParticles particle = new PacketPlayOutWorldParticles(
+                EnumParticle.REDSTONE, true,
+                (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(),
+                (float)color.getRed()/255, (float)color.getGreen()/255, (float)color.getBlue()/255, (float) 1, 0
+            );
+
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(particle);
+        }
+
     }
 
     //Create or update the hologram at the start

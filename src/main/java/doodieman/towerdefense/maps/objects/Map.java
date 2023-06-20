@@ -104,18 +104,20 @@ public class Map {
     }
 
     public Location getPathLocationAt(double targetLength) {
+
         double length = 0d;
         Location selected = path.get(0);
 
         for (int i = 0; i < path.size()-1; i++) {
+
             Location location = path.get(i);
             Location next = path.get(i+1);
 
             //It will exceed the target length
             if (location.distance(next) + length > targetLength) {
                 double lengthLeft = (targetLength - length);
-                selected = location.clone();
-                selected.add(moveCloser(location,next,length));
+                selected = moveCloser(location,next,lengthLeft);
+                break;
             }
 
             length += location.distance(next);
