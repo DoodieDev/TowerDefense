@@ -152,7 +152,7 @@ public enum Round {
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2
-    )),
+        )),
 
     ROUND_8(8, 10L, Arrays.asList(
         MobType.ZOMBIE3,
@@ -221,7 +221,7 @@ public enum Round {
         MobType.ZOMBIE3,
         MobType.ZOMBIE4
     ));
-
+    
     @Getter
     private final int id;
     @Getter
