@@ -36,10 +36,55 @@ public enum MobType {
         if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
     }),
 
-    SKELETON1(EntityType.SKELETON, 3.25, 1, 1, entity -> {
+    ZOMBIE4(EntityType.ZOMBIE, 0.75, 30, 10, entity -> {
+    //ZOMBIE BOSS
+        Zombie zombie = (Zombie) entity;
+        zombie.getEquipment().setHelmet(new ItemStack(Material.IRON_HELMET));
+        zombie.getEquipment().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+        zombie.getEquipment().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+        zombie.getEquipment().setBoots(new ItemStack(Material.LEATHER_BOOTS));
+        zombie.getEquipment().setItemInHand(new ItemStack(Material.IRON_SWORD));
+        zombie.setBaby(false);
+        zombie.setVillager(false);
+        if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
+    }),
+
+    SKELETON1(EntityType.SKELETON, 3, 1, 1, entity -> {
         Skeleton skeleton = (Skeleton) entity;
-        skeleton.getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET));
-        skeleton.getEquipment().setItemInHand(new ItemStack(Material.AIR));
+        skeleton.getEquipment().setItemInHand(new ItemStack(Material.BONE));
+        if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
+    }),
+    
+    SKELETON2(EntityType.SKELETON, 7.5, 3, 1, entity -> {
+        Skeleton skeleton = (Skeleton) entity;
+        skeleton.getEquipment().setBoots(new ItemStack(Material.GOLDEN_BOOTS));
+        skeleton.getEquipment().setItemInHand(new ItemStack(Material.RED_ROSE,1,(short) 8));
+        if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
+    }),
+
+    SKELETON3(EntityType.SKELETON, 3, 5, 1, entity -> {
+        Skeleton skeleton = (Skeleton) entity;
+        skeleton.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+        skeleton.getEquipment().setItemInHand(new ItemStack(Material.BONE));
+        if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
+    }),
+    
+    SKELETON4(EntityType.SKELETON, 2.5, 15, 1, entity -> {
+        Skeleton skeleton = (Skeleton) entity;
+        skeleton.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+        skeleton.getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
+        skeleton.getEquipment().setItemInHand(new ItemStack(Material.IRON_HOE));
+        if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
+    }),
+
+    SKELETON5(EntityType.SKELETON, 1.5, 75, 25, entity -> {
+    //SKELETON BOSS
+        Skeleton skeleton = (Skeleton) entity;
+        skeleton.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+        skeleton.getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
+        skeleton.getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
+        skeleton.getEquipment().setBoots(new ItemStack(Material.IRON_BOOTS));
+        skeleton.getEquipment().setItemInHand(new ItemStack(Material.STONE_SWORD));
         if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
     });
     
