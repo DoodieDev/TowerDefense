@@ -70,6 +70,7 @@ public class GameMob {
 
     public void kill() {
         this.entity.remove();
+        this.game.getAliveMobs().remove(this);
     }
 
     //Updates the health bar, and teleports it to the Entity
@@ -121,6 +122,10 @@ public class GameMob {
     //Check if the mob is in goal
     public boolean isInGoal() {
         return currentLength >= pathLength;
+    }
+
+    public Location getLocation() {
+        return this.entity.getLocation();
     }
 
     //Moves location1 closer towards location2

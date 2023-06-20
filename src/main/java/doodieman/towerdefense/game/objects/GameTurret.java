@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameTurret {
+public abstract class GameTurret {
 
     @Getter
     private final Game game;
@@ -49,9 +49,49 @@ public class GameTurret {
         this.rotation = 0;
     }
 
+    //Detect the mobs possible to shoot. Can be different from turret to turret.
+    public abstract List<GameMob> detect();
+    //Trigger the tower to shoot this mob.
+    public abstract void shoot(GameMob mob);
+    //Call the entire tower cycle of shooting mobs
+    public abstract void update(long roundTick);
+
+    public GameMob getClosestMob() {
+        List<GameMob> detected = this.detect();
+        if (detected.size() == 0) return null;
+        GameMob closest = detected.get(0);
+        double currentDistance = closest.getLocation().distance(this.location);
+
+        for (GameMob mob : this.detect()) {
+            double distance = mob.getLocation().distance(this.location);
+            if (distance > currentDistance) continue;
+            currentDistance = distance;
+            closest = mob;
+        }
+        return closest;
+    }
+
+    public void shootClosestMob() {
+        this.shoot(this.getClosestMob());
+    }
+
+    public void rotateTowardsMob(GameMob gameMob) {
+        this.setRotation(LocationUtil.getAngleToLocation(this.getLocation(),gameMob.getLocation()));
+        this.updateArmorStands();
+    }
+
     //Render the turret. (Schematic, hologram, etc)
     public void render() {
-        this.pasteSchematic();
+
+        //Render the turret. First paste the schematic async.
+        TowerDefense.runAsync(() -> {
+            this.pasteSchematic();
+            //When schematic is done. Render the armorstands.
+            TowerDefense.runSync(() -> {
+                this.pasteArmorStands();
+                this.updateArmorStands();
+            });
+        });
 
         //TODO create hologram
     }

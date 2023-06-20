@@ -65,6 +65,7 @@ public class Game {
     private int currentRound;
 
 
+
     private Hologram startHologram;
     private TextLine roundTextLine;
     private TextLine goldTextLine;
@@ -167,7 +168,6 @@ public class Game {
                     damage(mob.getMobType().getDamage());
                     gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation(), mob.getMobType());
                     mob.kill();
-                    aliveMobs.remove(mob);
                 }
                 mobsToRemove.clear();
 
@@ -202,14 +202,33 @@ public class Game {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-
                     if (roundActive)
                         spawnMob(mobType);
-
                 }
             }.runTaskLater(TowerDefense.getInstance(), i * round.getSpawnDelay());
             i++;
         }
+
+        //The timer when the round is active
+        new BukkitRunnable() {
+
+            long roundTick = 0L;
+
+            @Override
+            public void run() {
+                //Round not active anymore. Cancel the timer
+                if (!roundActive) {
+                    this.cancel();
+                    return;
+                }
+
+                //Update all turrets
+                for (GameTurret turret : getTurrets())
+                    turret.update(roundTick);
+
+                roundTick++;
+            }
+        }.runTaskTimer(TowerDefense.getInstance(),0L,1L);
     }
 
     //Called when the round is finished

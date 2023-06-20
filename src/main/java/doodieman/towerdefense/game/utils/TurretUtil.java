@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 
 public class TurretUtil {
 
@@ -54,10 +55,20 @@ public class TurretUtil {
     //Create a brand new turret
     public GameTurret createTurret(Game game, TurretType turretType, Location location) {
 
-        GameTurret turret = new GameTurret(game, turretType, location);
-        game.getTurrets().add(turret);
+        try {
+            Class<? extends GameTurret> turretClass = turretType.getTurretClass();
+            Constructor<? extends GameTurret> turretConstructor = turretClass.getConstructor(Game.class, TurretType.class, Location.class);
 
-        return turret;
+            GameTurret turret = turretConstructor.newInstance(game, turretType, location);
+            game.getTurrets().add(turret);
+
+            return turret;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
     }
 
     //Checks for redstone blocks in a 3x3 and down to void

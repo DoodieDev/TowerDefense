@@ -2,6 +2,8 @@ package doodieman.towerdefense.game.values;
 
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import doodieman.towerdefense.game.objects.GameTurret;
+import doodieman.towerdefense.game.objects.turrets.WoodTower;
 import doodieman.towerdefense.utils.ItemBuilder;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -18,7 +20,8 @@ public enum TurretType {
         "§6",
         "§fSkyder pile i én givet retning.%nl%§fenten nord, syd øst eller vest.",
         new ItemStack(Material.LOG),
-        150
+        150,
+        WoodTower.class
     ),
 
     STONE_TOWER(
@@ -27,7 +30,8 @@ public enum TurretType {
         "§7",
         "§fKaster sten i en af fire%nl%§fforskellige retninger, enten%nl%§fnord, syd, øst eller vest.",
         new ItemStack(Material.COBBLESTONE),
-        200
+        200,
+        WoodTower.class
     );
 
     @Getter
@@ -41,16 +45,19 @@ public enum TurretType {
     private final ItemStack item;
     @Getter
     private final double price;
+    @Getter
+    private final Class<? extends GameTurret> turretClass;
 
     private static final Map<String, TurretType> BY_ID = new HashMap<>();
 
-    TurretType(String id, String name, String textColor, String description, ItemStack item, double price) {
+    TurretType(String id, String name, String textColor, String description, ItemStack item, double price, Class<? extends GameTurret> turretClass) {
         this.id = id;
         this.name = name;
         this.textColor = textColor;
         this.description = description;
         this.item = item;
         this.price = price;
+        this.turretClass = turretClass;
     }
 
     //Get the itemstack

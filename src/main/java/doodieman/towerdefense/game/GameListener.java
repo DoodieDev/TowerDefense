@@ -72,15 +72,8 @@ public class GameListener implements Listener {
         turretUtil.removeTurretItems(player, turretType, 1);
         GameTurret turret = turretUtil.createTurret(game, turretType, blockLocation);
 
-        //Render the turret
-        TowerDefense.runAsync(() -> {
-            turret.render();
-            TowerDefense.runSync(() -> {
-                turret.pasteArmorStands();
-                turret.setRotation(LocationUtil.getAngleToLocation(player.getLocation(),blockLocation));
-                turret.updateArmorStands();
-            });
-        });
+        turret.setRotation(LocationUtil.getAngleToLocation(player.getLocation(),blockLocation));
+        turret.render();
 
         player.playSound(blockLocation, Sound.ZOMBIE_WOOD,0.8f,0.4f);
         player.spigot().playEffect(blockLocation.add(0.5,0,0.5), Effect.TILE_BREAK,turretType.getItem().getTypeId(),0,1,2,1,0.1f,150,20);
