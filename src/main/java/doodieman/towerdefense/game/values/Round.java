@@ -122,30 +122,36 @@ public enum Round {
     )),
 
     ROUND_7(7, 5L, Arrays.asList(
-        MobType.SKELETON2,
-        MobType.SKELETON2,
-        MobType.SKELETON2,
-        MobType.SKELETON2,
-        MobType.SKELETON2,
+        MobType.SKELETON3,
+        MobType.SKELETON3,
+        MobType.SKELETON3,
+        MobType.SKELETON3,
+        MobType.SKELETON3,
+        MobType.SKELETON3,
+        MobType.SKELETON3,
+        MobType.SKELETON3,
+        MobType.SKELETON3,
         MobType.SKELETON3,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
-        MobType.SKELETON3,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
-        MobType.SKELETON3,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
         MobType.SKELETON2,
-        MobType.SKELETON3
+        MobType.SKELETON2,
+        MobType.SKELETON2,
+        MobType.SKELETON2,
+        MobType.SKELETON2,
+        MobType.SKELETON2,
     )),
 
         ROUND_8(8, 10L, Arrays.asList(
@@ -181,7 +187,7 @@ public enum Round {
         MobType.ZOMBIE3
      )),
 
-    ROUND_9(9, 40L, Arrays.asList(
+    ROUND_9(9, 20L, Arrays.asList(
         MobType.SKELETON3,
         MobType.SKELETON3,
         MobType.SKELETON3,
@@ -191,7 +197,10 @@ public enum Round {
         MobType.SKELETON3,
         MobType.SKELETON3,
         MobType.SKELETON3,
-        MobType.SKELETON3
+        MobType.SKELETON3,
+        MobType.SKELETON4,
+        MobType.SKELETON4,
+        MobType.SKELETON4
     )),
 
     ROUND_10(10, 15L, Arrays.asList(
