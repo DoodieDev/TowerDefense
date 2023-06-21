@@ -18,6 +18,7 @@ import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.utils.PacketUtil;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -94,7 +95,7 @@ public class Game {
         this.aliveMobs = new ArrayList<>();
         this.turrets = new ArrayList<>();
         this.roundActive = false;
-        this.currentRound = 1;
+        this.currentRound = 0;
         this.startHologram = null;
     }
 
@@ -165,7 +166,7 @@ public class Game {
                 //While round is inactive - Display path
                 if (!roundActive) {
                     showPathParticles(displayPathOffset,15);
-                    displayPathOffset += 0.15;
+                    displayPathOffset += 0.30;
                 }
 
                 //While round is active
@@ -209,6 +210,7 @@ public class Game {
         this.roundActive = true;
         this.gameInteractive.getGameAnimations().newRoundStarted();
 
+        this.currentRound++;
         Round round = Round.getRound(currentRound);
         this.updateStartHologram();
 
@@ -251,15 +253,14 @@ public class Game {
     public void finishRound() {
         this.roundActive = false;
         this.wipeMobs();
-        gameInteractive.updateRoundItemSlot();
-        currentRound++;
+        this.gameInteractive.updateRoundItemSlot();
     }
 
     //Removes all the active mobs
     public void wipeMobs() {
-        for (GameMob mob : aliveMobs)
+        for (GameMob mob : this.aliveMobs)
             mob.kill();
-        aliveMobs.clear();
+        this.aliveMobs.clear();
     }
 
     //When a mobs damages the player
@@ -270,10 +271,12 @@ public class Game {
         this.updateStartHologram();
     }
 
+    //Set the game gold
     public void setGold(double amount) {
         this.gold = amount;
         this.updateStartHologram();
     }
+
     //Get real location from location in config.
     //Example: The map is built and saved with different coordinates in a different world.
     //When its pasted in the real game world. The location varies.
@@ -288,6 +291,7 @@ public class Game {
         return newLocation;
     }
 
+    //Display the particles throughout the entire path
     private void showPathParticles(double offset, double distance) {
         double pathLength = map.getPathLength();
         int pathPoints = (int) Math.floor(pathLength / distance);
@@ -297,17 +301,10 @@ public class Game {
 
         for (int i = 0; i < pathPoints; i++) {
             double placement = i * lengthPerPoint + offset;
-            Location loc = getRealLocation(map.getPathLocationAt(placement));
-            loc.add(0, 0.5, 0);
-
+            Location location = getRealLocation(map.getPathLocationAt(placement));
+            location.add(0, 0.5, 0);
             Color color = Color.fromRGB((int) (placement / pathLength * 255) , (int) ((1-(placement / pathLength)) * 255), 0);
-            PacketPlayOutWorldParticles particle = new PacketPlayOutWorldParticles(
-                EnumParticle.REDSTONE, true,
-                (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(),
-                (float)color.getRed()/255, (float)color.getGreen()/255, (float)color.getBlue()/255, (float) 1, 0
-            );
-
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(particle);
+            PacketUtil.sendRedstoneParticle(player.getPlayer(),location,color);
         }
 
     }

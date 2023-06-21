@@ -23,7 +23,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
 
         mapSlots.put(10, new MapSlot("eventyr", "§a§oBegynder"));
         mapSlots.put(19, new MapSlot("træstammen", "§a§oBegynder"));
-        mapSlots.put(28, new MapSlot(null, "§a§oBegynder"));
+        mapSlots.put(28, new MapSlot("oerkenen", "§a§oBegynder"));
 
         mapSlots.put(12, new MapSlot("haven", "§e§oØvede"));
         mapSlots.put(21, new MapSlot("grønland", "§e§oØvede"));
