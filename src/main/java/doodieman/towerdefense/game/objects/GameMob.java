@@ -1,5 +1,9 @@
 package doodieman.towerdefense.game.objects;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
+import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.values.MobType;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
@@ -10,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -35,6 +40,8 @@ public class GameMob {
     @Getter
     private Entity entity;
 
+    private ArmorStand healthArmorStand;
+
     //Health stuff
     @Getter
     private double health;
@@ -51,13 +58,15 @@ public class GameMob {
         this.nextPoint = path.get(pointIndex+1);
 
         this.health = mobType.getHealth();
+        this.healthArmorStand = null;
     }
 
     //Spawn the entity at the first path location
     public void spawn() {
-        //Spawn the actual entity
-        this.entity = game.getWorld().spawnEntity(path.get(0), mobType.getEntityType());
-        
+
+        Location location = this.path.get(0);
+
+        this.entity = game.getWorld().spawnEntity(location, mobType.getEntityType());
         mobType.getRunnable().run(this.entity);
 
         //Add NBT values to the entity
@@ -66,16 +75,32 @@ public class GameMob {
         nmsEntity.c(tag);
         tag.setInt("NoAI", 1);
         nmsEntity.f(tag);
+
+        this.updateHealthBar();
     }
 
     public void kill() {
         this.entity.remove();
         this.game.getAliveMobs().remove(this);
+        this.healthArmorStand.remove();
     }
 
     //Updates the health bar, and teleports it to the Entity
     public void updateHealthBar() {
-        this.entity.setCustomName("§7"+ StringUtil.formatNum(health) +" §c❤");
+
+        String text = "§4["+StringUtil.progressBar(health,mobType.getHealth(),20)+"§4]";
+        Location location = this.entity.getLocation().clone().add(0,mobType.getHologramOffset(),0);
+
+        if (healthArmorStand == null) {
+            this.healthArmorStand = game.getWorld().spawn(location,ArmorStand.class);
+            this.healthArmorStand.setCustomNameVisible(true);
+            this.healthArmorStand.setVisible(false);
+            this.healthArmorStand.setMarker(true);
+            this.healthArmorStand.setGravity(false);
+        }
+
+        this.healthArmorStand.setCustomName(text);
+        this.healthArmorStand.teleport(location);
     }
 
     //Moves the entity on the path, it moves (speed) blocks

@@ -91,7 +91,7 @@ public class GameAnimations {
     //Particles when a mob gets to the goal
     public void mobFinished(Location location, MobType mobType) {
         getPlayer().spigot().playEffect(location, Effect.LAVA_POP,0,0,0.1f,0.1f,0.1f,0.2f,10,40);
-        PacketUtil.sendTitle(getPlayer(), "", "§7"+ StringUtil.formatNum(game.getHealth())+" §c❤", 0, 20, 0);
+        PacketUtil.sendTitle(getPlayer(), "", "§f"+ StringUtil.formatNum(game.getHealth())+" §4❤", 0, 20, 0);
         getPlayer().playSound(getPlayer().getLocation(),Sound.ITEM_PICKUP,0.5f,0.8f);
     }
 
