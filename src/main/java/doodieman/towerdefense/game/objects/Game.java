@@ -68,6 +68,9 @@ public class Game {
     private final List<GameTurret> turrets;
     @Getter //Check if the round is active
     private boolean roundActive;
+    @Getter
+    private boolean mobsSpawning;
+
     @Getter //Current round number
     private int currentRound;
 
@@ -95,6 +98,7 @@ public class Game {
         this.aliveMobs = new ArrayList<>();
         this.turrets = new ArrayList<>();
         this.roundActive = false;
+        this.mobsSpawning = false;
         this.currentRound = 0;
         this.startHologram = null;
     }
@@ -188,7 +192,7 @@ public class Game {
                     mobsToRemove.clear();
 
                     //Check if round is over
-                    if (aliveMobs.size() <= 0)
+                    if (aliveMobs.size() <= 0 && !mobsSpawning)
                         finishRound();
                 }
 
@@ -207,37 +211,39 @@ public class Game {
 
     //Starts the round
     public void startRound() {
+
         this.roundActive = true;
+        this.mobsSpawning = true;
+        this.currentRound++;
+
         this.gameInteractive.getGameAnimations().newRoundStarted();
 
-        this.currentRound++;
         Round round = Round.getRound(currentRound);
         this.updateStartHologram();
 
-        //Spawn the mobs slowly
-        int i = 0;
-        for (MobType mobType : round.getMobs()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (roundActive)
-                        spawnMob(mobType);
-                }
-            }.runTaskLater(TowerDefense.getInstance(), i * round.getSpawnDelay());
-            i++;
-        }
 
         //The timer when the round is active
         new BukkitRunnable() {
 
             long roundTick = 0L;
+            final List<MobType> mobsLeftToSpawn = new ArrayList<>(round.getMobs());
 
             @Override
             public void run() {
+
                 //Round not active anymore. Cancel the timer
                 if (!roundActive) {
                     this.cancel();
                     return;
+                }
+
+                //Spawn mob
+                if (roundTick % round.getSpawnDelay() == 0 && mobsLeftToSpawn.size() > 0) {
+                    MobType mob = mobsLeftToSpawn.remove(0);
+                    spawnMob(mob);
+
+                    if (mobsLeftToSpawn.size() == 0)
+                        mobsSpawning = false;
                 }
 
                 //Update all turrets
@@ -254,6 +260,7 @@ public class Game {
         this.roundActive = false;
         this.wipeMobs();
         this.gameInteractive.updateRoundItemSlot();
+        this.gameInteractive.getGameAnimations().roundFinished();
     }
 
     //Removes all the active mobs

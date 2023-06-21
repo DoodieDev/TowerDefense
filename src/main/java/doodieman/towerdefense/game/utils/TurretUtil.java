@@ -71,7 +71,7 @@ public class TurretUtil {
 
     }
 
-    //Checks for redstone blocks in a 3x3 and down to void
+    //Checks for redstone blocks in a 1x1 and down to void
     public boolean canTurretBePlaced(Game game, Location location) {
         //Step 1 - Check for y-level
         Location mobSpawnLoc = game.getMobPath().get(0);
@@ -87,7 +87,7 @@ public class TurretUtil {
                 for (double z = corner1.getZ(); z <= corner2.getZ(); z++) {
                     Location loc = new Location(corner1.getWorld(),x,y,z);
                     Block block = corner1.getWorld().getBlockAt(loc);
-                    if (block.getType() == Material.REDSTONE_BLOCK)
+                    if (block.getType() == Material.REDSTONE_BLOCK || block.getType() == Material.DIAMOND_BLOCK)
                         return false;
                 }
             }

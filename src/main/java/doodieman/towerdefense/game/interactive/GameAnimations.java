@@ -50,6 +50,39 @@ public class GameAnimations {
         }.runTaskTimer(TowerDefense.getInstance(), 0L, 1L);
     }
 
+    public void roundFinished() {
+        Location location = this.getPlayer().getLocation();
+        Player player = this.getPlayer();
+
+        player.spigot().playEffect(location,Effect.FIREWORKS_SPARK,0,0,2,2,2,0.1f,60,20);
+
+        PacketUtil.sendTitle(getPlayer(), "§aRUNDE KLARET", "§aDu klarede §2runde "+game.getCurrentRound()+"§a!", 0, 60, 20);
+
+        long period = 5L;
+        long soundAmount = 4L;
+
+        new BukkitRunnable() {
+
+            long tick = 0;
+
+            @Override
+            public void run() {
+
+                if (tick >= soundAmount * period) {
+                    this.cancel();
+                    return;
+                }
+
+                float pitch = 0.5f + (tick / (float) (soundAmount * period));
+                player.playSound(location,Sound.NOTE_BASS,1f,pitch);
+
+                tick += period;
+            }
+        }.runTaskTimer(TowerDefense.getInstance(),0L,period);
+
+
+    }
+
     //Particles when a mob spawns
     public void mobSpawned(Location location) {
         getPlayer().spigot().playEffect(location, Effect.FIREWORKS_SPARK,0,0,0.1f,0.1f,0.1f,0.2f,10,40);
