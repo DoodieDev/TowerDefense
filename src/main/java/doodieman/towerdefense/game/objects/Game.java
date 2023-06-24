@@ -226,7 +226,7 @@ public class Game {
         new BukkitRunnable() {
 
             long roundTick = 0L;
-            final List<MobType> mobsLeftToSpawn = new ArrayList<>(round.getMobs());
+            final List<MobType> mobsLeftToSpawn = round.getMobsToSpawn();
 
             @Override
             public void run() {
