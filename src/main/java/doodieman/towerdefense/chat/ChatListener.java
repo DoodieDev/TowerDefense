@@ -25,6 +25,8 @@ public class ChatListener implements Listener {
         String username = player.getName();
         String message = event.getMessage();
 
+        message = message.replace("%","%%");
+
         event.setFormat(prefix+username+":§f "+message);
     }
 

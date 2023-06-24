@@ -261,6 +261,8 @@ public class Game {
         this.wipeMobs();
         this.gameInteractive.updateRoundItemSlot();
         this.gameInteractive.getGameAnimations().roundFinished();
+
+        this.setGold(this.getGold() + 150);
     }
 
     //Removes all the active mobs
