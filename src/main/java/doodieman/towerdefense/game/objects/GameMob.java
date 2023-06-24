@@ -79,11 +79,15 @@ public class GameMob {
         this.updateHealthBar();
     }
 
-    public void kill() {
+    //Destroy the GameMob
+    public void remove() {
+        //Remove the entities
         this.entity.remove();
-        this.game.getAliveMobs().remove(this);
         this.healthArmorStand.remove();
-        this.game.setGold(this.game.getGold() + 5);
+        this.game.getAliveMobs().remove(this);
+
+        //Give gold
+        this.game.addGold(this.mobType.getGold());
     }
 
     //Updates the health bar, and teleports it to the Entity

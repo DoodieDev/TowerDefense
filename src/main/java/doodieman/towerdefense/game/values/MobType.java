@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 public enum MobType {
 
-    ZOMBIE1(EntityType.ZOMBIE, 3, 1, 1, 2.3, entity -> {
+    ZOMBIE1(EntityType.ZOMBIE, 3, 1, 1,5, 2.3, entity -> {
         Zombie zombie = (Zombie) entity;
         zombie.getEquipment().setItemInHand(new ItemStack(Material.STICK));
         zombie.setBaby(false);
@@ -18,7 +18,7 @@ public enum MobType {
         if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
     }),
 
-    ZOMBIE2(EntityType.ZOMBIE, 3, 2, 1, 2.3, entity -> {
+    ZOMBIE2(EntityType.ZOMBIE, 3, 2, 1, 5,2.3, entity -> {
         Zombie zombie = (Zombie) entity;
         zombie.getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET));
         zombie.getEquipment().setItemInHand(new ItemStack(Material.CARROT_ITEM));
@@ -27,7 +27,7 @@ public enum MobType {
         if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
     }),
 
-    ZOMBIE3(EntityType.ZOMBIE, 3, 3, 1, 2.3, entity -> {
+    ZOMBIE3(EntityType.ZOMBIE, 3, 3, 1,5, 2.3, entity -> {
         Zombie zombie = (Zombie) entity;
         zombie.getEquipment().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
         zombie.getEquipment().setItemInHand(new ItemStack(Material.WOOD_SPADE));
@@ -36,7 +36,7 @@ public enum MobType {
         if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
     }),
 
-    ZOMBIE4(EntityType.ZOMBIE, 2, 30, 10, 2.3, entity -> {
+    ZOMBIE4(EntityType.ZOMBIE, 2, 30, 10,5, 2.3, entity -> {
         //ZOMBIE BOSS
         Zombie zombie = (Zombie) entity;
         zombie.getEquipment().setHelmet(new ItemStack(Material.IRON_HELMET));
@@ -49,27 +49,27 @@ public enum MobType {
         if (zombie.isInsideVehicle()) zombie.getVehicle().remove();
     }),
 
-    SKELETON1(EntityType.SKELETON, 5, 1, 1, 2.3, entity -> {
+    SKELETON1(EntityType.SKELETON, 5, 1, 1,5, 2.3, entity -> {
         Skeleton skeleton = (Skeleton) entity;
         skeleton.getEquipment().setItemInHand(new ItemStack(Material.BONE));
         if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
     }),
 
-    SKELETON2(EntityType.SKELETON, 8, 3, 1, 2.3, entity -> {
+    SKELETON2(EntityType.SKELETON, 8, 3, 1,5, 2.3, entity -> {
         Skeleton skeleton = (Skeleton) entity;
         skeleton.getEquipment().setBoots(new ItemStack(Material.GOLD_BOOTS));
         skeleton.getEquipment().setItemInHand(new ItemStack(Material.RED_ROSE,1,(short) 8));
         if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
     }),
 
-    SKELETON3(EntityType.SKELETON, 5, 5, 1, 2.3, entity -> {
+    SKELETON3(EntityType.SKELETON, 5, 5, 1,5, 2.3, entity -> {
         Skeleton skeleton = (Skeleton) entity;
         skeleton.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
         skeleton.getEquipment().setItemInHand(new ItemStack(Material.BONE));
         if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
     }),
 
-    SKELETON4(EntityType.SKELETON, 4, 15, 1, 2.3, entity -> {
+    SKELETON4(EntityType.SKELETON, 4, 15, 1,5, 2.3, entity -> {
         Skeleton skeleton = (Skeleton) entity;
         skeleton.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
         skeleton.getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
@@ -77,7 +77,7 @@ public enum MobType {
         if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
     }),
 
-    SKELETON5(EntityType.SKELETON, 3.5, 75, 25, 2.3, entity -> {
+    SKELETON5(EntityType.SKELETON, 3.5, 75, 25, 5, 2.3, entity -> {
         //SKELETON BOSS
         Skeleton skeleton = (Skeleton) entity;
         skeleton.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
@@ -99,14 +99,17 @@ public enum MobType {
     @Getter
     private final double damage;
     @Getter
+    private final double gold;
+    @Getter
     private final double hologramOffset;
 
-    MobType(EntityType entityType, double speed, double health, double damage, double hologramOffset, MobRunnable runnable) {
+    MobType(EntityType entityType, double speed, double health, double damage, double gold, double hologramOffset, MobRunnable runnable) {
         this.entityType = entityType;
         this.speed = speed/20; //Converts from blocks a tick, to blocks a second
         this.health = health;
         this.runnable = runnable;
         this.damage = damage;
+        this.gold = gold;
         this.hologramOffset = hologramOffset;
 
     }

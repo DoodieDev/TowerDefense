@@ -21,16 +21,10 @@ import doodieman.towerdefense.maps.objects.Map;
 import doodieman.towerdefense.utils.PacketUtil;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
-import lombok.Setter;
-import net.minecraft.server.v1_8_R3.EnumParticle;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -187,7 +181,7 @@ public class Game {
                     for (GameMob mob : mobsToRemove) {
                         damage(mob.getMobType().getDamage());
                         gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation(), mob.getMobType());
-                        mob.kill();
+                        mob.remove();
                     }
                     mobsToRemove.clear();
 
@@ -215,10 +209,10 @@ public class Game {
         this.roundActive = true;
         this.mobsSpawning = true;
         this.currentRound++;
-
         this.gameInteractive.getGameAnimations().newRoundStarted();
 
         Round round = Round.getRound(currentRound);
+
         this.updateStartHologram();
 
 
@@ -261,14 +255,12 @@ public class Game {
         this.wipeMobs();
         this.gameInteractive.updateRoundItemSlot();
         this.gameInteractive.getGameAnimations().roundFinished();
-
-        this.setGold(this.getGold() + 150);
     }
 
     //Removes all the active mobs
     public void wipeMobs() {
         for (GameMob mob : this.aliveMobs)
-            mob.kill();
+            mob.remove();
         this.aliveMobs.clear();
     }
 
@@ -280,10 +272,16 @@ public class Game {
         this.updateStartHologram();
     }
 
-    //Set the game gold
+    //Change the game gold value
     public void setGold(double amount) {
         this.gold = amount;
         this.updateStartHologram();
+    }
+    public void addGold(double amount) {
+        this.setGold(this.getGold() + amount);
+    }
+    public void removeGold(double amount) {
+        this.setGold(this.getGold() - amount);
     }
 
     //Get real location from location in config.

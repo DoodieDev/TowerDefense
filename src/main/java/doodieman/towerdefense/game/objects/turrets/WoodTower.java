@@ -36,7 +36,7 @@ public class WoodTower extends GameTurret {
     @Override
     public void shoot(GameMob mob) {
         this.rotateTowardsMob(mob);
-        mob.kill();
+        mob.remove();
     }
 
 
