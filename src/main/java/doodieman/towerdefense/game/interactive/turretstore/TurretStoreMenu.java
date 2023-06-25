@@ -23,8 +23,15 @@ public class TurretStoreMenu extends GUI {
         super(player, 4, "Butik");
         this.game = game;
 
-        this.turretSlots.put(11, TurretType.WOOD_TOWER);
-        this.turretSlots.put(12, TurretType.STONE_TOWER);
+        this.turretSlots.put(9, TurretType.WOOD_TOWER);
+        this.turretSlots.put(10, TurretType.STONE_TOWER);
+        this.turretSlots.put(11, TurretType.EYE_TOWER);
+        this.turretSlots.put(12, TurretType.TNT_TOWER);
+        this.turretSlots.put(13, TurretType.FIRE_TOWER);
+        this.turretSlots.put(14, TurretType.LASER_TOWER);
+        this.turretSlots.put(15, TurretType.SNOWBALL_TOWER);
+        this.turretSlots.put(16, TurretType.SAND_TOWER);
+        this.turretSlots.put(17, TurretType.ANGEL_TOWER);
     }
 
     @Override
@@ -41,7 +48,7 @@ public class TurretStoreMenu extends GUI {
 
             double price = turretType.getRealPrice(game.getDifficulty());
 
-            builder.addLore("", "§7Pris: §6"+ StringUtil.formatNum(price)+" guld", "", "§fTryk for at købe!");
+            builder.addLore("", "§7Pris: §e"+ StringUtil.formatNum(price)+"g", "", "§fTryk for at købe!");
             this.layout.put(slot, builder.build());
         });
 
@@ -61,7 +68,7 @@ public class TurretStoreMenu extends GUI {
             //Cannot afford the turret
             if (game.getGold() < price) {
                 double missingGold = price - game.getGold();
-                player.sendMessage("§cDet har du ikke råd til! Du mangler "+StringUtil.formatNum(missingGold)+" guld.");
+                player.sendMessage("§cDet har du ikke råd til. Du mangler "+StringUtil.formatNum(missingGold)+"g!");
                 player.playSound(player.getLocation(), Sound.VILLAGER_NO, 0.5f, 1.2f);
                 return;
             }
@@ -72,7 +79,7 @@ public class TurretStoreMenu extends GUI {
             //Give the turret item
             player.getInventory().addItem(turretType.getFormattedItem());
             player.playSound(player.getLocation(),Sound.ITEM_PICKUP, 1f, 0.9f);
-            player.sendMessage("§fDu har købt et "+turretType.getTextColor()+turretType.getName()+" §ffor §6"+StringUtil.formatNum(price)+" guld§f!");
+            player.sendMessage("§7Du købte et "+turretType.getTextColor()+"§n"+turretType.getName()+"§7 for §e"+StringUtil.formatNum(price)+"g§7!");
         }
 
     }

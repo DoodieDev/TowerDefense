@@ -76,7 +76,7 @@ public class GameListener implements Listener {
         turret.render();
 
         player.playSound(blockLocation, Sound.ZOMBIE_WOOD,0.8f,0.4f);
-        player.spigot().playEffect(blockLocation.add(0.5,0,0.5), Effect.TILE_BREAK,turretType.getItem().getTypeId(),0,1,2,1,0.1f,150,20);
+        player.spigot().playEffect(blockLocation.add(0.5,0,0.5), Effect.CLOUD,0,0,1,2,1,0.1f,20,20);
     }
 
     //Leave the game
