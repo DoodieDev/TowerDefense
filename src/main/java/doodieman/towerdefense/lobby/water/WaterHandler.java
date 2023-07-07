@@ -64,6 +64,7 @@ public class WaterHandler implements Listener {
 
         if (lastLocations.containsKey(player))
             player.teleport(lastLocations.get(player));
+
         else
             player.teleport(SpawnUtil.getSpawn());
     }

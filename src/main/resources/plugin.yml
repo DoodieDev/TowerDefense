@@ -1,7 +1,7 @@
 name: TowerDefense
 version: '${project.version}'
 main: doodieman.towerdefense.TowerDefense
-depend: [HolographicDisplays, Citizens, LuckPerms]
+depend: [HolographicDisplays, Citizens, LuckPerms, WorldGuard]
 authors: [DoodieMan]
 commands:
   mapsetup:

@@ -82,6 +82,7 @@ public abstract class CustomNpc implements Listener {
             this.hologram = HologramsAPI.createHologram(TowerDefense.getInstance(), hologramLocation);
         else
             this.hologram.clearLines();
+        this.hologram.setAllowPlaceholders(true);
 
         for (String line : lines)
             this.hologram.appendTextLine(StringUtil.colorize(line));

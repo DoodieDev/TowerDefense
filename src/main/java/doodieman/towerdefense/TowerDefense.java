@@ -5,6 +5,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import doodieman.towerdefense.chat.ChatHandler;
 import doodieman.towerdefense.game.GameHandler;
+import doodieman.towerdefense.lobby.bench.BenchHandler;
 import doodieman.towerdefense.lobby.mapselector.MapSelectorHandler;
 import doodieman.towerdefense.lobby.spawn.SetspawnCommand;
 import doodieman.towerdefense.lobby.spawn.SpawnCommand;
@@ -98,7 +99,9 @@ public final class TowerDefense extends JavaPlugin {
         this.gameHandler = new GameHandler();
         this.mapSelectorHandler = new MapSelectorHandler();
         this.spawnHandler = new SpawnHandler();
+
         new WaterHandler();
+        new BenchHandler();
     }
 
     private void loadCommands() {
