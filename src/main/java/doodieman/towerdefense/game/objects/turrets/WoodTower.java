@@ -11,11 +11,10 @@ import java.util.stream.Collectors;
 
 public class WoodTower extends GameTurret {
 
-    private double range;
+    long lastShot = 0L;
 
     public WoodTower(Game game, TurretType turretType, Location location) {
         super(game, turretType, location);
-        this.range = 5;
     }
 
     @Override
@@ -23,13 +22,14 @@ public class WoodTower extends GameTurret {
 
         if (roundTick % 60 == 0)
             this.shootClosestMob();
+
     }
 
     @Override
     public List<GameMob> detect() {
         return this.getGame().getAliveMobs()
             .stream()
-            .filter(mob -> mob.getLocation().distance(this.getLocation()) <= range)
+            .filter(mob -> mob.getLocation().distance(this.getLocation()) <= this.getTurretType().getRange())
             .collect(Collectors.toList());
     }
 

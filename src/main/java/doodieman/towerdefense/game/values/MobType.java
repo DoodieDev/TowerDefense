@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
@@ -88,35 +89,35 @@ public enum MobType {
         if (skeleton.isInsideVehicle()) skeleton.getVehicle().remove();
     }),
 
-    PIGMAN1(EntityType.PIGMAN, 2, 15, 1, 10, 2.3, entity -> {
-        Pigman pigman = (Pigman) entity;
+    PIGMAN1(EntityType.PIG_ZOMBIE, 2, 15, 1, 10, 2.3, entity -> {
+        PigZombie pigman = (PigZombie) entity;
         pigman.getEquipment().setItemInHand(new ItemStack(Material.BLAZE_ROD));
         if (pigman.isInsideVehicle()) pigman.getVehicle().remove();
     }),
 
-    PIGMAN2(EntityType.PIGMAN, 2, 25, 1, 15, 2.3, entity -> {
-        Pigman pigman = (Pigman) entity;
+    PIGMAN2(EntityType.PIG_ZOMBIE, 2, 25, 1, 15, 2.3, entity -> {
+        PigZombie pigman = (PigZombie) entity;
         pigman.getEquipment().setHelmet(new ItemStack(Material.GOLD_HELMET));
         pigman.getEquipment().setItemInHand(new ItemStack(Material.FISHING_ROD));
         if (pigman.isInsideVehicle()) pigman.getVehicle().remove();
     }),
 
-    PIGMAN3(EntityType.PIGMAN, 3.5, 20, 1, 20, 2.3, entity -> {
-        Pigman pigman = (Pigman) entity;
+    PIGMAN3(EntityType.PIG_ZOMBIE, 3.5, 20, 1, 20, 2.3, entity -> {
+        PigZombie pigman = (PigZombie) entity;
         pigman.getEquipment().setBoots(new ItemStack(Material.GOLD_BOOTS));
         pigman.getEquipment().setItemInHand(new ItemStack(Material.GOLD_BARDING));
         if (pigman.isInsideVehicle()) pigman.getVehicle().remove();
     }),
 
-    PIGMAN4(EntityType.PIGMAN, 2.75, 30, 1, 30, 2.3, entity -> {
-        Pigman pigman = (Pigman) entity;
+    PIGMAN4(EntityType.PIG_ZOMBIE, 2.75, 30, 1, 30, 2.3, entity -> {
+        PigZombie pigman = (PigZombie) entity;
         pigman.getEquipment().setLeggings(new ItemStack(Material.GOLD_LEGGINGS));
         pigman.getEquipment().setItemInHand(new ItemStack(Material.GOLD_SPADE));
         if (pigman.isInsideVehicle()) pigman.getVehicle().remove();
     }),
 
-    PIGMAN5(EntityType.PIGMAN, 1.5, 150, 50, 100, 2.3, entity -> {
-        Pigman pigman = (Pigman) entity;
+    PIGMAN5(EntityType.PIG_ZOMBIE, 1.5, 150, 50, 100, 2.3, entity -> {
+        PigZombie pigman = (PigZombie) entity;
         pigman.getEquipment().setHelmet(new ItemStack(Material.GOLD_HELMET));
         pigman.getEquipment().setChestplate(new ItemStack(Material.GOLD_CHESTPLATE));
         pigman.getEquipment().setItemInHand(new ItemStack(Material.GOLD_SWORD ));

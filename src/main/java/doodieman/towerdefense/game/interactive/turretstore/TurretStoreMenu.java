@@ -68,7 +68,7 @@ public class TurretStoreMenu extends GUI {
             //Cannot afford the turret
             if (game.getGold() < price) {
                 double missingGold = price - game.getGold();
-                player.sendMessage("§cDet har du ikke råd til. Du mangler "+StringUtil.formatNum(missingGold)+"g!");
+                player.sendMessage("§cDet har du ikke råd til. Du mangler §e"+StringUtil.formatNum(missingGold)+"g§c!");
                 player.playSound(player.getLocation(), Sound.VILLAGER_NO, 0.5f, 1.2f);
                 return;
             }

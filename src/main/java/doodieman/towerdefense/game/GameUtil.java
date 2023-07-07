@@ -51,6 +51,7 @@ public class GameUtil {
         player.getPlayer().sendMessage("§aDu kan altid forsætte fra punktet du forlod.");
         player.getPlayer().getInventory().clear();
         player.getPlayer().teleport(SpawnUtil.getSpawn());
+        player.getPlayer().setGameMode(GameMode.ADVENTURE);
     }
 
     //Stop an active game

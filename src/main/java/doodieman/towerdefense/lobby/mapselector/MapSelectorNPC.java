@@ -13,12 +13,12 @@ import java.util.Arrays;
 public class MapSelectorNPC extends CustomNpc {
 
     public MapSelectorNPC() {
-        super("mapselector", new Location(Bukkit.getWorld("world"), 1996.5, 13, 2000.5));
+        super("mapselector", new Location(Bukkit.getWorld("world"), 1257.5, 61, 982.5));
         setLookClose(true);
         setNameplateVisible(false);
-        setHologram(Arrays.asList("§lTryk på mig §rfor at", "starte et spil!", "", "§4(Under udvikling)"));
-        setSkinSignature("Ta4ihp1x/s4dWbUJ49bbdF3GE5SLzbDrLRL1Ir/H/QpDV92T7aIZc+r8CSqxY7zKdqmPR1At9Z0yTHrbBgFjYYreRzvJTmYTvVM+fuFyJw7cfW7eq/vpnN5gDaeADIwefih9y7Mlchafji9KNSm6H7bN0rPl+Q7y5zYPEhQVB3+hjYCsX/xx1mKeMR7nrLYMYuTH+eXlDT19plOg6ELjldI1HAorVVLgxEp7u6G3J31MslP9frpBXf7qEloT0nY3hdFKptQAM6Z8OQwPNi9Fo9pwIfa6+ZvMeuvKfHJAl2cYonSoow/RcEAWixPzTVesKHjPB0yh+RuyzA6Cin6p57jRecdeWArqyAvwzLiF+7Ar7CHk3L75LVTMNinm1VWJfg/75h34BWHIYfPUugSY1GyWl97XHT5VYXorZ1de3uT9yfghynGvqMOZA7v7DmCItom3fGG9IfOrWzSglBY714DO/eNuj+/qxuSAzDYRCkCOiu2KsUUx1vef2/lNNGBEiAlZCHSRfSK0kwA/OH1YwIPFPW0s8rLL53kdnnRTmld2c72OiszSGYUJHCSH+XEiO9BkcnibaPA/eSNMEWk11Qmt77vPWD51pB+Jdn1bQ+G8isxqdSHkY4nOrOdSzHwTWPFYBnl7139FQGRDTfgjF8lRluPv7P7y0ASsGD2yUqQ=");
-        setSkinTexture("ewogICJ0aW1lc3RhbXAiIDogMTY3OTQ5NjUxMDQ1MywKICAicHJvZmlsZUlkIiA6ICJmNTljYmZjMzc5MDQ0YmZlODk0YjE5MWI5ZDU2MmY3ZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJIYW5uZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS80OTc5NWQxMzBjOGQxM2JiNDdkMTRiMzE5MWEyOWJjOTg5ZTY2MTY1NjkwMDE5YjcwZDJjYjZjMTEyZDg4N2RiIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=");
+        setHologram(Arrays.asList("✦§f §f §f §lSOL §f §f✦", "", "§fVelkommen til vores", "§oTower Defense§f server!", "", "§n§lSnak med Lars§f for", "§fat komme igang!", "", "§7§nLars"));
+        setSkinSignature("Sz33kBWoE8IlEhc2as8P9cTwK/hnfX0FtYeiVQU3RwnxKHQLYlRu1WS7aUqpEBp20r9U0u6t2VGoRaHOdTu8Zre3b7/2RTU78r/X51Pl0AXz1BlTOQAqAurVOv1a0vxRNGRiASHejKutAVPJGBiwElMHQfGNWrU2d1y+za2xvlgjdB5VPFjPDKlyMtBelEVd+HLE80acM0WfouRdQNEJ3rnwRbYerY6iou9YZwVNOIA9I2IBrb6CZ05s8//krqCBoof7m2CsHT3CSVy2KyXXgXdcj+ACd7TSD1dKE0IsEEQcEQZ7IS7OjZT+L8UVOYICfTWGoQlc4gZCPjxrgMXELkdCwiNZCEeDjBSYp9Nkp0+0ThmRhgfg40QSeUTTdfPuMOpidvWMlF1BIR6b9+yknv2F5L3cf9zORni5yvjfdXuAnRGP4O4UhoNyjHuZ0HB9U7HP+aPKCdMeqNJ/O3rN7IZe/BCaavAC7oebGzm8qhd5taN6cbdvpfPr7CryEXeuakVYNlMKDwlIqloOkG08DEhd0OskeFlSVugofaDkzeM3IFVY8iiNcr3N3fJvB2qEZQvnIQkcdody7bEQ6OgNBxOXfvF4S7jWMt7KYwXY7dSR38wCx6bq1UoVHHt2K3RumFE7Qp/BLab2DU5bsGeY5xT/5AXsaGwT8zjL6cqMTRw=");
+        setSkinTexture("ewogICJ0aW1lc3RhbXAiIDogMTU5MDQzNTgwMjg4OSwKICAicHJvZmlsZUlkIiA6ICJhMjk1ODZmYmU1ZDk0Nzk2OWZjOGQ4ZGE0NzlhNDNlZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJWaWVydGVsdG9hc3RpaWUiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWNiY2M4NTRkMTExNDA4ODQ4MzBmNGVjZDQwN2ZjZDEzYTgyODU2NmMzZDNlYzcwNTVlNjQ2NTQ4MWE1MGMwZSIKICAgIH0KICB9Cn0=");
         spawnNpc();
     }
 

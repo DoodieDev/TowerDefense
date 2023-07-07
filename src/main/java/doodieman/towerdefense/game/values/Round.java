@@ -10,11 +10,11 @@ import java.util.List;
 public enum Round {
 
     ROUND_1(1, 25L, Arrays.asList(
-        new MobTypeStack(20,MobType.ZOMBIE1),
+        new MobTypeStack(20,MobType.ZOMBIE1)
     )),
 
     ROUND_2(2, 15L, Arrays.asList(
-        new MobTypeStack(35,MobType.ZOMBIE1),
+        new MobTypeStack(35,MobType.ZOMBIE1)
     )),
 
     ROUND_3(3, 20L, Arrays.asList(
@@ -37,7 +37,7 @@ public enum Round {
         new MobTypeStack(15,MobType.SKELETON2)
     )),
 
-    ROUND_7(7, 12.5L, Arrays.asList(
+    ROUND_7(7, 12L, Arrays.asList(
         new MobTypeStack(30,MobType.ZOMBIE1),
         new MobTypeStack(20,MobType.SKELETON1),
         new MobTypeStack(10,MobType.SKELETON2)
@@ -88,7 +88,7 @@ public enum Round {
         new MobTypeStack(10,MobType.SKELETON3)
     )),
 
-    ROUND_15(15, 7.5L, Arrays.asList(
+    ROUND_15(15, 8L, Arrays.asList(
         new MobTypeStack(20,MobType.ZOMBIE1),
         new MobTypeStack(15,MobType.ZOMBIE2),
         new MobTypeStack(10,MobType.ZOMBIE3),
@@ -114,7 +114,7 @@ public enum Round {
         new MobTypeStack(20,MobType.SKELETON4)
     )),
 
-    ROUND_19(19, 2.5L, Arrays.asList(
+    ROUND_19(19, 3L, Arrays.asList(
         new MobTypeStack(50,MobType.SKELETON1),
         new MobTypeStack(20,MobType.SKELETON3),
         new MobTypeStack(10,MobType.SKELETON4)
@@ -130,9 +130,9 @@ public enum Round {
 
     
 
-    ROUND_21(21, 7.5L, Arrays.asList(
+    ROUND_21(21, 8L, Arrays.asList(
         new MobTypeStack(40,MobType.PIGMAN1),
-        new MobTypeStack(15,MobType.PIGMAN2),
+        new MobTypeStack(15,MobType.PIGMAN2)
     )),
 
     ROUND_22(22, 5L, Arrays.asList(
@@ -144,7 +144,7 @@ public enum Round {
         new MobTypeStack(10,MobType.PIGMAN3)
     )),
 
-    ROUND_24(24, 1.5L, Arrays.asList(
+    ROUND_24(24, 2L, Arrays.asList(
         new MobTypeStack(50,MobType.SKELETON2),
         new MobTypeStack(1,MobType.PIGMAN4),
         new MobTypeStack(25,MobType.ZOMBIE3)

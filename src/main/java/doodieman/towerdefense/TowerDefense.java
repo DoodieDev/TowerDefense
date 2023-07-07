@@ -9,6 +9,7 @@ import doodieman.towerdefense.lobby.mapselector.MapSelectorHandler;
 import doodieman.towerdefense.lobby.spawn.SetspawnCommand;
 import doodieman.towerdefense.lobby.spawn.SpawnCommand;
 import doodieman.towerdefense.lobby.spawn.SpawnHandler;
+import doodieman.towerdefense.lobby.water.WaterHandler;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.maps.MapHandler;
 import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
@@ -97,6 +98,7 @@ public final class TowerDefense extends JavaPlugin {
         this.gameHandler = new GameHandler();
         this.mapSelectorHandler = new MapSelectorHandler();
         this.spawnHandler = new SpawnHandler();
+        new WaterHandler();
     }
 
     private void loadCommands() {
