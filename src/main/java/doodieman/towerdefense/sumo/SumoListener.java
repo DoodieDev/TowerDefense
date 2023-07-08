@@ -92,6 +92,7 @@ public class SumoListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (!SumoUtil.getInstance().isInGame(player)) return;
+        if (handler.getState() != SumoState.FIGHTING) return;
 
         SumoUtil.getInstance().stopGame(player);
     }

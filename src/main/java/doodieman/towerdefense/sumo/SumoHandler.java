@@ -1,10 +1,13 @@
 package doodieman.towerdefense.sumo;
 
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.sumo.objects.SumoLocation;
 import doodieman.towerdefense.sumo.objects.SumoPlayer;
 import doodieman.towerdefense.sumo.objects.SumoState;
+import doodieman.towerdefense.utils.WorldGuardUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -30,8 +33,12 @@ public class SumoHandler {
         this.listener = new SumoListener(this);
         this.util = new SumoUtil(this);
 
-        this.sumoBenchIDS = Arrays.asList("8", "9", "10");
+        WorldGuardUtil.playersWithinRegion(Bukkit.getOnlinePlayers(), Bukkit.getWorld("world"), "sumo")
+            .forEach(player -> {
+                player.teleport(SumoLocation.LOSERLOBBY.getLocation());
+            });
 
+        this.sumoBenchIDS = Arrays.asList("8", "9", "10");
         this.startTimer();
     }
 

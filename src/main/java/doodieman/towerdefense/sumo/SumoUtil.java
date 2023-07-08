@@ -96,6 +96,8 @@ public class SumoUtil {
         Location winLocation = SumoLocation.WINLOBBY.getLocation();
         Location loserLocation = SumoLocation.LOSERLOBBY.getLocation();
 
+        PacketUtil.sendTitle(winningPlayer,"§aDU VANDT!","§aDu er virkelig dygtig",0,40,0);
+        PacketUtil.sendTitle(losingPlayer,"§cDU TABTE!","§cDu er virkelig dårlig",0,40,0);
 
         handler.setState(SumoState.WINEFFECT);
 
@@ -121,15 +123,6 @@ public class SumoUtil {
                 //Launch 1 to 10 Firework
                 for (int i = 0; i <= new Random().nextInt(10); i++)
                     spawnFirework(winLocation);
-
-                /*
-                Firework firework = (Firework) winLocation.getWorld().spawnEntity(winLocation, EntityType.FIREWORK);
-                FireworkMeta fwMeta = firework.getFireworkMeta();
-
-                FireworkEffect fwEffect = FireworkEffect.builder()
-                    .flicker(true)
-
-                 */
 
             }
         }.runTaskLater(TowerDefense.getInstance(),40L);
