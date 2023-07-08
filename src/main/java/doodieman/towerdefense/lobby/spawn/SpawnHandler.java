@@ -14,12 +14,5 @@ public class SpawnHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, TowerDefense.getInstance());
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        player.teleport(SpawnUtil.getSpawn());
-        player.setGameMode(GameMode.ADVENTURE);
-    }
-
 
 }

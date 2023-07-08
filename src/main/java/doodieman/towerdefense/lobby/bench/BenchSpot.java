@@ -1,10 +1,13 @@
 package doodieman.towerdefense.lobby.bench;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.material.Directional;
 
 public class BenchSpot {
 
@@ -13,6 +16,7 @@ public class BenchSpot {
     final Player player;
     @Getter
     final Block block;
+    @Getter
     final String benchID;
     @Getter
     ArmorStand armorStand;
@@ -27,6 +31,7 @@ public class BenchSpot {
 
     public void startSitting() {
         Location roundedLoc = block.getLocation().clone().add(0.5, 0.3, 0.5);
+        roundedLoc.setYaw(this.getRelativeYaw());
         this.armorStand = block.getWorld().spawn(roundedLoc, ArmorStand.class);
         this.armorStand.setMarker(true);
         this.armorStand.setVisible(false);
@@ -41,5 +46,26 @@ public class BenchSpot {
         handler.getOccupiedBenches().remove(this);
     }
 
+    private BlockFace getBlockFace() {
+        if (block.getState().getData() instanceof Directional) {
+            Directional directionalData = (Directional) block.getState().getData();
+            return directionalData.getFacing();
+        }
+        return BlockFace.NORTH;
+    }
+
+    private float getRelativeYaw() {
+        switch (this.getBlockFace()) {
+            case NORTH:
+                return 180;
+            case EAST:
+                return -90;
+            case WEST:
+                return 90;
+            case SOUTH:
+            default:
+                return 0;
+        }
+    }
 
 }

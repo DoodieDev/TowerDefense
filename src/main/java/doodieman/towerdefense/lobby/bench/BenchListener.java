@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
@@ -46,6 +47,18 @@ public class BenchListener implements Listener {
 
         if (!sitEvent.isCancelled())
             spot.startSitting();
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        BenchSpot benchSpot = handler.getBenchSpot(player);
+        if (benchSpot == null) return;
+
+        BenchLeaveEvent leaveEvent = new BenchLeaveEvent(player,benchSpot);
+        Bukkit.getPluginManager().callEvent(leaveEvent);
+
+        benchSpot.stopSitting();
     }
 
     @EventHandler

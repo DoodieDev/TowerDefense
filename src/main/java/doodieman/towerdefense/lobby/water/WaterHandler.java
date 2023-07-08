@@ -3,6 +3,7 @@ package doodieman.towerdefense.lobby.water;
 import com.boydti.fawe.bukkit.util.BukkitReflectionUtils;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.lobby.spawn.SpawnUtil;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -19,9 +20,15 @@ import java.util.Map;
 
 public class WaterHandler implements Listener {
 
-    public Map<Player, Location> lastLocations = new HashMap<>();
+    @Getter
+    private final Map<Player, Location> lastLocations = new HashMap<>();
+
+    @Getter
+    private static WaterHandler instance;
 
     public WaterHandler() {
+        instance = this;
+
         Bukkit.getPluginManager().registerEvents(this, TowerDefense.getInstance());
 
         new BukkitRunnable() {

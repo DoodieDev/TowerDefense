@@ -16,8 +16,10 @@ import doodieman.towerdefense.maps.MapHandler;
 import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import doodieman.towerdefense.playerdata.PlayerDataHandler;
-import doodieman.towerdefense.playerdata.objects.PlayerData;
 import doodieman.towerdefense.simplecommands.discord.DiscordCommand;
+import doodieman.towerdefense.simpleevents.GlobalListener;
+import doodieman.towerdefense.simpleevents.region.RegionListener;
+import doodieman.towerdefense.sumo.SumoHandler;
 import doodieman.towerdefense.turretsetup.TurretSetupHandler;
 import doodieman.towerdefense.turretsetup.command.TurretSetupCommand;
 import lombok.Getter;
@@ -26,7 +28,6 @@ import net.citizensnpcs.api.npc.MemoryNPCDataStore;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -54,6 +55,8 @@ public final class TowerDefense extends JavaPlugin {
     private PlayerDataHandler playerDataHandler;
     @Getter
     private SpawnHandler spawnHandler;
+    @Getter
+    private SumoHandler sumoHandler;
 
     /*
         external plugin dependencies
@@ -99,9 +102,11 @@ public final class TowerDefense extends JavaPlugin {
         this.gameHandler = new GameHandler();
         this.mapSelectorHandler = new MapSelectorHandler();
         this.spawnHandler = new SpawnHandler();
+        this.sumoHandler = new SumoHandler();
 
         new WaterHandler();
         new BenchHandler();
+        new RegionListener();
     }
 
     private void loadCommands() {
