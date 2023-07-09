@@ -25,6 +25,11 @@ public class StoneTower extends GameTurret {
     }
 
     @Override
+    public void roundFinished() {
+
+    }
+
+    @Override
     public void update(long roundTick) {
 
     }

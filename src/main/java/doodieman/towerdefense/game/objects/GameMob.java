@@ -11,12 +11,14 @@ import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityHeadRotation;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -80,14 +82,35 @@ public class GameMob {
     }
 
     //Destroy the GameMob
-    public void remove() {
-        //Remove the entities
-        this.entity.remove();
-        this.healthArmorStand.remove();
-        this.game.getAliveMobs().remove(this);
+    public void remove(boolean deathEffect) {
+        if (!deathEffect) {
+            this.entity.remove();
+            this.healthArmorStand.remove();
+            this.game.getAliveMobs().remove(this);
+        } else {
+            entity.playEffect(EntityEffect.DEATH);
+            this.healthArmorStand.remove();
+            this.game.getAliveMobs().remove(this);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    entity.remove();
+                }
+            }.runTaskLater(TowerDefense.getInstance(),5L);
+        }
 
-        //Give gold
-        this.game.addGold(this.mobType.getGold());
+    }
+
+    public void damage(double amount) {
+        //Dead
+        if (amount >= this.health) {
+            this.remove(true);
+            this.game.addGold(this.mobType.getGold());
+        } else {
+            entity.playEffect(EntityEffect.HURT);
+            this.health -= amount;
+            this.updateHealthBar();
+        }
     }
 
     //Updates the health bar, and teleports it to the Entity

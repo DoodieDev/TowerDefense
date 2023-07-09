@@ -22,7 +22,7 @@ public enum TurretType {
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTlkMDhjMGE4ZDAwMWE3ODhlMjYwZDZiYTFmNGYwOGFkYTBlYTcxOWEwZjRlNjExZDZjNGI3YWM4M2JiMDM1ZSJ9fX0="),
         1,
         1,
-        5,
+        6,
         150,
         WoodTower.class
     ),
@@ -32,8 +32,8 @@ public enum TurretType {
         "Sten Tårn",
         "§7",
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWU1NGFiYmM2NWIxM2E0MmMyOTU5MGEwY2Y5ZDNlMDA3MDJkMWU2MGQ5NzRmOTI4NmE3YzE3MjY3ZjIyODJjOSJ9fX0="),
-        1,
         2,
+        1.5,
         8,
         200,
         WoodTower.class
@@ -44,10 +44,10 @@ public enum TurretType {
         "Øje Tårn",
         "§3",
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODcyZDM0MWQ3N2RiZGU2ZDUzZGFkNjFiZjE5MjUyNGRiZGI5NmFmMTM1OGUwNzQ4ZmVlYTE0ODFiMWY4In19fQ=="),
-        1,
         2,
-        8,
-        200,
+        1,
+        14,
+        350,
         WoodTower.class
     ),
 
@@ -56,10 +56,10 @@ public enum TurretType {
         "TNT Tårn",
         "§4",
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWU0MzUyNjgwZDBiYjI5YjkxMzhhZjc4MzMwMWEzOTFiMzQwOTBjYjQ5NDFkNTJjMDg3Y2E3M2M4MDM2Y2I1MSJ9fX0="),
-        1,
-        2,
         8,
-        200,
+        1,
+        8,
+        325,
         WoodTower.class
     ),
 
@@ -69,9 +69,9 @@ public enum TurretType {
         "§c",
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDE3YjhiNDNmOGM0YjVjZmViOTE5YzlmOGZlOTNmMjZjZWI2ZDJiMTMzYzJhYjFlYjMzOWJkNjYyMWZkMzA5YyJ9fX0="),
         1,
-        2,
+        10,
         8,
-        200,
+        400,
         WoodTower.class
     ),
 
@@ -80,10 +80,10 @@ public enum TurretType {
         "Laser Tårn",
         "§b",
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWNiN2MyMWNjNDNkYzE3Njc4ZWU2ZjE2NTkxZmZhYWIxZjYzN2MzN2Y0ZjZiYmQ4Y2VhNDk3NDUxZDc2ZGI2ZCJ9fX0="),
-        1,
-        2,
-        8,
-        200,
+        3,
+        5,
+        10,
+        550,
         WoodTower.class
     ),
 
@@ -93,9 +93,9 @@ public enum TurretType {
         "§f",
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTExNWM3OTY4ZWMzNzcxZWU5ZmY2YWU2YmNhMmQ1YmEzOTYyYWE3MjdhNGZhOGQzNzYwOGU0YzliZjE1MTJiYiJ9fX0="),
         1,
-        2,
+        10,
         8,
-        200,
+        850,
         WoodTower.class
     ),
 
@@ -104,10 +104,10 @@ public enum TurretType {
         "Sand Tårn",
         "§e",
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGM0MGYzZDliNjg0YmZkYTFkODdjNTAwYmQzZjE0ZDc5ZWY4M2EwZWU3MGUzY2I1MzM5MGRlZGU3Mzc5OWU4NiJ9fX0="),
-        1,
-        2,
-        8,
-        200,
+        5,
+        3,
+        9,
+        950,
         WoodTower.class
     ),
 
@@ -116,10 +116,10 @@ public enum TurretType {
         "Engel Tårn",
         "§f",
         SkullCreator.itemFromBase64("ewogICJ0aW1lc3RhbXAiIDogMTY4NzE4MjEwMjA1MSwKICAicHJvZmlsZUlkIiA6ICJlZDUzZGQ4MTRmOWQ0YTNjYjRlYjY1MWRjYmE3N2U2NiIsCiAgInByb2ZpbGVOYW1lIiA6ICI0MTQxNDE0MWgiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2QxNzZlZWFmNDU5ZGNmOWY5MGMzZjA3NjBjNmE2M2IyMWNiYTA2ZTY4NDUyOTY4ZmFmNWJkOGE5NjUxMGVlMCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"),
-        1,
-        2,
-        8,
-        200,
+        10,
+        5,
+        12,
+        3750,
         WoodTower.class
     );
 

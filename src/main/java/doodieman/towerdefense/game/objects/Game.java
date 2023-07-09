@@ -181,7 +181,7 @@ public class Game {
                     for (GameMob mob : mobsToRemove) {
                         damage(mob.getMobType().getDamage());
                         gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation(), mob.getMobType());
-                        mob.remove();
+                        mob.remove(false);
                     }
                     mobsToRemove.clear();
 
@@ -255,12 +255,15 @@ public class Game {
         this.wipeMobs();
         this.gameInteractive.updateRoundItemSlot();
         this.gameInteractive.getGameAnimations().roundFinished();
+
+        for (GameTurret turret : getTurrets())
+            turret.roundFinished();
     }
 
     //Removes all the active mobs
     public void wipeMobs() {
         for (GameMob mob : this.aliveMobs)
-            mob.remove();
+            mob.remove(false);
         this.aliveMobs.clear();
     }
 

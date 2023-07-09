@@ -56,6 +56,7 @@ public abstract class GameTurret {
     //Call the entire tower cycle of shooting mobs
     public abstract void update(long roundTick);
 
+    public abstract void roundFinished();
 
 
     public GameMob getClosestMob() {

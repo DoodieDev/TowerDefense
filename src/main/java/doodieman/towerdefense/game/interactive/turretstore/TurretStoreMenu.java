@@ -6,6 +6,7 @@ import doodieman.towerdefense.utils.GUI;
 import doodieman.towerdefense.utils.ItemBuilder;
 import doodieman.towerdefense.utils.StringUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -26,12 +27,17 @@ public class TurretStoreMenu extends GUI {
         this.turretSlots.put(9, TurretType.WOOD_TOWER);
         this.turretSlots.put(10, TurretType.STONE_TOWER);
         this.turretSlots.put(11, TurretType.EYE_TOWER);
-        this.turretSlots.put(12, TurretType.TNT_TOWER);
-        this.turretSlots.put(13, TurretType.FIRE_TOWER);
-        this.turretSlots.put(14, TurretType.LASER_TOWER);
+        //this.turretSlots.put(12, TurretType.TNT_TOWER);
+        //this.turretSlots.put(13, TurretType.FIRE_TOWER);
+        //this.turretSlots.put(14, TurretType.LASER_TOWER);
         this.turretSlots.put(15, TurretType.SNOWBALL_TOWER);
         this.turretSlots.put(16, TurretType.SAND_TOWER);
         this.turretSlots.put(17, TurretType.ANGEL_TOWER);
+
+        //Temporarily disabled
+        this.turretSlots.put(12, null);
+        this.turretSlots.put(13, null);
+        this.turretSlots.put(14, null);
     }
 
     @Override
@@ -44,12 +50,21 @@ public class TurretStoreMenu extends GUI {
 
         //Render turrets
         turretSlots.forEach((slot, turretType) -> {
-            ItemBuilder builder = new ItemBuilder(turretType.getFormattedItem());
 
+            if (turretType == null) {
+                ItemBuilder builder = new ItemBuilder(Material.BARRIER);
+                builder.name("§c§nKommer snart");
+                builder.lore("", "§fHer vil der komme et nyt", "§ftårn så snart det er lavet!");
+                this.layout.put(slot, builder.build());
+                return;
+            }
+
+            ItemBuilder builder = new ItemBuilder(turretType.getFormattedItem());
             double price = turretType.getRealPrice(game.getDifficulty());
 
             builder.addLore("", "§7Pris: §e"+ StringUtil.formatNum(price)+"g", "", "§fTryk for at købe!");
             this.layout.put(slot, builder.build());
+
         });
 
         super.render();

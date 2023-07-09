@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class WoodTower extends GameTurret {
 
     long lastShot = 0L;
+    long roundTick = 0L;
 
     public WoodTower(Game game, TurretType turretType, Location location) {
         super(game, turretType, location);
@@ -19,10 +20,20 @@ public class WoodTower extends GameTurret {
 
     @Override
     public void update(long roundTick) {
+        this.roundTick = roundTick;
 
-        if (roundTick % 60 == 0)
+        //Shoot
+        if (roundTick >= lastShot + ( 20L / getTurretType().getShotsPerSecond() )) {
+            this.lastShot = roundTick;
             this.shootClosestMob();
+        }
 
+    }
+
+    @Override
+    public void roundFinished() {
+        this.roundTick = 0L;
+        this.lastShot = 0L;
     }
 
     @Override
@@ -36,7 +47,7 @@ public class WoodTower extends GameTurret {
     @Override
     public void shoot(GameMob mob) {
         this.rotateTowardsMob(mob);
-        mob.remove();
+        mob.damage(getTurretType().getDamage());
     }
 
 
