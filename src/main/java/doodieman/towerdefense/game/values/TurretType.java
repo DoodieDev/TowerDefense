@@ -180,6 +180,9 @@ public enum TurretType {
         builder.addLore(
             "",
             "§7DPS: §f" + StringUtil.formatNum(this.damage * this.shotsPerSecond)+" §4❤",
+            "",
+            "§7Skade: §f"+StringUtil.formatNum(this.damage)+" §4❤",
+            "§7Skud i sekundet: §f"+StringUtil.formatNum(this.shotsPerSecond),
             "§7Range: §f" + StringUtil.formatNum(this.range)+" blocks"
         );
 

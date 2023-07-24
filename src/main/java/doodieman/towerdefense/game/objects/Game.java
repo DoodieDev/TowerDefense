@@ -68,8 +68,6 @@ public class Game {
     @Getter //Current round number
     private int currentRound;
 
-
-
     private Hologram startHologram;
     private TextLine roundTextLine;
     private TextLine goldTextLine;
