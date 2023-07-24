@@ -16,6 +16,7 @@ import doodieman.towerdefense.maps.MapHandler;
 import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import doodieman.towerdefense.playerdata.PlayerDataHandler;
+import doodieman.towerdefense.sheets.SheetsDataManager;
 import doodieman.towerdefense.simplecommands.discord.DiscordCommand;
 import doodieman.towerdefense.simpleevents.GlobalListener;
 import doodieman.towerdefense.simpleevents.region.RegionListener;
@@ -27,9 +28,12 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.MemoryNPCDataStore;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.luckperms.api.LuckPerms;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 public final class TowerDefense extends JavaPlugin {
 
@@ -57,6 +61,8 @@ public final class TowerDefense extends JavaPlugin {
     private SpawnHandler spawnHandler;
     @Getter
     private SumoHandler sumoHandler;
+    @Getter
+    private SheetsDataManager sheetsDataManager;
 
     /*
         external plugin dependencies
@@ -77,8 +83,18 @@ public final class TowerDefense extends JavaPlugin {
         this.npcRegistry = CitizensAPI.createNamedNPCRegistry("towerdefense", new MemoryNPCDataStore());
         RegisteredServiceProvider<LuckPerms> luckPermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         this.luckPerms = luckPermsProvider.getProvider();
+        this.sheetsDataManager = new SheetsDataManager();
 
         Bukkit.getPluginManager().registerEvents(new GlobalListener(),this);
+
+        //Download the sheets data (Turrets, Mobs, Rounds, etc)
+        try {
+            sheetsDataManager.download();
+        } catch (IOException | InvalidFormatException exception) {
+            exception.printStackTrace();
+        }
+
+
 
         //Initialize handlers and commands
         this.loadHandlers();
@@ -91,6 +107,32 @@ public final class TowerDefense extends JavaPlugin {
         this.npcRegistry.deregisterAll();
         HologramsAPI.getHolograms(this).forEach(Hologram::delete);
     }
+    /*
+    private void testSheets() {
+        try {
+            Sheets sheets = SheetsDataManager.getSheetsService();
+            String range = "rawdata_mobs!A1:K1";
+
+            ValueRange response = sheets.spreadsheets().values()
+                .get(SheetsDataManager.SPREADSHEETS_ID,range)
+                .execute();
+
+            List<List<Object>> values = response.getValues();
+
+            if (values == null || values.isEmpty()) {
+                Bukkit.broadcastMessage("pølse 2");
+            } else {
+                Bukkit.broadcastMessage("pølse med remoulade");
+            }
+
+        } catch (Exception exception) {
+            Bukkit.broadcastMessage("pølse");
+            exception.printStackTrace();
+        }
+
+    }
+
+     */
 
     private void loadHandlers() {
         this.playerDataHandler = new PlayerDataHandler();
