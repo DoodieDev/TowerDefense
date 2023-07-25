@@ -16,7 +16,7 @@ import doodieman.towerdefense.maps.MapHandler;
 import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import doodieman.towerdefense.playerdata.PlayerDataHandler;
-import doodieman.towerdefense.sheets.SheetsDataManager;
+import doodieman.towerdefense.sheetsdata.SheetsDataManager;
 import doodieman.towerdefense.simplecommands.discord.DiscordCommand;
 import doodieman.towerdefense.simpleevents.GlobalListener;
 import doodieman.towerdefense.simpleevents.region.RegionListener;
@@ -30,6 +30,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.luckperms.api.LuckPerms;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.bukkit.Bukkit;
+import org.bukkit.permissions.ServerOperator;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -76,6 +77,7 @@ public final class TowerDefense extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.announceForAdmins("§aEnabling the plugin..");
         instance = this;
         this.saveDefaultConfig();
 
@@ -90,49 +92,26 @@ public final class TowerDefense extends JavaPlugin {
         //Download the sheets data (Turrets, Mobs, Rounds, etc)
         try {
             sheetsDataManager.download();
+            sheetsDataManager.loadMobs();
+            sheetsDataManager.loadRounds();
         } catch (IOException | InvalidFormatException exception) {
             exception.printStackTrace();
         }
 
-
-
         //Initialize handlers and commands
         this.loadHandlers();
         this.loadCommands();
+        this.announceForAdmins("§aPlugin has been enabled!");
     }
 
     @Override
     public void onDisable() {
+        this.announceForAdmins("§cDisabling the plugin..");
         this.gameHandler.exitAllGames();
         this.npcRegistry.deregisterAll();
         HologramsAPI.getHolograms(this).forEach(Hologram::delete);
+        this.announceForAdmins("§cPlugin has been disabled!");
     }
-    /*
-    private void testSheets() {
-        try {
-            Sheets sheets = SheetsDataManager.getSheetsService();
-            String range = "rawdata_mobs!A1:K1";
-
-            ValueRange response = sheets.spreadsheets().values()
-                .get(SheetsDataManager.SPREADSHEETS_ID,range)
-                .execute();
-
-            List<List<Object>> values = response.getValues();
-
-            if (values == null || values.isEmpty()) {
-                Bukkit.broadcastMessage("pølse 2");
-            } else {
-                Bukkit.broadcastMessage("pølse med remoulade");
-            }
-
-        } catch (Exception exception) {
-            Bukkit.broadcastMessage("pølse");
-            exception.printStackTrace();
-        }
-
-    }
-
-     */
 
     private void loadHandlers() {
         this.playerDataHandler = new PlayerDataHandler();
@@ -166,5 +145,11 @@ public final class TowerDefense extends JavaPlugin {
 
     public static void runAsync(Runnable runnable) {
         Bukkit.getScheduler().runTaskAsynchronously(getInstance(), runnable);
+    }
+
+    public void announceForAdmins(String message) {
+        Bukkit.getOnlinePlayers().stream()
+            .filter(ServerOperator::isOp)
+            .forEach(player -> player.sendMessage("§6§l[TD]§r "+message));
     }
 }
