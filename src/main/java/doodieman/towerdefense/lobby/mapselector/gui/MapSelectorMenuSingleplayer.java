@@ -22,16 +22,16 @@ public class MapSelectorMenuSingleplayer extends GUI {
         super(player, 6, "Vælg et map");
 
         mapSlots.put(10, new MapSlot("eventyr", "§a§oBegynder"));
-        mapSlots.put(19, new MapSlot("træstammen", "§a§oBegynder"));
+        mapSlots.put(19, new MapSlot("haven", "§a§oBegynder"));
         mapSlots.put(28, new MapSlot("oerkenen", "§a§oBegynder"));
 
-        mapSlots.put(12, new MapSlot("haven", "§e§oØvede"));
-        mapSlots.put(21, new MapSlot("udflugten", "§e§oØvede"));
-        mapSlots.put(30, new MapSlot(null, "§e§oØvede"));
+        mapSlots.put(12, new MapSlot("jordskælv", "§e§oØvede"));
+        mapSlots.put(21, new MapSlot("træstammen", "§e§oØvede"));
+        mapSlots.put(30, new MapSlot("udflugten", "§e§oØvede"));
 
-        mapSlots.put(14, new MapSlot("grønland", "§6§oAvanceret"));
-        mapSlots.put(23, new MapSlot("majsmarken", "§6§oAvanceret"));
-        mapSlots.put(32, new MapSlot("jordskælv", "§6§oAvanceret"));
+        mapSlots.put(14, new MapSlot("majsmarken", "§6§oAvanceret"));
+        mapSlots.put(23, new MapSlot("grønland", "§6§oAvanceret"));
+        mapSlots.put(32, new MapSlot(null, "§6§oAvanceret"));
 
         mapSlots.put(16, new MapSlot("skak", "§c§oExpert"));
         mapSlots.put(25, new MapSlot(null, "§c§oExpert"));

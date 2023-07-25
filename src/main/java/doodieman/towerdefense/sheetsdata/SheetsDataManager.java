@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.EntityType;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -46,6 +47,7 @@ public class SheetsDataManager {
 
     }
 
+    //Loads all SheetRound instances
     public void loadRounds() {
 
         //Go through all round rows until there is an empty
@@ -56,11 +58,9 @@ public class SheetsDataManager {
 
             //Go through all the round cells until there is an empty
             int cellIndex = 0;
-
             while (this.roundsSheet.getRow(round - 1).getCell(cellIndex) != null) {
                 Cell cell = this.roundsSheet.getRow(round - 1).getCell(cellIndex);
                 roundData.add(this.getCellValue(cell));
-
                 cellIndex++;
             }
 
@@ -71,8 +71,8 @@ public class SheetsDataManager {
                 TowerDefense.getInstance().announceForAdmins("§cError loading round "+round+". ("+exception.getMessage()+")");
                 return;
             }
-            this.sheetRoundList.add(sheetRound);
 
+            this.sheetRoundList.add(sheetRound);
             round++;
         }
     }
@@ -80,7 +80,7 @@ public class SheetsDataManager {
     //Loads all the SheetMob instances
     public void loadMobs() {
         int row = 1;
-        int length = 10;
+        int length = 11;
 
         while (this.mobSheet.getRow(row).getCell(0).getCellType() != Cell.CELL_TYPE_BLANK) {
 
@@ -89,7 +89,7 @@ public class SheetsDataManager {
             try {
                 mob = new SheetMobType(mobValues);
             } catch (Exception exception) {
-                TowerDefense.getInstance().announceForAdmins("§cError loading mob '"+mobValues.get(0)+"'. Skipping..");
+                TowerDefense.getInstance().announceForAdmins("§cError loading mob '"+mobValues.get(0)+"'. ("+exception.getMessage()+")");
                 row++;
                 continue;
             }

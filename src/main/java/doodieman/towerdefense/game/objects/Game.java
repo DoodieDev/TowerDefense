@@ -12,15 +12,18 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.interactive.GameInteractive;
 import doodieman.towerdefense.game.values.Difficulty;
-import doodieman.towerdefense.game.values.MobType;
-import doodieman.towerdefense.game.values.Round;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.sheetsdata.SheetsDataUtil;
+import doodieman.towerdefense.sheetsdata.dataobjects.SheetMobCluster;
+import doodieman.towerdefense.sheetsdata.dataobjects.SheetMobType;
+import doodieman.towerdefense.sheetsdata.dataobjects.SheetRound;
 import doodieman.towerdefense.utils.PacketUtil;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -178,7 +181,7 @@ public class Game {
                     //Remove mobs in goal
                     for (GameMob mob : mobsToRemove) {
                         damage(mob.getMobType().getDamage());
-                        gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation(), mob.getMobType());
+                        gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation());
                         mob.remove(false);
                     }
                     mobsToRemove.clear();
@@ -194,9 +197,11 @@ public class Game {
     }
 
     //Spawns a mob that automatically will go on the path
-    public void spawnMob(MobType mobType) {
+    public void spawnMob(SheetMobType mobType) {
+
         GameMob mob = new GameMob(this, mobType);
         mob.spawn();
+
         aliveMobs.add(mob);
         gameInteractive.getGameAnimations().mobSpawned(mob.getEntity().getLocation());
     }
@@ -209,7 +214,7 @@ public class Game {
         this.currentRound++;
         this.gameInteractive.getGameAnimations().newRoundStarted();
 
-        Round round = Round.getRound(currentRound);
+        SheetRound round = SheetsDataUtil.getInstance().getRound(currentRound);
 
         this.updateStartHologram();
 
@@ -218,7 +223,7 @@ public class Game {
         new BukkitRunnable() {
 
             long roundTick = 0L;
-            final List<MobType> mobsLeftToSpawn = round.getMobsToSpawn();
+            final List<SheetMobCluster> mobsLeftToSpawn = new ArrayList<>(round.getMobClusters());
 
             @Override
             public void run() {
@@ -231,11 +236,23 @@ public class Game {
 
                 //Spawn mob
                 if (roundTick % round.getSpawnDelay() == 0 && mobsLeftToSpawn.size() > 0) {
-                    MobType mob = mobsLeftToSpawn.remove(0);
-                    spawnMob(mob);
 
-                    if (mobsLeftToSpawn.size() == 0)
-                        mobsSpawning = false;
+                    SheetMobCluster cluster = mobsLeftToSpawn.get(0);
+                    cluster.setAmount(cluster.getAmount() - 1);
+
+                    SheetMobType mobType = cluster.getSheetMobType();
+                    spawnMob(mobType);
+
+                    //No mobs left in cluster. Remove cluser from list.
+                    if (cluster.getAmount() <= 0) {
+                        mobsLeftToSpawn.remove(cluster);
+
+                        //No more clusters. Set status to no longer spawning.
+                        if (mobsLeftToSpawn.size() <= 0) {
+                            mobsSpawning = false;
+                        }
+                    }
+
                 }
 
                 //Update all turrets

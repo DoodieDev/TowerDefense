@@ -1,10 +1,7 @@
 package doodieman.towerdefense.game.objects;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import doodieman.towerdefense.TowerDefense;
-import doodieman.towerdefense.game.values.MobType;
+import doodieman.towerdefense.sheetsdata.dataobjects.SheetMobType;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -27,7 +24,7 @@ public class GameMob {
     @Getter
     private final Game game;
     @Getter
-    private final MobType mobType;
+    private final SheetMobType mobType;
     @Getter
     private final List<Location> path;
 
@@ -48,7 +45,7 @@ public class GameMob {
     @Getter
     private double health;
 
-    public GameMob(Game game, MobType mobType) {
+    public GameMob(Game game, SheetMobType mobType) {
         this.game = game;
         this.mobType = mobType;
         this.path = game.getMobPath();
@@ -69,7 +66,9 @@ public class GameMob {
         Location location = this.path.get(0);
 
         this.entity = game.getWorld().spawnEntity(location, mobType.getEntityType());
-        mobType.getRunnable().run(this.entity);
+
+        //Equip the mob, set to baby, etc
+        this.mobType.initializeEntity(this.entity);
 
         //Add NBT values to the entity
         net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) this.entity).getHandle();

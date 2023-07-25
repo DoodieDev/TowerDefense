@@ -48,8 +48,8 @@ public class MapSelectorMenuDifficulty extends GUI {
             itemBuilder.lore(
                 "",
                 "§fBelønninger:",
-                "§f+ §2$§a250",
-                "§f+ §a1.000 §2XP",
+                "§f+ §2$§a???",
+                "§f+ §a??? §2XP",
                 "",
                 "§fTryk for at vælge",
                 "§fdenne sværhedsgrad!"
