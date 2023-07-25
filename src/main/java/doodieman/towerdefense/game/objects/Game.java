@@ -164,7 +164,7 @@ public class Game {
 
                 //While round is inactive - Display path
                 if (!roundActive) {
-                    showPathParticles(displayPathOffset,15);
+                    showPathParticles(displayPathOffset,30);
                     displayPathOffset += 0.30;
                 }
 
@@ -318,20 +318,65 @@ public class Game {
 
     //Display the particles throughout the entire path
     private void showPathParticles(double offset, double distance) {
+
         double pathLength = map.getPathLength();
+        double middlePath = map.getPathLength() / 2;
+
         int pathPoints = (int) Math.floor(pathLength / distance);
         double lengthPerPoint = pathLength / pathPoints;
 
         offset = offset % lengthPerPoint;
 
+        Color startColor = Color.fromRGB(0, 255,0);
+        Color middleColor = Color.fromRGB(255, 255,0);
+        Color endColor = Color.fromRGB(255, 0,0);
+
         for (int i = 0; i < pathPoints; i++) {
+
             double placement = i * lengthPerPoint + offset;
             Location location = getRealLocation(map.getPathLocationAt(placement));
             location.add(0, 0.5, 0);
-            Color color = Color.fromRGB((int) (placement / pathLength * 255) , (int) ((1-(placement / pathLength)) * 255), 0);
-            PacketUtil.sendRedstoneParticle(player.getPlayer(),location,color);
+
+            Color color;
+
+            //If it is over 50% of the map length, fade from MIDDLE to END color.
+            if (placement >= middlePath) {
+                double percent = (placement - middlePath) / middlePath;
+                int red = (int) this.getNumberCloseToTarget(middleColor.getRed(),endColor.getRed(), percent);
+                int green = (int) this.getNumberCloseToTarget(middleColor.getGreen(),endColor.getGreen(), percent);
+                int blue = (int) this.getNumberCloseToTarget(middleColor.getBlue(),endColor.getBlue(), percent);
+
+                color = Color.fromRGB(red, green, blue);
+            }
+
+            //If it iis less 50% of the map length, fade from START to MIDDLE color.
+            else {
+                double percent = placement / middlePath;
+
+                int red = (int) this.getNumberCloseToTarget(startColor.getRed(),middleColor.getRed(), percent);
+                int green = (int) this.getNumberCloseToTarget(startColor.getGreen(),middleColor.getGreen(), percent);
+                int blue = (int) this.getNumberCloseToTarget(startColor.getBlue(),middleColor.getBlue(), percent);
+
+                color = Color.fromRGB(red, green, blue);
+            }
+
+            for (int j = 0; j < 5; j++) {
+                PacketUtil.sendRedstoneParticle(player.getPlayer(),location.clone().add(0,j * 0.1,0),color);
+            }
         }
 
+    }
+
+    private double getNumberCloseToTarget(double start, double target, double percent) {
+        double difference = target - start;
+        double differenceOfPercent = difference * percent;
+        double result;
+        if (target >= start) {
+            result = start + differenceOfPercent;
+        } else {
+            result = start + differenceOfPercent;
+        }
+        return result;
     }
 
     //Create or update the hologram at the start
