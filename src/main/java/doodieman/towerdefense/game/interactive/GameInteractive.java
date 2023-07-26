@@ -97,7 +97,6 @@ public class GameInteractive implements Listener {
     //Called every tick from the Game class
     public void doTick(int tick) {
 
-
         if (tick % 4 == 0)
             this.displayPlacementOptions();
     }

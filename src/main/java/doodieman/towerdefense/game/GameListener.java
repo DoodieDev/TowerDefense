@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -169,6 +170,12 @@ public class GameListener implements Listener {
         if (!(event.getEntity() instanceof Painting)) return;
         Player player = (Player) event.getRemover();
         if (!util.isInGame(player)) return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onEntityStartBurn(EntityCombustEvent event) {
+        if (event.getEntity() instanceof Player) return;
         event.setCancelled(true);
     }
 

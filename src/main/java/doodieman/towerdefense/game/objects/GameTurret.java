@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
@@ -102,8 +103,10 @@ public abstract class GameTurret {
         //Render the turret. First paste the schematic async.
         TowerDefense.runAsync(() -> {
             this.pasteSchematic();
+
             //When schematic is done. Render the armorstands.
             TowerDefense.runSync(() -> {
+                this.pasteRedstoneBlocks();
                 this.pasteArmorStands();
                 this.updateArmorStands();
             });
@@ -156,6 +159,20 @@ public abstract class GameTurret {
 
         } catch (IOException | MaxChangedBlocksException exception) {
             exception.printStackTrace();
+        }
+    }
+
+    //Paste the 3x3 redstoneblocks at the bottom
+    public void pasteRedstoneBlocks() {
+        int xCorner1 = getZeroLocation().getBlockX() - 1;
+        int zCorner1 = getZeroLocation().getBlockZ() - 1;
+        int xCorner2 = getZeroLocation().getBlockX() + 1;
+        int zCorner2 = getZeroLocation().getBlockZ() + 1;
+
+        for (int x = xCorner1; x <= xCorner2; x++) {
+            for (int z = zCorner1; z <= zCorner2; z++) {
+                this.game.getWorld().getBlockAt(x,getZeroLocation().getBlockY(),z).setType(Material.REDSTONE_BLOCK);
+            }
         }
     }
 
