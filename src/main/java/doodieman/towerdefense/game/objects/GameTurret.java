@@ -117,7 +117,7 @@ public abstract class GameTurret {
         Location loc = this.location.clone();
         loc.setX(Math.floor(loc.getX()));
         loc.setZ(Math.floor(loc.getZ()));
-        loc.setY(1);
+        loc.setY(0);
         return loc;
     }
 

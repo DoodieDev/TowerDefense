@@ -43,6 +43,11 @@ public class GameUtil {
 
                 //Start the game
                 game.start();
+
+                //TEMPORARY
+                onlinePlayer.setAllowFlight(true);
+                onlinePlayer.sendMessage("§6Flytilstand aktiveret! Pga. serveren er under udvikling.");
+                onlinePlayer.sendMessage("§eI fremtiden vil det blive en VIP fordel!");
             }
         });
     }

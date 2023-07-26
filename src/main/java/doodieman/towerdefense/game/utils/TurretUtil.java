@@ -17,6 +17,7 @@ import doodieman.towerdefense.game.GameHandler;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.objects.GameTurret;
 import doodieman.towerdefense.game.values.TurretType;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,8 +34,12 @@ public class TurretUtil {
 
     final GameHandler handler;
 
+    @Getter
+    private static TurretUtil instance;
+
     public TurretUtil(GameHandler handler) {
         this.handler = handler;
+        instance = this;
     }
 
     //Check if item is a turret

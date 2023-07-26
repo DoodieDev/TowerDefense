@@ -23,7 +23,6 @@ import doodieman.towerdefense.sheetsdata.dataobjects.SheetRound;
 import doodieman.towerdefense.utils.PacketUtil;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -197,6 +196,8 @@ public class Game {
                     if (aliveMobs.size() <= 0 && !mobsSpawning)
                         finishRound();
                 }
+
+                gameInteractive.doTick(tick);
 
                 tick++;
             }
@@ -407,4 +408,10 @@ public class Game {
         this.healthTextLine.setText("§7Liv: §f"+StringUtil.formatNum(health)+"§4❤");
         this.goldTextLine.setText("§7Guld: §e"+ StringUtil.formatNum(gold) +"g");
     }
+
+    public int getMobYLevel() {
+        return this.mobPath.get(0).getBlockY();
+    }
+
+
 }
