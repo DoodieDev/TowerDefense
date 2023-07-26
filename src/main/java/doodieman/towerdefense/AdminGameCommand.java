@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TestCommand implements CommandExecutor {
+public class AdminGameCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -16,20 +16,12 @@ public class TestCommand implements CommandExecutor {
 
         if (args.length < 1) return true;
 
-        if (args[0].equalsIgnoreCase("as")) {
+        if (args[0].equalsIgnoreCase("gold")) {
 
             Game game = GameUtil.getInstance().getActiveGame(player);
-
-            for (GameTurret turret : game.getTurrets()) {
-                turret.setRotation(turret.getRotation() + 10);
-
-                turret.updateArmorStands();
-            }
-
+            game.addGold(5000);
 
         }
-
-
 
 
         return true;

@@ -5,33 +5,53 @@ import doodieman.towerdefense.game.objects.GameMob;
 import doodieman.towerdefense.game.objects.GameTurret;
 import doodieman.towerdefense.game.values.TurretType;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StoneTower extends GameTurret {
+
+    long lastShot = 0L;
+    long roundTick = 0L;
 
     public StoneTower(Game game, TurretType turretType, Location location) {
         super(game, turretType, location);
     }
 
     @Override
-    public List<GameMob> detect() {
-        return null;
-    }
+    public void update(long roundTick) {
+        this.roundTick = roundTick;
 
-    @Override
-    public void shoot(GameMob mob) {
+        //Shoot
+        if (roundTick >= lastShot + ( 20L / getTurretType().getShotsPerSecond() )) {
+            this.lastShot = roundTick;
+            this.shootClosestMob();
+        }
 
     }
 
     @Override
     public void roundFinished() {
-
+        this.roundTick = 0L;
+        this.lastShot = 0L;
     }
 
     @Override
-    public void update(long roundTick) {
+    public List<GameMob> detect() {
+        return this.getGame().getAliveMobs()
+            .stream()
+            .filter(mob -> mob.getLocation().distance(this.getLocation()) <= this.getTurretType().getRange())
+            .collect(Collectors.toList());
+    }
 
+    @Override
+    public void shoot(GameMob mob) {
+        getLocation().getWorld().playSound(getLocation(), Sound.DIG_STONE,0.5f,1f);
+
+
+        this.rotateTowardsMob(mob);
+        mob.damage(getTurretType().getDamage());
     }
 
 }

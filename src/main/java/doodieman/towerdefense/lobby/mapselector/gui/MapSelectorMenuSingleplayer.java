@@ -34,7 +34,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
         mapSlots.put(32, new MapSlot(null, "§6§oAvanceret"));
 
         mapSlots.put(16, new MapSlot("skak", "§c§oExpert"));
-        mapSlots.put(25, new MapSlot(null, "§c§oExpert"));
+        mapSlots.put(25, new MapSlot("domino", "§c§oExpert"));
         mapSlots.put(34, new MapSlot(null, "§c§oExpert"));
 
     }

@@ -133,7 +133,7 @@ public final class TowerDefense extends JavaPlugin {
     private void loadCommands() {
         Bukkit.getPluginCommand("mapsetup").setExecutor(new MapSetupCommand(this.mapSetupHandler));
         Bukkit.getPluginCommand("turretsetup").setExecutor(new TurretSetupCommand(this.turretSetupHandler));
-        Bukkit.getPluginCommand("test").setExecutor(new TestCommand());
+        Bukkit.getPluginCommand("admin").setExecutor(new AdminGameCommand());
         Bukkit.getPluginCommand("setspawn").setExecutor(new SetspawnCommand());
         Bukkit.getPluginCommand("spawn").setExecutor(new SpawnCommand());
         Bukkit.getPluginCommand("discord").setExecutor(new DiscordCommand());

@@ -8,7 +8,9 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -71,18 +73,21 @@ public class SheetMobType {
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packetBoots);
         }
 
+        if (entity.isInsideVehicle())
+            entity.getVehicle().remove();
+
         switch (entityType) {
 
             case ZOMBIE:
-
-                break;
-
-            case SKELETON:
-
+                Zombie zombie = (Zombie) entity;
+                zombie.setBaby(false);
+                zombie.setVillager(false);
                 break;
 
             case PIG_ZOMBIE:
-
+                PigZombie pigzombie = (PigZombie) entity;
+                pigzombie.setBaby(false);
+                pigzombie.setVillager(false);
                 break;
 
         }

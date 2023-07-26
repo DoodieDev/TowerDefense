@@ -18,7 +18,7 @@ commands:
   spawn:
     aliases: [ lobby, leave ]
 
-  test:
+  admin:
     permission: "*"
   discord:
     aliases: [ discordserver, disc ]

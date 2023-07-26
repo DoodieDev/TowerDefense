@@ -10,12 +10,12 @@ import org.bukkit.Sound;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WoodTower extends GameTurret {
+public class EyeTower extends GameTurret {
 
     long lastShot = 0L;
     long roundTick = 0L;
 
-    public WoodTower(Game game, TurretType turretType, Location location) {
+    public EyeTower(Game game, TurretType turretType, Location location) {
         super(game, turretType, location);
     }
 
@@ -47,12 +47,10 @@ public class WoodTower extends GameTurret {
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.DIG_WOOD,0.5f,1f);
+        getLocation().getWorld().playSound(getLocation(), Sound.ZOMBIE_INFECT,0.5f,1.4f);
 
         this.rotateTowardsMob(mob);
         mob.damage(getTurretType().getDamage());
     }
-
-
 
 }

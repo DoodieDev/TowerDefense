@@ -3,6 +3,14 @@ package doodieman.towerdefense.game.values;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import doodieman.towerdefense.game.objects.GameTurret;
+import doodieman.towerdefense.game.objects.turrets.AngelTower;
+import doodieman.towerdefense.game.objects.turrets.EyeTower;
+import doodieman.towerdefense.game.objects.turrets.FireTower;
+import doodieman.towerdefense.game.objects.turrets.LaserTower;
+import doodieman.towerdefense.game.objects.turrets.SandTower;
+import doodieman.towerdefense.game.objects.turrets.SnowballTower;
+import doodieman.towerdefense.game.objects.turrets.StoneTower;
+import doodieman.towerdefense.game.objects.turrets.TntTower;
 import doodieman.towerdefense.game.objects.turrets.WoodTower;
 import doodieman.towerdefense.utils.ItemBuilder;
 import doodieman.towerdefense.utils.SkullCreator;
@@ -36,7 +44,7 @@ public enum TurretType {
         1.5,
         8,
         200,
-        WoodTower.class
+        StoneTower.class
     ),
 
     EYE_TOWER(
@@ -48,7 +56,7 @@ public enum TurretType {
         1,
         14,
         350,
-        WoodTower.class
+        EyeTower.class
     ),
 
     TNT_TOWER(
@@ -60,7 +68,7 @@ public enum TurretType {
         1,
         8,
         325,
-        WoodTower.class
+        TntTower.class
     ),
 
     FIRE_TOWER(
@@ -72,7 +80,7 @@ public enum TurretType {
         10,
         8,
         400,
-        WoodTower.class
+        FireTower.class
     ),
 
     LASER_TOWER(
@@ -84,7 +92,7 @@ public enum TurretType {
         5,
         10,
         550,
-        WoodTower.class
+        LaserTower.class
     ),
 
     SNOWBALL_TOWER(
@@ -96,7 +104,7 @@ public enum TurretType {
         10,
         8,
         850,
-        WoodTower.class
+        SnowballTower.class
     ),
 
     SAND_TOWER(
@@ -108,7 +116,7 @@ public enum TurretType {
         3,
         9,
         950,
-        WoodTower.class
+        SandTower.class
     ),
 
     ANGEL_TOWER(
@@ -120,7 +128,7 @@ public enum TurretType {
         5,
         12,
         3750,
-        WoodTower.class
+        AngelTower.class
     );
 
 

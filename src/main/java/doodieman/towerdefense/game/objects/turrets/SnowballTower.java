@@ -10,12 +10,12 @@ import org.bukkit.Sound;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WoodTower extends GameTurret {
+public class SnowballTower extends GameTurret {
 
     long lastShot = 0L;
     long roundTick = 0L;
 
-    public WoodTower(Game game, TurretType turretType, Location location) {
+    public SnowballTower(Game game, TurretType turretType, Location location) {
         super(game, turretType, location);
     }
 
@@ -47,12 +47,11 @@ public class WoodTower extends GameTurret {
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.DIG_WOOD,0.5f,1f);
+        getLocation().getWorld().playSound(getLocation(), Sound.SHOOT_ARROW,0.5f,0.5f);
+
 
         this.rotateTowardsMob(mob);
         mob.damage(getTurretType().getDamage());
     }
-
-
 
 }

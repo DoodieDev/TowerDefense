@@ -151,8 +151,10 @@ public class GameMob {
         entity.teleport(closerLocation);
 
         //Only fix head rotation every ~3 blocks, so it doesn't bug
+        /*
         if (Math.round(currentLength) % 3 == 0)
             this.fixHeadRotation();
+         */
 
         this.updateHealthBar();
     }
