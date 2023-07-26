@@ -104,7 +104,11 @@ public class SumoUtil {
         //Launch the losing player
         Bukkit.getWorld("world").strikeLightningEffect(losingPlayer.getLocation());
         Location center = SumoLocation.CENTER.getLocation();
-        losingPlayer.setVelocity(new Vector((losingPlayer.getLocation().getX() - center.getX()) * 5, 2, (losingPlayer.getLocation().getZ() - center.getZ()) * 5));
+
+        //Catch the warning "Excessive velocity set detected: tried to set velocity of entity" that spams console.
+        try {
+            losingPlayer.setVelocity(new Vector((losingPlayer.getLocation().getX() - center.getX()) * 5, 2, (losingPlayer.getLocation().getZ() - center.getZ()) * 5));
+        } catch (Exception ignored) {}
 
         //Reset after 2 seconds
         new BukkitRunnable() {

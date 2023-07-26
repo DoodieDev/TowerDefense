@@ -71,6 +71,7 @@ public class MapSelectorMenuDifficulty extends GUI {
         }
 
         if (difficultySlots.containsKey(slot)) {
+            player.closeInventory();
             Difficulty difficulty = difficultySlots.get(slot);
             GameUtil.getInstance().startGame(player, map, difficulty);
             this.playClickSound();

@@ -58,22 +58,29 @@ public abstract class GameTurret {
 
     public abstract void roundFinished();
 
-
+    //Get the mob closest to the end goal
     public GameMob getClosestMob() {
+
         List<GameMob> detected = this.detect();
         if (detected.size() == 0) return null;
-        GameMob closest = detected.get(0);
-        double currentDistance = closest.getLocation().distance(this.location);
 
-        for (GameMob mob : this.detect()) {
-            double distance = mob.getLocation().distance(this.location);
-            if (distance > currentDistance) continue;
+        GameMob closest = detected.get(0);
+        double currentDistance = closest.currentLength;
+
+        for (GameMob mob : detected) {
+
+            double distance = mob.currentLength;
+            if (distance <= currentDistance) continue;
+
             currentDistance = distance;
             closest = mob;
+
         }
+
         return closest;
     }
 
+    //Make turrt execute shoot on the mob closest to end
     public void shootClosestMob() {
         GameMob closestMob = this.getClosestMob();
         if (closestMob == null) return;

@@ -20,6 +20,7 @@ public class GameScoreboard {
     public GameScoreboard(Game game) {
         this.game = game;
         this.player = game.getPlayer().getPlayer();
+        this.scoreboard = null;
     }
 
     public void createScoreboard() {
@@ -43,6 +44,7 @@ public class GameScoreboard {
     }
 
     public void deleteScoreboard() {
+        if (scoreboard == null) return;
         updater.cancel();
         this.scoreboard.getScoreboard().getObjective(DisplaySlot.SIDEBAR).unregister();
     }

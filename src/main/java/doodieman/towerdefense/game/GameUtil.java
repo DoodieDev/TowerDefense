@@ -8,6 +8,7 @@ import lombok.Getter;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameUtil {
 
@@ -25,18 +26,25 @@ public class GameUtil {
     public void startGame(OfflinePlayer player, Map map, Difficulty difficulty) {
         if (this.isInGame(player)) return;
 
-        //Player stuff
-        Player onlinePlayer = player.getPlayer();
-        onlinePlayer.setHealth(20);
-        onlinePlayer.setFoodLevel(20);
-        onlinePlayer.setGameMode(GameMode.SURVIVAL);
-        onlinePlayer.getInventory().clear();
-
         //Start game
         Game game = new Game(player, map, difficulty);
         this.handler.getActiveGames().put(player, game);
-        game.prepare();
-        game.start();
+
+        //Prepare the game and teleport upon finish
+        game.prepare(new BukkitRunnable() {
+            @Override
+            public void run() {
+                //Player stuff
+                Player onlinePlayer = player.getPlayer();
+                onlinePlayer.setHealth(20);
+                onlinePlayer.setFoodLevel(20);
+                onlinePlayer.setGameMode(GameMode.SURVIVAL);
+                onlinePlayer.getInventory().clear();
+
+                //Start the game
+                game.start();
+            }
+        });
     }
 
     //Exit and save the game
@@ -47,8 +55,10 @@ public class GameUtil {
         game.stop(removeSchematic);
         handler.getActiveGames().remove(game.getPlayer());
 
-        player.getPlayer().sendMessage("§aSpillet er blevet gemt!");
-        player.getPlayer().sendMessage("§aDu kan altid forsætte fra punktet du forlod.");
+        player.getPlayer().sendMessage("");
+        player.getPlayer().sendMessage("§aDu har forladt spillet!");
+        player.getPlayer().sendMessage("§c(Dit spil bliver ikke gemt endnu)");
+        player.getPlayer().sendMessage("");
         player.getPlayer().getInventory().clear();
         player.getPlayer().teleport(SpawnUtil.getSpawn());
         player.getPlayer().setGameMode(GameMode.ADVENTURE);

@@ -96,20 +96,26 @@ public class Game {
         this.mobsSpawning = false;
         this.currentRound = 0;
         this.startHologram = null;
+        this.mobPathLoop = null;
     }
 
     //Prepares the game, pasting schematic, etc
-    public void prepare() {
+    public void prepare(BukkitRunnable onFinish) {
+
         //Paste schematic async
         TowerDefense.runAsync(new BukkitRunnable() {
             @Override
             public void run() {
                 map.pasteSchematic(zeroLocation);
+                if (player.isOnline())
+                    TowerDefense.runSync(onFinish);
             }
         });
+
         //Load the mob path
         for (Location location : map.getPath())
             this.mobPath.add(getRealLocation(location));
+
         //Create the hologram at mob starting point
         this.updateStartHologram();
     }
@@ -124,7 +130,8 @@ public class Game {
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop(boolean removeSchematic) {
         this.roundActive = false;
-        this.mobPathLoop.cancel();
+        if (this.mobPathLoop != null)
+            this.mobPathLoop.cancel();
         this.gridLocation.unregister();
         this.gameInteractive.unregister();
         if (this.startHologram != null)

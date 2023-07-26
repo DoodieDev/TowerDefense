@@ -75,6 +75,8 @@ public class SheetMobType {
 
         if (entity.isInsideVehicle())
             entity.getVehicle().remove();
+        if (entity.getPassenger() != null)
+            entity.getPassenger().remove();
 
         switch (entityType) {
 
