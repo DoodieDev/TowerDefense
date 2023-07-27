@@ -94,6 +94,11 @@ public class GameInteractive implements Listener {
             ItemBuilder builder = new ItemBuilder(Material.BARRIER);
             builder.name("§c§oDu er død");
             player.getInventory().setItem(7, builder.build());
+
+        } else if (game.hasWonGame()) {
+            ItemBuilder builder = new ItemBuilder(Material.BARRIER);
+            builder.name("§c§oDu har klaret alle runder");
+            player.getInventory().setItem(7, builder.build());
         }
 
         else {
@@ -209,7 +214,14 @@ public class GameInteractive implements Listener {
 
             //Game is over
             if (!game.isAlive()) {
-                player.sendMessage("§cDu kan ikke starte flere runder, da du er død!");
+                player.sendMessage("§cDu kan ikke starte flere runder, du er død!");
+                player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
+                return;
+            }
+
+            //Game is over - Has completed all rounds
+            if (game.hasWonGame()) {
+                player.sendMessage("§cDu kan ikke starte flere runder, du har klaret alle runder!");
                 player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
                 return;
             }
@@ -221,9 +233,16 @@ public class GameInteractive implements Listener {
         //Open turrets store
         if (player.getInventory().getHeldItemSlot() == 6) {
 
-            //Game is over
+            //Game is over - Death
             if (!game.isAlive()) {
-                player.sendMessage("§cDu kan ikke købe tårne, da du er død!");
+                player.sendMessage("§cDu kan ikke købe tårne, du er død!");
+                player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
+                return;
+            }
+
+            //Game is over - Has completed all rounds
+            if (game.hasWonGame()) {
+                player.sendMessage("§cDu kan ikke købe tårne, du har klaret alle runder!");
                 player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
                 return;
             }

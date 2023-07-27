@@ -187,7 +187,7 @@ public class Game {
                     //Remove mobs in goal
                     for (GameMob mob : mobsToRemove) {
                         gameInteractive.getGameAnimations().mobFinished( mob);
-                        damage(mob.getMobType().getDamage());
+                        damage(Math.round(mob.getHealth()));
                         mob.remove(false);
                     }
                     mobsToRemove.clear();
@@ -431,6 +431,9 @@ public class Game {
 
     public boolean isAlive() {
         return this.health > 0;
+    }
+    public boolean hasWonGame() {
+        return !this.roundActive && this.currentRound >= difficulty.getRounds();
     }
 
 }

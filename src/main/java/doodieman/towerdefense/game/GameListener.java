@@ -64,10 +64,18 @@ public class GameListener implements Listener {
 
         //Game is over
         if (!game.isAlive()) {
-            player.sendMessage("§cDu kan ikke placere tårne, da du er død!");
+            player.sendMessage("§cDu kan ikke placere tårne, du er død!");
             player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
             return;
         }
+
+        //Game is over - Has completed all rounds
+        if (game.hasWonGame()) {
+            player.sendMessage("§cDu kan ikke placere tårne, du har klaret alle runder!");
+            player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
+            return;
+        }
+
 
         //Check if it can be placed
         if (!handler.getTurretUtil().canTurretBePlaced(game,blockLocation)) {
