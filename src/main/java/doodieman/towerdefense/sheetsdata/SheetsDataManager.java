@@ -133,7 +133,6 @@ public class SheetsDataManager {
         }
     }
 
-
     //Initialize the environment
     private void initializeWorkbook() throws IOException, InvalidFormatException {
         this.workbook = WorkbookFactory.create(new File(this.getFilePath()));

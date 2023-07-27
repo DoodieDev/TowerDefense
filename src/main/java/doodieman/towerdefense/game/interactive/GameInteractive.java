@@ -8,16 +8,20 @@ import doodieman.towerdefense.game.interactive.turretstore.TurretStoreMenu;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.utils.TurretUtil;
 import doodieman.towerdefense.game.values.ControlBlock;
+import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.utils.ItemBuilder;
+import doodieman.towerdefense.utils.LocationUtil;
 import doodieman.towerdefense.utils.PacketUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -96,16 +100,16 @@ public class GameInteractive implements Listener {
 
     //Called every tick from the Game class
     public void doTick(int tick) {
-
         if (tick % 4 == 0)
             this.displayPlacementOptions();
+        if (tick % 6 == 0)
+            this.displayRange();
     }
 
     //Display where the player can place turrets
     public void displayPlacementOptions() {
         if (!TurretUtil.getInstance().isTurretItem(player.getItemInHand())) return;
 
-        //Example 7 = 196 blocks to scan
         int scanRange = 5;
 
         //Corners to scan
@@ -116,18 +120,39 @@ public class GameInteractive implements Listener {
 
         for (int x = xCorner1; x <= xCorner2; x++) {
             for (int z = zCorner1; z <= zCorner2; z++) {
-                if (ControlBlock.isPlaceable(x,z,game.getWorld())) {
-                    this.displayPlacement(x,z,4, Color.fromRGB(51,255,0));
-                }
+                if (!ControlBlock.isPlaceable(x,z,game.getWorld())) continue;
 
-                else {
-                    this.displayPlacement(x,z,4, Color.fromRGB(255,0,0));
-                }
+                this.displayPlacement(x,z,4, Color.fromRGB(51,255,0));
             }
         }
 
     }
 
+    //Display the range of a turret
+    public void displayRange() {
+
+        if (!TurretUtil.getInstance().isTurretItem(player.getItemInHand())) return;
+        TurretType turretType = TurretUtil.getInstance().getTurretFromItem(player.getItemInHand());
+
+        Block targetBlock = LocationUtil.getTargetBlock(player,50);
+
+        int pointsPerRange = 20;
+        double range = turretType.getRange();
+        int points = (int) Math.floor(range * pointsPerRange);
+        Location center = targetBlock.getLocation();
+        center.setY(game.getMobPath().get(0).getBlockY() + 0.25);
+
+        //Display the outer circle
+        for (int i = 0; i < points; i++) {
+
+            double angle = i * (360f / points);
+            Location location = LocationUtil.getLocationInCircle(center,angle,range);
+
+            player.spigot().playEffect(location, Effect.WITCH_MAGIC,0,0,0,0,0,0,1,70);
+        }
+    }
+
+    //Display a placement square on the map
     public void displayPlacement(int centerX, int centerZ, int particlesPerSide, Color color) {
         double displayLevel = game.getMobPath().get(0).getBlockY() + 0.05;
 
@@ -148,13 +173,10 @@ public class GameInteractive implements Listener {
 
             //Side 1
             Location side1 = new Location(world,xCorner1 + length,displayLevel,zCorner1);
-
             //Side 2
             Location side2 = new Location(world,xCorner2 - length,displayLevel,zCorner2);
-
             //Side 3
             Location side3 = new Location(world,xCorner1,displayLevel,zCorner1 + length);
-
             //Side 4
             Location side4 = new Location(world,xCorner2,displayLevel,zCorner2 - length);
 

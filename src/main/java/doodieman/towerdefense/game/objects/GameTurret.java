@@ -16,8 +16,6 @@ import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.utils.LocationUtil;
 import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -109,10 +107,13 @@ public abstract class GameTurret {
                 this.pasteRedstoneBlocks();
                 this.pasteArmorStands();
                 this.updateArmorStands();
+
+                //Call animation
+                this.getGame().getGameInteractive().getGameAnimations().onTurretPlacement(this);
+
+                //TODO create hologram
             });
         });
-
-        //TODO create hologram
     }
 
     //Get the zero location for pasting schematic
