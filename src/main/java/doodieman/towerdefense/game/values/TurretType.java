@@ -31,7 +31,7 @@ public enum TurretType {
         1,
         1,
         6,
-        150,
+        125,
         WoodTower.class
     ),
 
@@ -39,23 +39,23 @@ public enum TurretType {
         "stonetower",
         "Sten Tårn",
         "§7",
-        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWU1NGFiYmM2NWIxM2E0MmMyOTU5MGEwY2Y5ZDNlMDA3MDJkMWU2MGQ5NzRmOTI4NmE3YzE3MjY3ZjIyODJjOSJ9fX0="),
-        2,
-        1.5,
-        8,
-        200,
+        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2M1ZjNjM2Q1ZDdiMWNlMGYzMjA0MGMxNDU0ZGFmODg3OGUxY2MyOTllMDI1YmFkMmU2OTE5ZWJhZTIxZmJiOCJ9fX0="),
+        2.5,
+        0.5,
+        7,
+        175,
         StoneTower.class
     ),
 
     EYE_TOWER(
         "eyetower",
         "Øje Tårn",
-        "§3",
-        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODcyZDM0MWQ3N2RiZGU2ZDUzZGFkNjFiZjE5MjUyNGRiZGI5NmFmMTM1OGUwNzQ4ZmVlYTE0ODFiMWY4In19fQ=="),
+        "§d",
+        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWJhOTY0N2VjN2M4ZjM1OWQ4ZDA5NTJiZGJmNzJjYmI0YjU3NDNjZjg0NTVkY2I3NjY0ZTJiZjliZGY4YjcxOCJ9fX0="),
+        0.5,
         2,
-        1,
-        14,
-        350,
+        13,
+        225,
         EyeTower.class
     ),
 
@@ -75,7 +75,7 @@ public enum TurretType {
         "firetower",
         "Ild Tårn",
         "§c",
-        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDE3YjhiNDNmOGM0YjVjZmViOTE5YzlmOGZlOTNmMjZjZWI2ZDJiMTMzYzJhYjFlYjMzOWJkNjYyMWZkMzA5YyJ9fX0="),
+        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWZiYjZlZWE1NzU0N2IyNTg4YmFmOGFmNjQ5ZDkxMTZmZjA4Y2FjNTZkZDIxNDBiM2M0OTU3Nzc5OWJhZDdjIn19fQ=="),
         1,
         10,
         8,
@@ -87,7 +87,7 @@ public enum TurretType {
         "lasertower",
         "Laser Tårn",
         "§b",
-        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWNiN2MyMWNjNDNkYzE3Njc4ZWU2ZjE2NTkxZmZhYWIxZjYzN2MzN2Y0ZjZiYmQ4Y2VhNDk3NDUxZDc2ZGI2ZCJ9fX0="),
+        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjNiZTUzZDQ3YzYwNmM2NzhhZDkzYTM5MGRmZDZkMGIxNmI2NmMxYjY1OTA1YzYxNDE3NTRmMDU3MGY2NGJhMyJ9fX0="),
         3,
         5,
         10,
@@ -99,11 +99,11 @@ public enum TurretType {
         "snowballtower",
         "Snebold Tårn",
         "§f",
-        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTExNWM3OTY4ZWMzNzcxZWU5ZmY2YWU2YmNhMmQ1YmEzOTYyYWE3MjdhNGZhOGQzNzYwOGU0YzliZjE1MTJiYiJ9fX0="),
-        1,
+        SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRmZDc3MjRjNjlhMDI0ZGNmYzYwYjE2ZTAwMzM0YWI1NzM4ZjRhOTJiYWZiOGZiYzc2Y2YxNTMyMmVhMDI5MyJ9fX0="),
+        0.3,
         10,
-        8,
-        850,
+        7,
+        425,
         SnowballTower.class
     ),
 
@@ -112,10 +112,10 @@ public enum TurretType {
         "Sand Tårn",
         "§e",
         SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGM0MGYzZDliNjg0YmZkYTFkODdjNTAwYmQzZjE0ZDc5ZWY4M2EwZWU3MGUzY2I1MzM5MGRlZGU3Mzc5OWU4NiJ9fX0="),
-        5,
-        3,
+        6,
+        0.8,
         9,
-        950,
+        650,
         SandTower.class
     ),
 
@@ -124,10 +124,10 @@ public enum TurretType {
         "Engel Tårn",
         "§f",
         SkullCreator.itemFromBase64("ewogICJ0aW1lc3RhbXAiIDogMTY4NzE4MjEwMjA1MSwKICAicHJvZmlsZUlkIiA6ICJlZDUzZGQ4MTRmOWQ0YTNjYjRlYjY1MWRjYmE3N2U2NiIsCiAgInByb2ZpbGVOYW1lIiA6ICI0MTQxNDE0MWgiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2QxNzZlZWFmNDU5ZGNmOWY5MGMzZjA3NjBjNmE2M2IyMWNiYTA2ZTY4NDUyOTY4ZmFmNWJkOGE5NjUxMGVlMCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"),
-        10,
-        5,
-        12,
-        3750,
+        7,
+        2.5,
+        11,
+        3275,
         AngelTower.class
     );
 
@@ -142,7 +142,7 @@ public enum TurretType {
     @Getter
     private final double damage;
     @Getter
-    private final double shotsPerSecond;
+    private final double attackSpeed;
     @Getter
     private final double range;
     @Getter
@@ -158,7 +158,7 @@ public enum TurretType {
         String textColor,
         ItemStack item,
         double damage,
-        double shotsPerSecond,
+        double attackSpeed,
         double range,
         double price,
         Class<? extends GameTurret> turretClass
@@ -168,7 +168,7 @@ public enum TurretType {
         this.textColor = textColor;
         this.item = item;
         this.damage = damage;
-        this.shotsPerSecond = shotsPerSecond;
+        this.attackSpeed = attackSpeed;
         this.range = range;
         this.price = price;
         this.turretClass = turretClass;
@@ -187,11 +187,9 @@ public enum TurretType {
         builder.name(textColor+"§n"+name);
         builder.addLore(
             "",
-            "§7DPS: §f" + StringUtil.formatNum(this.damage * this.shotsPerSecond)+" §4❤",
-            "",
             "§7Skade: §f"+StringUtil.formatNum(this.damage)+" §4❤",
-            "§7Skud i sekundet: §f"+StringUtil.formatNum(this.shotsPerSecond),
-            "§7Range: §f" + StringUtil.formatNum(this.range)+" blocks"
+            "§7Range: §f" + StringUtil.formatNum(this.range)+" blocks",
+            "§7Attack speed: §f"+StringUtil.formatNum(this.attackSpeed)
         );
 
         //Add NBT

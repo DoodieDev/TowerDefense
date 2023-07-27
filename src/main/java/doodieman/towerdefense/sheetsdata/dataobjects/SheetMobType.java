@@ -47,7 +47,7 @@ public class SheetMobType {
         this.health = (double) mobData.get(1);
         this.speed = ((double) mobData.get(2)) / 20;
         this.damage = (double) mobData.get(3);
-        this.gold = (double) mobData.get(4);
+        this.gold = Math.round((double) mobData.get(4));
         this.hand = Material.getMaterial((String) mobData.get(5));
         this.helmet = Material.getMaterial((String) mobData.get(6));
         this.chestplate = Material.getMaterial((String) mobData.get(7));

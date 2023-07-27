@@ -24,7 +24,7 @@ public class StoneTower extends GameTurret {
         this.roundTick = roundTick;
 
         //Shoot
-        if (roundTick >= lastShot + ( 20L / getTurretType().getShotsPerSecond() )) {
+        if (roundTick >= lastShot + ( 20L / getTurretType().getAttackSpeed() )) {
             this.lastShot = roundTick;
             this.shootClosestMob();
         }

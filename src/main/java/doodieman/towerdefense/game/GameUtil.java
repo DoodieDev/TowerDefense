@@ -4,10 +4,13 @@ import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.values.Difficulty;
 import doodieman.towerdefense.lobby.spawn.SpawnUtil;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.utils.LabyModUtil;
 import lombok.Getter;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameUtil {
@@ -30,6 +33,8 @@ public class GameUtil {
         Game game = new Game(player, map, difficulty);
         this.handler.getActiveGames().put(player, game);
 
+        LabyModUtil.sendCineScope(player.getPlayer(),50,0,0);
+
         //Prepare the game and teleport upon finish
         game.prepare(new BukkitRunnable() {
             @Override
@@ -40,14 +45,19 @@ public class GameUtil {
                 onlinePlayer.setFoodLevel(20);
                 onlinePlayer.setGameMode(GameMode.SURVIVAL);
                 onlinePlayer.getInventory().clear();
+                onlinePlayer.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,Integer.MAX_VALUE,0,false,false));
 
                 //Start the game
                 game.start();
 
+                LabyModUtil.sendCineScope(player.getPlayer(),0,1000,200);
+
                 //TEMPORARY
                 onlinePlayer.setAllowFlight(true);
-                onlinePlayer.sendMessage("§6Flytilstand aktiveret! Pga. serveren er under udvikling.");
-                onlinePlayer.sendMessage("§eI fremtiden vil det blive en VIP fordel!");
+                onlinePlayer.sendMessage("");
+                onlinePlayer.sendMessage("§6§lFlytilstand aktiveret§6 eftersom serveren er under udvikling.");
+                onlinePlayer.sendMessage("§cHusk: Dette vil blive en VIP-fordel i fremtiden!");
+                onlinePlayer.sendMessage("");
             }
         });
     }
@@ -60,11 +70,17 @@ public class GameUtil {
         game.stop(removeSchematic);
         handler.getActiveGames().remove(game.getPlayer());
 
+        if (removeSchematic) {
+            LabyModUtil.sendCineScope(player.getPlayer(),50,0,0);
+            LabyModUtil.sendCineScope(player.getPlayer(),0,500,5);
+        }
+
         player.getPlayer().sendMessage("");
         player.getPlayer().sendMessage("§aDu har forladt spillet!");
         player.getPlayer().sendMessage("§c(Dit spil bliver ikke gemt endnu)");
         player.getPlayer().sendMessage("");
         player.getPlayer().getInventory().clear();
+        player.getPlayer().removePotionEffect(PotionEffectType.NIGHT_VISION);
         player.getPlayer().teleport(SpawnUtil.getSpawn());
         player.getPlayer().setGameMode(GameMode.ADVENTURE);
     }

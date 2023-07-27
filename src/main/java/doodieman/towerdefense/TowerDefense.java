@@ -23,6 +23,7 @@ import doodieman.towerdefense.simpleevents.region.RegionListener;
 import doodieman.towerdefense.sumo.SumoHandler;
 import doodieman.towerdefense.turretsetup.TurretSetupHandler;
 import doodieman.towerdefense.turretsetup.command.TurretSetupCommand;
+import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.MemoryNPCDataStore;
@@ -77,7 +78,10 @@ public final class TowerDefense extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        //Pure visual for admins
+        long startTime = System.currentTimeMillis();
         this.announceForAdmins("§aEnabling the plugin..");
+
         instance = this;
         this.saveDefaultConfig();
 
@@ -90,6 +94,7 @@ public final class TowerDefense extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GlobalListener(),this);
 
         //Download the sheets data (Turrets, Mobs, Rounds, etc)
+        this.announceForAdmins("§aDownloading sheets data..");
         try {
             sheetsDataManager.download();
             sheetsDataManager.loadMobs();
@@ -99,18 +104,31 @@ public final class TowerDefense extends JavaPlugin {
         }
 
         //Initialize handlers and commands
+        this.announceForAdmins("§aLoading all handlers and commands..");
         this.loadHandlers();
         this.loadCommands();
-        this.announceForAdmins("§aPlugin has been enabled!");
+
+        //Pure visual for admins
+        long finishTime = System.currentTimeMillis();
+        String formattedTime = StringUtil.formatNum((finishTime - startTime) / 1000f);
+        this.announceForAdmins("§aPlugin has successfully been enabled! (Took "+formattedTime+"s)");
     }
 
     @Override
     public void onDisable() {
+        //Pure visual for admins
+        long startTime = System.currentTimeMillis();
         this.announceForAdmins("§cDisabling the plugin..");
+
         this.gameHandler.exitAllGames();
         this.npcRegistry.deregisterAll();
+
         HologramsAPI.getHolograms(this).forEach(Hologram::delete);
-        this.announceForAdmins("§cPlugin has been disabled!");
+
+        //Pure visual for admins
+        long finishTime = System.currentTimeMillis();
+        String formattedTime = StringUtil.formatNum((finishTime - startTime) / 1000f);
+        this.announceForAdmins("§cPlugin has been disabled! (Took "+formattedTime+"s)");
     }
 
     private void loadHandlers() {

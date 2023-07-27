@@ -151,9 +151,9 @@ public class GameAnimations {
     }
 
     //Particles when a mob gets to the goal
-    public void mobFinished(GameMob mob) {
+    public void mobFinished(GameMob mob, double damage) {
 
-        double newHealth = game.getHealth() - mob.getMobType().getDamage();
+        double newHealth = game.getHealth() - damage;
         Location location = mob.getLocation();
 
         getPlayer().spigot().playEffect(location, Effect.LAVA_POP,0,0,0.1f,0.1f,0.1f,0.2f,10,40);

@@ -205,7 +205,7 @@ public class GameInteractive implements Listener {
 
         //Open settings
         if (player.getInventory().getHeldItemSlot() == 8) {
-            new SettingsMenu(player).open();
+            new SettingsMenu(player, game).open();
             player.playSound(player.getLocation(), Sound.CHEST_OPEN, 0.2f, 1.2f);
         }
 

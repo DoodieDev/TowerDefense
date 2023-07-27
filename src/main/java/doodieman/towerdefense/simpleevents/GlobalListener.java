@@ -21,6 +21,7 @@ public class GlobalListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
         if (Bukkit.getOnlinePlayers().size() > 20)
             event.setJoinMessage("");
         else
@@ -33,8 +34,10 @@ public class GlobalListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (Bukkit.getOnlinePlayers().size() > 20) return;
-        event.setQuitMessage("§8[§c-§8] "+LuckPermsUtil.getRankColor(player)+player.getName());
+        if (Bukkit.getOnlinePlayers().size() > 20)
+            event.setQuitMessage("");
+        else
+            event.setQuitMessage("§8[§c-§8] "+LuckPermsUtil.getRankColor(player)+player.getName());
     }
 
     @EventHandler

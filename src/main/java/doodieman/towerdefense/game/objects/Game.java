@@ -12,6 +12,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.interactive.GameInteractive;
 import doodieman.towerdefense.game.values.Difficulty;
+import doodieman.towerdefense.game.values.GameSetting;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
@@ -31,6 +32,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Game {
@@ -66,6 +68,7 @@ public class Game {
     private boolean roundActive;
     @Getter
     private boolean mobsSpawning;
+    private final java.util.Map<GameSetting, Boolean> gameSettings;
 
     @Getter //Current round number
     private int currentRound;
@@ -96,6 +99,7 @@ public class Game {
         this.currentRound = 0;
         this.startHologram = null;
         this.mobPathLoop = null;
+        this.gameSettings = new HashMap<>();
     }
 
     //Prepares the game, pasting schematic, etc
@@ -110,6 +114,10 @@ public class Game {
                     TowerDefense.runSync(onFinish);
             }
         });
+
+        //Load the default Game Settings
+        for (GameSetting setting : GameSetting.values())
+            this.gameSettings.put(setting,setting.isDefaultValue());
 
         //Load the mob path
         for (Location location : map.getPath())
@@ -186,8 +194,10 @@ public class Game {
 
                     //Remove mobs in goal
                     for (GameMob mob : mobsToRemove) {
-                        gameInteractive.getGameAnimations().mobFinished( mob);
-                        damage(Math.round(mob.getHealth()));
+                        double damage = Math.ceil(mob.getHealth());
+
+                        gameInteractive.getGameAnimations().mobFinished( mob, damage);
+                        damage(damage);
                         mob.remove(false);
                     }
                     mobsToRemove.clear();
@@ -220,6 +230,8 @@ public class Game {
         this.roundActive = true;
         this.mobsSpawning = true;
         this.currentRound++;
+
+        this.gameInteractive.updateRoundItemSlot();
         this.gameInteractive.getGameAnimations().newRoundStarted();
 
         SheetRound round = SheetsDataUtil.getInstance().getRound(currentRound);
@@ -281,6 +293,9 @@ public class Game {
 
         for (GameTurret turret : getTurrets())
             turret.roundFinished();
+
+        if (this.getGameSetting(GameSetting.AUTO_START) && !this.hasWonGame())
+            this.startRound();
     }
 
     //Removes all the active mobs
@@ -293,11 +308,11 @@ public class Game {
     //When a mobs damages the player
     public void damage(double amount) {
         this.health -= amount;
-        this.updateStartHologram();
 
         //Game over
         if (this.health <= 0) {
             this.health = 0;
+            this.updateStartHologram();
             this.gameDeath();
         }
     }
@@ -311,32 +326,6 @@ public class Game {
 
         this.gameInteractive.getGameAnimations().onDie();
         this.gameInteractive.updateRoundItemSlot();
-    }
-
-    //Change the game gold value
-    public void setGold(double amount) {
-        this.gold = amount;
-        this.updateStartHologram();
-    }
-    public void addGold(double amount) {
-        this.setGold(this.getGold() + amount);
-    }
-    public void removeGold(double amount) {
-        this.setGold(this.getGold() - amount);
-    }
-
-    //Get real location from location in config.
-    //Example: The map is built and saved with different coordinates in a different world.
-    //When its pasted in the real game world. The location varies.
-    public Location getRealLocation(Location location) {
-        Location mapZero = map.getCorner1();
-        double xDiffer = -(mapZero.getX() - location.getX());
-        double yDiffer = -(mapZero.getY() - location.getY());
-        double zDiffer = -(mapZero.getZ() - location.getZ());
-        Location newLocation = zeroLocation.clone().add(xDiffer,yDiffer,zDiffer);
-        newLocation.setYaw(location.getYaw());
-        newLocation.setPitch(location.getPitch());
-        return newLocation;
     }
 
     //Display the particles throughout the entire path
@@ -390,18 +379,6 @@ public class Game {
 
     }
 
-    private double getNumberCloseToTarget(double start, double target, double percent) {
-        double difference = target - start;
-        double differenceOfPercent = difference * percent;
-        double result;
-        if (target >= start) {
-            result = start + differenceOfPercent;
-        } else {
-            result = start + differenceOfPercent;
-        }
-        return result;
-    }
-
     //Create or update the hologram at the start
     public void updateStartHologram() {
         Location location = this.mobPath.get(0).clone().add(0,3,0);
@@ -424,16 +401,61 @@ public class Game {
         this.goldTextLine.setText("§7Guld: §e"+ StringUtil.formatNum(gold) +"g");
     }
 
+
+    /*
+        SIMPLE UTILITIES
+    */
+
+    //Get real location from location in config.
+    //Example: The map is built and saved with different coordinates in a different world.
+    //When its pasted in the real game world. The location varies.
+    public Location getRealLocation(Location location) {
+        Location mapZero = map.getCorner1();
+        double xDiffer = -(mapZero.getX() - location.getX());
+        double yDiffer = -(mapZero.getY() - location.getY());
+        double zDiffer = -(mapZero.getZ() - location.getZ());
+        Location newLocation = zeroLocation.clone().add(xDiffer,yDiffer,zDiffer);
+        newLocation.setYaw(location.getYaw());
+        newLocation.setPitch(location.getPitch());
+        return newLocation;
+    }
+
+    //Change the game gold value
+    public void setGold(double amount) {
+        this.gold = amount;
+        this.updateStartHologram();
+    }
+    public void addGold(double amount) {
+        this.setGold(this.getGold() + amount);
+    }
+    public void removeGold(double amount) {
+        this.setGold(this.getGold() - amount);
+    }
+
+    private double getNumberCloseToTarget(double start, double target, double percent) {
+        double difference = target - start;
+        double differenceOfPercent = difference * percent;
+        double result;
+        if (target >= start) {
+            result = start + differenceOfPercent;
+        } else {
+            result = start + differenceOfPercent;
+        }
+        return result;
+    }
     public int getMobYLevel() {
         return this.mobPath.get(0).getBlockY();
     }
-
-
     public boolean isAlive() {
         return this.health > 0;
     }
     public boolean hasWonGame() {
         return !this.roundActive && this.currentRound >= difficulty.getRounds();
     }
-
+    public boolean getGameSetting(GameSetting setting) {
+        return this.gameSettings.get(setting);
+    }
+    public void setGameSetting(GameSetting setting, boolean value) {
+        this.gameSettings.put(setting,value);
+    }
 }
