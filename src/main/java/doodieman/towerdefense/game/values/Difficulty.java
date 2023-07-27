@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 public enum Difficulty {
 
-    EASY("Let", 200, 250, 40, 1, "§e", new ItemStack(Material.GOLD_RECORD)),
+    EASY("Let", 5, 250, 40, 1, "§e", new ItemStack(Material.GOLD_RECORD)),
     MEDIUM("Medium", 150, 250, 60, 1, "§6", new ItemStack(Material.RECORD_3)),
     HARD("Svær", 100, 250, 80, 1, "§c", new ItemStack(Material.RECORD_4));
 

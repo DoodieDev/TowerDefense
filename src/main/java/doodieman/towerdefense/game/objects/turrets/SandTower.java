@@ -47,7 +47,7 @@ public class SandTower extends GameTurret {
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.DIG_SAND,0.5f,0.8f);
+        getLocation().getWorld().playSound(getLocation(), Sound.DIG_SAND,1f,0.8f);
 
         this.rotateTowardsMob(mob);
         mob.damage(getTurretType().getDamage());

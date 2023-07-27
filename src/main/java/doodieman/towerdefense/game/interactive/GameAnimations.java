@@ -2,6 +2,7 @@ package doodieman.towerdefense.game.interactive;
 
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.objects.GameMob;
 import doodieman.towerdefense.game.objects.GameTurret;
 import doodieman.towerdefense.utils.LocationUtil;
 import doodieman.towerdefense.utils.PacketUtil;
@@ -140,15 +141,23 @@ public class GameAnimations {
 
     }
 
+    public void onDie() {
+        PacketUtil.sendTitle(getPlayer(), "§cDu døde!", "§cØv bøv bussemand..", 20, 100, 20);
+    }
+
     //Particles when a mob spawns
     public void mobSpawned(Location location) {
         getPlayer().spigot().playEffect(location, Effect.FIREWORKS_SPARK,0,0,0.1f,0.1f,0.1f,0.2f,10,40);
     }
 
     //Particles when a mob gets to the goal
-    public void mobFinished(Location location) {
+    public void mobFinished(GameMob mob) {
+
+        double newHealth = game.getHealth() - mob.getMobType().getDamage();
+        Location location = mob.getLocation();
+
         getPlayer().spigot().playEffect(location, Effect.LAVA_POP,0,0,0.1f,0.1f,0.1f,0.2f,10,40);
-        PacketUtil.sendTitle(getPlayer(), "", "§f"+ StringUtil.formatNum(game.getHealth())+" §4❤", 0, 20, 0);
+        PacketUtil.sendTitle(getPlayer(), "", "§f"+ StringUtil.formatNum(newHealth)+" §4❤", 0, 20, 0);
         getPlayer().playSound(getPlayer().getLocation(),Sound.ITEM_PICKUP,0.5f,0.8f);
     }
 

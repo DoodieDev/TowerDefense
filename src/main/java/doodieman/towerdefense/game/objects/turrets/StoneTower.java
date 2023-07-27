@@ -47,7 +47,7 @@ public class StoneTower extends GameTurret {
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.DIG_STONE,0.5f,1f);
+        getLocation().getWorld().playSound(getLocation(), Sound.DIG_STONE,1f,1f);
 
 
         this.rotateTowardsMob(mob);

@@ -90,7 +90,13 @@ public class GameInteractive implements Listener {
             builder.name("§c§oRunden er aktiv");
             player.getInventory().setItem(7, builder.build());
 
-        } else {
+        } else if (!game.isAlive()) {
+            ItemBuilder builder = new ItemBuilder(Material.BARRIER);
+            builder.name("§c§oDu er død");
+            player.getInventory().setItem(7, builder.build());
+        }
+
+        else {
             ItemBuilder builder = new ItemBuilder(Material.EMERALD);
             builder.name("§a§nStart runde§r §7(Højreklik)");
             player.getInventory().setItem(7, builder.build());
@@ -187,7 +193,6 @@ public class GameInteractive implements Listener {
         }
     }
 
-
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (event.getPlayer() != player) return;
@@ -201,12 +206,28 @@ public class GameInteractive implements Listener {
 
         //Start round
         if (player.getInventory().getHeldItemSlot() == 7 && !game.isRoundActive()) {
+
+            //Game is over
+            if (!game.isAlive()) {
+                player.sendMessage("§cDu kan ikke starte flere runder, da du er død!");
+                player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
+                return;
+            }
+
             game.startRound();
             this.updateRoundItemSlot();
         }
 
         //Open turrets store
         if (player.getInventory().getHeldItemSlot() == 6) {
+
+            //Game is over
+            if (!game.isAlive()) {
+                player.sendMessage("§cDu kan ikke købe tårne, da du er død!");
+                player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
+                return;
+            }
+
             new TurretStoreMenu(player, game).open();
             player.playSound(player.getLocation(), Sound.CHEST_OPEN, 0.2f, 1.2f);
         }

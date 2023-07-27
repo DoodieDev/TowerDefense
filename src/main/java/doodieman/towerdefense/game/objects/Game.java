@@ -186,14 +186,14 @@ public class Game {
 
                     //Remove mobs in goal
                     for (GameMob mob : mobsToRemove) {
+                        gameInteractive.getGameAnimations().mobFinished( mob);
                         damage(mob.getMobType().getDamage());
-                        gameInteractive.getGameAnimations().mobFinished(mob.getEntity().getLocation());
                         mob.remove(false);
                     }
                     mobsToRemove.clear();
 
                     //Check if round is over
-                    if (aliveMobs.size() <= 0 && !mobsSpawning)
+                    if (aliveMobs.size() <= 0 && !mobsSpawning && health > 0)
                         finishRound();
                 }
 
@@ -285,7 +285,7 @@ public class Game {
 
     //Removes all the active mobs
     public void wipeMobs() {
-        for (GameMob mob : this.aliveMobs)
+        for (GameMob mob : new ArrayList<>(this.aliveMobs))
             mob.remove(false);
         this.aliveMobs.clear();
     }
@@ -293,9 +293,24 @@ public class Game {
     //When a mobs damages the player
     public void damage(double amount) {
         this.health -= amount;
-        if (this.health < 0)
-            this.health = 0;
         this.updateStartHologram();
+
+        //Game over
+        if (this.health <= 0) {
+            this.health = 0;
+            this.gameDeath();
+        }
+    }
+
+    //Called when the player dies
+    public void gameDeath() {
+        this.mobPathLoop.cancel();
+        this.wipeMobs();
+        this.roundActive = false;
+        this.health = 0;
+
+        this.gameInteractive.getGameAnimations().onDie();
+        this.gameInteractive.updateRoundItemSlot();
     }
 
     //Change the game gold value
@@ -413,5 +428,9 @@ public class Game {
         return this.mobPath.get(0).getBlockY();
     }
 
+
+    public boolean isAlive() {
+        return this.health > 0;
+    }
 
 }

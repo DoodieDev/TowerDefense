@@ -62,6 +62,13 @@ public class GameListener implements Listener {
         Game game = util.getActiveGame(player);
         TurretType turretType = handler.getTurretUtil().getTurretFromItem(tool);
 
+        //Game is over
+        if (!game.isAlive()) {
+            player.sendMessage("§cDu kan ikke placere tårne, da du er død!");
+            player.playSound(player.getLocation(),Sound.VILLAGER_NO,1f,1.3f);
+            return;
+        }
+
         //Check if it can be placed
         if (!handler.getTurretUtil().canTurretBePlaced(game,blockLocation)) {
             player.sendMessage("§cDu kan ikke placere et tårn her!");

@@ -47,7 +47,7 @@ public class EyeTower extends GameTurret {
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.ZOMBIE_INFECT,0.5f,1.4f);
+        getLocation().getWorld().playSound(getLocation(), Sound.ZOMBIE_INFECT,1f,1.4f);
 
         this.rotateTowardsMob(mob);
         mob.damage(getTurretType().getDamage());

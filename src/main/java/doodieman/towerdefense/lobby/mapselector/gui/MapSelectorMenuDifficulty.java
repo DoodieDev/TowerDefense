@@ -28,8 +28,8 @@ public class MapSelectorMenuDifficulty extends GUI {
         this.map = map;
 
         this.difficultySlots.put(12, Difficulty.EASY);
-        this.difficultySlots.put(13, Difficulty.MEDIUM);
-        this.difficultySlots.put(14, Difficulty.HARD);
+        this.difficultySlots.put(13, null);
+        this.difficultySlots.put(14, null);
     }
 
     @Override
@@ -43,18 +43,34 @@ public class MapSelectorMenuDifficulty extends GUI {
         //Difficulties
         difficultySlots.forEach((slot, difficulty) -> {
 
-            ItemBuilder itemBuilder = new ItemBuilder(difficulty.getItem());
-            itemBuilder.name(difficulty.getTextColor()+"§n"+difficulty.getName());
-            itemBuilder.lore(
-                "",
-                "§fBelønninger:",
-                "§f+ §2$§a???",
-                "§f+ §a??? §2XP",
-                "",
-                "§fTryk for at vælge",
-                "§fdenne sværhedsgrad!"
-            );
-            itemBuilder.addItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+            ItemBuilder itemBuilder;
+
+            if (difficulty != null) {
+                itemBuilder = new ItemBuilder(difficulty.getItem());
+                itemBuilder.name(difficulty.getTextColor()+"§n"+difficulty.getName());
+                itemBuilder.lore(
+                    "",
+                    "§fBelønninger:",
+                    "§f+ §2$§a???",
+                    "§f+ §a??? §2XP",
+                    "",
+                    "§fTryk for at vælge",
+                    "§fdenne sværhedsgrad!"
+                );
+
+                itemBuilder.addItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+
+            } else {
+                itemBuilder = new ItemBuilder(Material.BARRIER);
+                itemBuilder.name("§c§nKommer snart");
+                itemBuilder.lore(
+                    "",
+                    "§fHer vil der komme en anden",
+                    "§fsværhedsgrad så snart det er lavet!"
+                );
+
+                itemBuilder.addItemFlag(ItemFlag.HIDE_POTION_EFFECTS);
+            }
 
             this.layout.put(slot, itemBuilder.build());
         });
@@ -70,7 +86,7 @@ public class MapSelectorMenuDifficulty extends GUI {
             return;
         }
 
-        if (difficultySlots.containsKey(slot)) {
+        if (difficultySlots.containsKey(slot) && difficultySlots.get(slot) != null) {
             player.closeInventory();
             Difficulty difficulty = difficultySlots.get(slot);
             GameUtil.getInstance().startGame(player, map, difficulty);

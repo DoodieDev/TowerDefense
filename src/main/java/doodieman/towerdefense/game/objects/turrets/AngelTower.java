@@ -47,7 +47,7 @@ public class AngelTower extends GameTurret {
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.DIG_WOOL,0.5f,1f);
+        getLocation().getWorld().playSound(getLocation(), Sound.DIG_WOOL,1f,1f);
 
         this.rotateTowardsMob(mob);
         mob.damage(getTurretType().getDamage());
