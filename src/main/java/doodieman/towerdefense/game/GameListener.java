@@ -76,10 +76,15 @@ public class GameListener implements Listener {
             return;
         }
 
-
         //Check if it can be placed
         if (!handler.getTurretUtil().canTurretBePlaced(game,blockLocation)) {
             player.sendMessage("§cDu kan ikke placere et tårn her!");
+            return;
+        }
+
+        //Is still pasting a turret. Please wait..
+        if (game.isPastingTurret()) {
+            player.sendMessage("§cDu placerer tårne for hurtigt!");
             return;
         }
 

@@ -24,6 +24,7 @@ import doodieman.towerdefense.sheetsdata.dataobjects.SheetRound;
 import doodieman.towerdefense.utils.PacketUtil;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -69,6 +70,8 @@ public class Game {
     @Getter
     private boolean mobsSpawning;
     private final java.util.Map<GameSetting, Boolean> gameSettings;
+    @Getter @Setter
+    private boolean isPastingTurret;
 
     @Getter //Current round number
     private int currentRound;
@@ -100,6 +103,7 @@ public class Game {
         this.startHologram = null;
         this.mobPathLoop = null;
         this.gameSettings = new HashMap<>();
+        this.isPastingTurret = false;
     }
 
     //Prepares the game, pasting schematic, etc

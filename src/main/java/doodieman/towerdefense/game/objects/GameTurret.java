@@ -97,6 +97,7 @@ public abstract class GameTurret {
 
     //Render the turret. (Schematic, hologram, etc)
     public void render() {
+        this.game.setPastingTurret(true);
 
         //Render the turret. First paste the schematic async.
         TowerDefense.runAsync(() -> {
@@ -110,7 +111,7 @@ public abstract class GameTurret {
 
                 //Call animation
                 this.getGame().getGameInteractive().getGameAnimations().onTurretPlacement(this);
-
+                this.game.setPastingTurret(false);
                 //TODO create hologram
             });
         });
