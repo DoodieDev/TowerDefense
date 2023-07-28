@@ -195,6 +195,7 @@ public abstract class GameTurret {
             armorStand.setVisible(false);
 
             armorStand.setSmall(asSection.getBoolean("small",false));
+            armorStand.setVisible(asSection.getBoolean("visible",false));
 
             armorStand.setHeadPose(LocationUtil.stringToEulerAngle(asSection.getString("head")));
             armorStand.setBodyPose(LocationUtil.stringToEulerAngle(asSection.getString("body")));

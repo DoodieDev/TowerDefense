@@ -78,6 +78,7 @@ public class TurretSetupHandler {
             asSection.set(i+".leftArm", LocationUtil.eulerAngleToString(armorStand.getLeftArmPose()));
             asSection.set(i+".rightLeg", LocationUtil.eulerAngleToString(armorStand.getRightLegPose()));
             asSection.set(i+".leftLeg", LocationUtil.eulerAngleToString(armorStand.getLeftLegPose()));
+            asSection.set(i+".visible", armorStand.isVisible());
 
             //Save equipment
             asSection.set(i+".equipment.helmet",armorStand.getHelmet());
