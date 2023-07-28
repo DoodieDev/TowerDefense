@@ -151,6 +151,7 @@ public class GameInteractive implements Listener {
         double range = turretType.getRange();
         int points = (int) Math.floor(range * pointsPerRange);
         Location center = targetBlock.getLocation();
+        center.add(0.5,0,0.5);
         center.setY(game.getMobPath().get(0).getBlockY() + 0.25);
 
         //Display the outer circle
