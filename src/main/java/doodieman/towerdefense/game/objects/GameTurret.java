@@ -193,7 +193,6 @@ public abstract class GameTurret {
 
             armorStand.setGravity(false);
             armorStand.setBasePlate(false);
-            armorStand.setVisible(false);
 
             armorStand.setSmall(asSection.getBoolean("small",false));
             armorStand.setVisible(asSection.getBoolean("visible",false));
