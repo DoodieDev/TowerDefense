@@ -32,7 +32,7 @@ public class SettingsMenu extends GUI {
         //Leave game
         ItemBuilder leaveGame = new ItemBuilder(Material.INK_SACK, 1, (short) 1);
         leaveGame.name("§c§nForlad og gem");
-        leaveGame.lore("§7§oDine fremskridt vil blive gemt! §c(Ikke lavet)", "", "§fTryk for at forlade spillet!");
+        leaveGame.lore("§7§oDine fremskridt vil blive gemt!", "", "§fTryk for at forlade spillet!");
         this.layout.put(16, leaveGame.build());
 
         //Auto start

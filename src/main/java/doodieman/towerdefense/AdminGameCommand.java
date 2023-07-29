@@ -3,6 +3,8 @@ package doodieman.towerdefense;
 import doodieman.towerdefense.game.GameUtil;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.objects.GameTurret;
+import doodieman.towerdefense.maps.MapUtil;
+import doodieman.towerdefense.maps.objects.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,12 +18,34 @@ public class AdminGameCommand implements CommandExecutor {
 
         if (args.length < 1) return true;
 
-        if (args[0].equalsIgnoreCase("gold")) {
+        switch (args[0].toUpperCase()) {
 
-            Game game = GameUtil.getInstance().getActiveGame(player);
-            game.addGold(5000);
+            case "GOLD":
+                Game gameToGold = GameUtil.getInstance().getActiveGame(player);
+                gameToGold.addGold(5000);
+                break;
+
+            case "SAVEGAME":
+                Game gameToSave = GameUtil.getInstance().getActiveGame(player);
+                gameToSave.saveGame();
+
+                player.sendMessage("Saved game.. tror jeg nok");
+                break;
+
+            case "LOADGAME":
+
+                Map map = MapUtil.getInstance().getMap(args[1].toLowerCase());
+                if (map == null) {
+                    player.sendMessage("§cUkendt map");
+                    break;
+                }
+
+                GameUtil.getInstance().loadGame(player,map);
+
+                break;
 
         }
+
 
 
         return true;

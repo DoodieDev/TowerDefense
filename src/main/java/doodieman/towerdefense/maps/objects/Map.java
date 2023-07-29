@@ -14,6 +14,7 @@ import com.sk89q.worldedit.world.registry.WorldData;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.utils.LocationUtil;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -73,17 +74,14 @@ public class Map {
             Vector pasteLocation = new Vector(location.getX(), location.getY(), location.getZ());
             com.sk89q.worldedit.world.World pasteWorld = new BukkitWorld(location.getWorld());
             WorldData pasteWorldData = pasteWorld.getWorldData();
-
             Clipboard clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream(file)).read(pasteWorldData);
             ClipboardHolder clipboardHolder = new ClipboardHolder(clipboard, pasteWorldData);
             EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(pasteWorld, -1);
-
             Operation operation = clipboardHolder
                 .createPaste(editSession, pasteWorldData)
                 .to(pasteLocation)
                 .ignoreAirBlocks(false)
                 .build();
-
             Operations.completeLegacy(operation);
             editSession.flushQueue();
 

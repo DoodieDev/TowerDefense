@@ -96,7 +96,7 @@ public abstract class GameTurret {
     }
 
     //Render the turret. (Schematic, hologram, etc)
-    public void render() {
+    public void render(boolean animation) {
         this.game.setPastingTurret(true);
 
         //Render the turret. First paste the schematic async.
@@ -110,7 +110,8 @@ public abstract class GameTurret {
                 this.updateArmorStands();
 
                 //Call animation
-                this.getGame().getGameInteractive().getGameAnimations().onTurretPlacement(this);
+                if (animation)
+                    this.getGame().getGameInteractive().getGameAnimations().onTurretPlacement(this);
                 this.game.setPastingTurret(false);
                 //TODO create hologram
             });

@@ -11,28 +11,40 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.interactive.GameInteractive;
+import doodieman.towerdefense.game.utils.TurretUtil;
 import doodieman.towerdefense.game.values.Difficulty;
 import doodieman.towerdefense.game.values.GameSetting;
+import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.playerdata.PlayerDataUtil;
+import doodieman.towerdefense.playerdata.objects.PlayerData;
 import doodieman.towerdefense.sheetsdata.SheetsDataUtil;
 import doodieman.towerdefense.sheetsdata.dataobjects.SheetMobCluster;
 import doodieman.towerdefense.sheetsdata.dataobjects.SheetMobType;
 import doodieman.towerdefense.sheetsdata.dataobjects.SheetRound;
+import doodieman.towerdefense.utils.InventoryUtil;
+import doodieman.towerdefense.utils.LocationUtil;
 import doodieman.towerdefense.utils.PacketUtil;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -90,6 +102,8 @@ public class Game {
         this.gameInteractive = new GameInteractive(player, this);
         this.mobPath = new ArrayList<>();
         this.world = MapUtil.getInstance().getGameWorld();
+
+        //Grid location
         this.gridLocation = MapGridHandler.getInstance().generateLocation();
         this.gridLocation.register();
         this.zeroLocation = this.gridLocation.getLocation(this.world);
@@ -117,6 +131,7 @@ public class Game {
             @Override
             public void run() {
                 map.pasteSchematic(zeroLocation);
+
                 if (player.isOnline())
                     TowerDefense.runSync(onFinish);
             }
@@ -144,6 +159,10 @@ public class Game {
 
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop(boolean removeSchematic) {
+
+        if (!roundActive && isGameActive) {
+            this.saveGame();
+        }
 
         this.roundActive = false;
         this.isGameActive = false;
@@ -181,16 +200,9 @@ public class Game {
         this.mobPathLoop = new BukkitRunnable() {
 
             int tick = 0;
-            double displayPathOffset = 0;
 
             @Override
             public void run() {
-
-                //While round is inactive - Display path
-                if (!roundActive) {
-                    showPathParticles(displayPathOffset,30);
-                    displayPathOffset += 0.30;
-                }
 
                 //While round is active
                 if (roundActive) {
@@ -236,6 +248,8 @@ public class Game {
 
     //Starts the round
     public void startRound() {
+
+        this.saveGame();
 
         this.roundActive = true;
         this.mobsSpawning = true;
@@ -338,57 +352,6 @@ public class Game {
         this.gameInteractive.updateRoundItemSlot();
     }
 
-    //Display the particles throughout the entire path
-    private void showPathParticles(double offset, double distance) {
-
-        double pathLength = map.getPathLength();
-        double middlePath = map.getPathLength() / 2;
-
-        int pathPoints = (int) Math.floor(pathLength / distance);
-        double lengthPerPoint = pathLength / pathPoints;
-
-        offset = offset % lengthPerPoint;
-
-        Color startColor = Color.fromRGB(0, 255,0);
-        Color middleColor = Color.fromRGB(255, 255,0);
-        Color endColor = Color.fromRGB(255, 0,0);
-
-        for (int i = 0; i < pathPoints; i++) {
-
-            double placement = i * lengthPerPoint + offset;
-            Location location = getRealLocation(map.getPathLocationAt(placement));
-            location.add(0, 0.5, 0);
-
-            Color color;
-
-            //If it is over 50% of the map length, fade from MIDDLE to END color.
-            if (placement >= middlePath) {
-                double percent = (placement - middlePath) / middlePath;
-                int red = (int) this.getNumberCloseToTarget(middleColor.getRed(),endColor.getRed(), percent);
-                int green = (int) this.getNumberCloseToTarget(middleColor.getGreen(),endColor.getGreen(), percent);
-                int blue = (int) this.getNumberCloseToTarget(middleColor.getBlue(),endColor.getBlue(), percent);
-
-                color = Color.fromRGB(red, green, blue);
-            }
-
-            //If it iis less 50% of the map length, fade from START to MIDDLE color.
-            else {
-                double percent = placement / middlePath;
-
-                int red = (int) this.getNumberCloseToTarget(startColor.getRed(),middleColor.getRed(), percent);
-                int green = (int) this.getNumberCloseToTarget(startColor.getGreen(),middleColor.getGreen(), percent);
-                int blue = (int) this.getNumberCloseToTarget(startColor.getBlue(),middleColor.getBlue(), percent);
-
-                color = Color.fromRGB(red, green, blue);
-            }
-
-            for (int j = 0; j < 5; j++) {
-                PacketUtil.sendRedstoneParticle(player.getPlayer(),location.clone().add(0,j * 0.1,0),color);
-            }
-        }
-
-    }
-
     //Create or update the hologram at the start
     public void updateStartHologram() {
         Location location = this.mobPath.get(0).clone().add(0,3,0);
@@ -412,6 +375,71 @@ public class Game {
     }
 
 
+    public void saveGame() {
+        if (turrets.size() <= 0) return;
+
+        PlayerData playerData = PlayerDataUtil.getData(player);
+        FileConfiguration config = playerData.getFile();
+
+        config.set("saves."+map.getMapID(), null);
+
+        if (!config.contains("saves."+map.getMapID()))
+            config.createSection("saves."+map.getMapID());
+        ConfigurationSection section = config.getConfigurationSection("saves."+map.getMapID());
+
+        //Save basic stats
+        section.set("health", this.health);
+        section.set("round", this.currentRound);
+        section.set("difficulty",this.difficulty.getId());
+        section.set("gold", this.gold);
+        section.set("inventory", InventoryUtil.toBase64(player.getPlayer().getInventory()));
+        section.set("date", new Date().getTime());
+
+        //Save turrets
+        int id = 0;
+        for (GameTurret turret : this.turrets) {
+            String turretPath = "turrets."+id+".";
+
+            section.set(turretPath+"offset", LocationUtil.vectorToString(this.getOffset(turret.getZeroLocation())));
+            section.set(turretPath+"turretType", turret.getTurretType().getId());
+
+            //TODO save more stats
+
+            id++;
+        }
+
+        playerData.save();
+    }
+
+    public void loadGame() {
+        PlayerData playerData = PlayerDataUtil.getData(player);
+        FileConfiguration config = playerData.getFile();
+
+        ConfigurationSection section = config.getConfigurationSection("saves."+map.getMapID());
+
+        this.health = section.getDouble("health");
+        this.currentRound = section.getInt("round");
+        this.gold = section.getDouble("gold");
+
+        //Load inventory
+        Inventory inventory = InventoryUtil.fromBase64(section.getString("inventory"));
+        for (int i = 0; i < inventory.getSize(); i++)
+            player.getPlayer().getInventory().setItem(i,inventory.getItem(i));
+        //Load turrets
+        for (String id : section.getConfigurationSection("turrets").getKeys(false)) {
+            ConfigurationSection turretSection = section.getConfigurationSection("turrets."+id);
+
+            org.bukkit.util.Vector offset = LocationUtil.stringToVector(turretSection.getString("offset"));
+            String turretTypeID = turretSection.getString("turretType");
+
+            TurretType turretType = TurretType.getByID(turretTypeID);
+            Location turretLocation = this.getLocationFromOffset(offset);
+
+            GameTurret turret = TurretUtil.getInstance().createTurret(this,turretType,turretLocation);
+            turret.render(false);
+        }
+    }
+
     /*
         SIMPLE UTILITIES
     */
@@ -419,15 +447,28 @@ public class Game {
     //Get real location from location in config.
     //Example: The map is built and saved with different coordinates in a different world.
     //When its pasted in the real game world. The location varies.
-    public Location getRealLocation(Location location) {
+    public Location getRealLocation(Location mapLocation) {
         Location mapZero = map.getCorner1();
-        double xDiffer = -(mapZero.getX() - location.getX());
-        double yDiffer = -(mapZero.getY() - location.getY());
-        double zDiffer = -(mapZero.getZ() - location.getZ());
+        double xDiffer = -(mapZero.getX() - mapLocation.getX());
+        double yDiffer = -(mapZero.getY() - mapLocation.getY());
+        double zDiffer = -(mapZero.getZ() - mapLocation.getZ());
         Location newLocation = zeroLocation.clone().add(xDiffer,yDiffer,zDiffer);
-        newLocation.setYaw(location.getYaw());
-        newLocation.setPitch(location.getPitch());
+        newLocation.setYaw(mapLocation.getYaw());
+        newLocation.setPitch(mapLocation.getPitch());
         return newLocation;
+    }
+
+    //Get the offset from in-game location. Used to save locations.
+    public org.bukkit.util.Vector getOffset(Location ingameLocation) {
+        double xDiffer = -(zeroLocation.getX() - ingameLocation.getX());
+        double yDiffer = -(zeroLocation.getY() - ingameLocation.getY());
+        double zDiffer = -(zeroLocation.getZ() - ingameLocation.getZ());
+        return new org.bukkit.util.Vector(xDiffer,yDiffer,zDiffer);
+    }
+    public Location getLocationFromOffset(org.bukkit.util.Vector offset) {
+        return zeroLocation
+            .clone()
+            .add(offset.getX(), offset.getY(), offset.getZ());
     }
 
     //Change the game gold value
@@ -442,17 +483,6 @@ public class Game {
         this.setGold(this.getGold() - amount);
     }
 
-    private double getNumberCloseToTarget(double start, double target, double percent) {
-        double difference = target - start;
-        double differenceOfPercent = difference * percent;
-        double result;
-        if (target >= start) {
-            result = start + differenceOfPercent;
-        } else {
-            result = start + differenceOfPercent;
-        }
-        return result;
-    }
     public int getMobYLevel() {
         return this.mobPath.get(0).getBlockY();
     }

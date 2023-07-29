@@ -8,12 +8,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 
 public class LocationUtil {
+
     public static String locationToString(Location loc) {
         return loc.getWorld().getName() + ";" + loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getYaw() + ";" + loc.getPitch();
     }
-
     public static Location stringToLocation(String string) {
         String[] parts = string.split(";");
         if (parts.length != 6) return new Location(Bukkit.getWorld("world"), 0, 0, 0);
@@ -28,10 +29,10 @@ public class LocationUtil {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
+
     public static String eulerAngleToString(EulerAngle eulerAngle) {
         return eulerAngle.getX()+";"+eulerAngle.getY()+";"+eulerAngle.getZ();
     }
-
     public static EulerAngle stringToEulerAngle(String string) {
         String[] parts = string.split(";");
         if (parts.length != 3) return new EulerAngle(0,0,0);
@@ -41,6 +42,20 @@ public class LocationUtil {
         float z = Float.parseFloat(parts[2]);
 
         return new EulerAngle(x,y,z);
+    }
+
+    public static String vectorToString(Vector vector) {
+        return vector.getX()+";"+vector.getY()+";"+vector.getZ();
+    }
+    public static Vector stringToVector(String string) {
+        String[] parts = string.split(";");
+        if (parts.length != 3) return new Vector(0,0,0);
+
+        float x = Float.parseFloat(parts[0]);
+        float y = Float.parseFloat(parts[1]);
+        float z = Float.parseFloat(parts[2]);
+
+        return new Vector(x,y,z);
     }
 
 

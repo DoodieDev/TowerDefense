@@ -1,6 +1,7 @@
 package doodieman.towerdefense.lobby.mapselector.gui;
 
 import doodieman.towerdefense.game.GameUtil;
+import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.values.Difficulty;
 import doodieman.towerdefense.maps.objects.Map;
 import doodieman.towerdefense.utils.GUI;
@@ -88,8 +89,12 @@ public class MapSelectorMenuDifficulty extends GUI {
 
         if (difficultySlots.containsKey(slot) && difficultySlots.get(slot) != null) {
             player.closeInventory();
+
             Difficulty difficulty = difficultySlots.get(slot);
-            GameUtil.getInstance().startGame(player, map, difficulty);
+
+            Game game = GameUtil.getInstance().createGame(player, map, difficulty);
+            GameUtil.getInstance().prepareGame(game, null);
+
             this.playClickSound();
         }
     }

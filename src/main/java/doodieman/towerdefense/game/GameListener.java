@@ -91,10 +91,11 @@ public class GameListener implements Listener {
         //Create the turret
         TurretUtil turretUtil = handler.getTurretUtil();
         turretUtil.removeTurretItems(player, turretType, 1);
+
         GameTurret turret = turretUtil.createTurret(game, turretType, blockLocation);
 
         turret.setRotation(LocationUtil.getAngleToLocation(blockLocation,player.getLocation()));
-        turret.render();
+        turret.render(true);
 
     }
 

@@ -11,6 +11,7 @@ import doodieman.towerdefense.game.values.ControlBlock;
 import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.utils.ItemBuilder;
 import doodieman.towerdefense.utils.LocationUtil;
+import doodieman.towerdefense.utils.NumberUtil;
 import doodieman.towerdefense.utils.PacketUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -47,11 +48,14 @@ public class GameInteractive implements Listener {
     @Getter
     private final GameScoreboard scoreboard;
 
+    private double displayPathOffset;
+
     public GameInteractive(OfflinePlayer player, Game game) {
         this.offlinePlayer = player;
         this.player = offlinePlayer.getPlayer();
         this.game = game;
 
+        this.displayPathOffset = 0;
         this.gameAnimations = new GameAnimations(game);
         this.scoreboard = new GameScoreboard(game);
     }
@@ -112,7 +116,12 @@ public class GameInteractive implements Listener {
     //Called every tick from the Game class
     public void doTick(int tick) {
 
+        if (!game.isRoundActive()) {
+            showPathParticles(displayPathOffset,30);
+            displayPathOffset += 0.30;
+        }
 
+        //When player is holding a turret
         if (TurretUtil.getInstance().isTurretItem(player.getItemInHand())) {
             if (tick % 4 == 0)
                 this.displayPlacementOptions();
@@ -201,6 +210,57 @@ public class GameInteractive implements Listener {
             PacketUtil.sendRedstoneParticle(player,side3, color);
             PacketUtil.sendRedstoneParticle(player,side4, color);
         }
+    }
+
+    //Display the particles throughout the entire path
+    private void showPathParticles(double offset, double distance) {
+
+        double pathLength = game.getMap().getPathLength();
+        double middlePath = game.getMap().getPathLength() / 2;
+
+        int pathPoints = (int) Math.floor(pathLength / distance);
+        double lengthPerPoint = pathLength / pathPoints;
+
+        offset = offset % lengthPerPoint;
+
+        Color startColor = Color.fromRGB(0, 255,0);
+        Color middleColor = Color.fromRGB(255, 255,0);
+        Color endColor = Color.fromRGB(255, 0,0);
+
+        for (int i = 0; i < pathPoints; i++) {
+
+            double placement = i * lengthPerPoint + offset;
+            Location location = game.getRealLocation(game.getMap().getPathLocationAt(placement));
+            location.add(0, 0.5, 0);
+
+            Color color;
+
+            //If it is over 50% of the map length, fade from MIDDLE to END color.
+            if (placement >= middlePath) {
+                double percent = (placement - middlePath) / middlePath;
+                int red = (int) NumberUtil.getNumberCloseToTarget(middleColor.getRed(),endColor.getRed(), percent);
+                int green = (int) NumberUtil.getNumberCloseToTarget(middleColor.getGreen(),endColor.getGreen(), percent);
+                int blue = (int) NumberUtil.getNumberCloseToTarget(middleColor.getBlue(),endColor.getBlue(), percent);
+
+                color = Color.fromRGB(red, green, blue);
+            }
+
+            //If it iis less 50% of the map length, fade from START to MIDDLE color.
+            else {
+                double percent = placement / middlePath;
+
+                int red = (int) NumberUtil.getNumberCloseToTarget(startColor.getRed(),middleColor.getRed(), percent);
+                int green = (int) NumberUtil.getNumberCloseToTarget(startColor.getGreen(),middleColor.getGreen(), percent);
+                int blue = (int) NumberUtil.getNumberCloseToTarget(startColor.getBlue(),middleColor.getBlue(), percent);
+
+                color = Color.fromRGB(red, green, blue);
+            }
+
+            for (int j = 0; j < 5; j++) {
+                PacketUtil.sendRedstoneParticle(player.getPlayer(),location.clone().add(0,j * 0.1,0),color);
+            }
+        }
+
     }
 
     @EventHandler

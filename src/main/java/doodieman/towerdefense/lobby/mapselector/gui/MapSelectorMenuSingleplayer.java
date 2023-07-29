@@ -1,7 +1,11 @@
 package doodieman.towerdefense.lobby.mapselector.gui;
 
+import doodieman.towerdefense.game.GameUtil;
+import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.objects.GameSave;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.playerdata.objects.PlayerData;
 import doodieman.towerdefense.utils.GUI;
 import doodieman.towerdefense.utils.ItemBuilder;
 import lombok.Getter;
@@ -51,15 +55,46 @@ public class MapSelectorMenuSingleplayer extends GUI {
             ItemBuilder itemBuilder;
 
             if (mapSlot.getMapID() != null) {
+
                 Map map = MapUtil.getInstance().getMap(mapSlot.getMapID());
 
-                itemBuilder = new ItemBuilder(Material.EMPTY_MAP);
-                itemBuilder.name("§f§n"+map.getMapName());
-                itemBuilder.lore("§f- §7§o"+mapSlot.getDifficulty(), "", "§fTryk for at spille!");
-                if (map.getMapVisual().size() > 0) {
-                    itemBuilder.addLore("");
-                    itemBuilder.addLore(map.getMapVisual());
+                //Doesn't have a save
+                if (!GameUtil.getInstance().hasSavedGame(player,map)) {
+
+                    itemBuilder = new ItemBuilder(Material.EMPTY_MAP);
+                    itemBuilder.name("§f§n"+map.getMapName());
+                    itemBuilder.lore("§f- §7§o"+mapSlot.getDifficulty(), "", "§fTryk for at spille!");
+                    if (map.getMapVisual().size() > 0) {
+                        itemBuilder.addLore("");
+                        itemBuilder.addLore(map.getMapVisual());
+                    }
                 }
+
+                //Has a save
+                else {
+
+                    GameSave save = GameUtil.getInstance().getSavedGame(player,map);
+
+                    itemBuilder = new ItemBuilder(Material.EMPTY_MAP);
+                    itemBuilder.name("§f§n"+map.getMapName());
+                    itemBuilder.lore(
+                        "§f- §7§o"+mapSlot.getDifficulty(),
+                        "",
+                        "§7[§aSAVE§7] "+save.getFormattedDate(),
+                        "",
+                        "§7Gemt klokken: §f"+save.getFormattedTime().replace(":","§7:§f"),
+                        "§7Runde: §f"+save.getRound()+"§7/§f"+save.getDifficulty().getRounds(),
+                        "",
+                        "§f§oVenstreklik§f for at spille videre!",
+                        "§f§oHøjreklik§f for at starte forfra!"
+                    );
+                    if (map.getMapVisual().size() > 0) {
+                        itemBuilder.addLore("");
+                        itemBuilder.addLore(map.getMapVisual());
+                    }
+                }
+
+
 
             } else {
                 itemBuilder = new ItemBuilder(Material.PAPER);
@@ -88,8 +123,28 @@ public class MapSelectorMenuSingleplayer extends GUI {
             if (mapSlot.getMapID() == null) return;
             Map map = MapUtil.getInstance().getMap(mapSlot.getMapID());
 
-            new MapSelectorMenuDifficulty(player, map).open();
-            this.playClickSound();
+            if (!GameUtil.getInstance().hasSavedGame(player,map)) {
+                new MapSelectorMenuDifficulty(player, map).open();
+                this.playClickSound();
+                return;
+            }
+
+            //Left click - Start brand new
+            if (clickType == ClickType.RIGHT) {
+                new MapSelectorMenuDifficulty(player, map).open();
+                this.playClickSound();
+            }
+
+            //Right click - Load saved game
+            else if (clickType == ClickType.LEFT) {
+                this.playClickSound();
+                player.closeInventory();
+
+                if (!GameUtil.getInstance().hasSavedGame(player,map)) return;
+                GameUtil.getInstance().loadGame(player,map);
+            }
+
+
         }
 
     }
