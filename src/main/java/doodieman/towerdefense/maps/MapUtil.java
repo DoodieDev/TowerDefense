@@ -1,8 +1,11 @@
 package doodieman.towerdefense.maps;
 
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.maps.objects.MapSlot;
 import lombok.Getter;
 import org.bukkit.World;
+
+import java.util.List;
 
 public class MapUtil {
 
@@ -31,6 +34,26 @@ public class MapUtil {
             .stream()
             .filter(map -> map.getMapID().equalsIgnoreCase(mapID))
             .findAny().get();
+    }
+
+    public List<MapSlot> getMapSlots() {
+        return this.handler.getMapSlotList();
+    }
+
+    public MapSlot getMapSlot(String mapID) {
+        return this.handler.getMapSlotList()
+            .stream()
+            .filter(mapSlot -> mapSlot.getMapID().equals(mapID))
+            .findFirst()
+            .get();
+    }
+
+    public MapSlot getMapSlot(int menuSlot) {
+        return this.handler.getMapSlotList()
+            .stream()
+            .filter(mapSlot -> mapSlot.getMenuSlot() == menuSlot)
+            .findFirst()
+            .get();
     }
 
 }

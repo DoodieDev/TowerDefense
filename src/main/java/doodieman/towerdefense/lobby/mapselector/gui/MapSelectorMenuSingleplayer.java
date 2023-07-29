@@ -4,7 +4,9 @@ import doodieman.towerdefense.game.GameUtil;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.objects.GameSave;
 import doodieman.towerdefense.maps.MapUtil;
+import doodieman.towerdefense.maps.enums.MapDifficulty;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.maps.objects.MapSlot;
 import doodieman.towerdefense.playerdata.objects.PlayerData;
 import doodieman.towerdefense.utils.GUI;
 import doodieman.towerdefense.utils.ItemBuilder;
@@ -17,30 +19,16 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MapSelectorMenuSingleplayer extends GUI {
 
-    private final HashMap<Integer, MapSlot> mapSlots = new HashMap<>();
+    final List<MapSlot> mapSlotList;
 
     public MapSelectorMenuSingleplayer(Player player) {
         super(player, 6, "Vælg et map");
 
-        mapSlots.put(10, new MapSlot("eventyr", "§a§oBegynder"));
-        mapSlots.put(19, new MapSlot("træstammen", "§a§oBegynder"));
-        mapSlots.put(28, new MapSlot("oerkenen", "§a§oBegynder"));
-
-        mapSlots.put(12, new MapSlot("haven", "§e§oØvede"));
-        mapSlots.put(21, new MapSlot("majsmarken", "§e§oØvede"));
-        mapSlots.put(30, new MapSlot("jordskælv", "§e§oØvede"));
-
-        mapSlots.put(14, new MapSlot("udflugten", "§6§oAvanceret"));
-        mapSlots.put(23, new MapSlot("grønland", "§6§oAvanceret"));
-        mapSlots.put(32, new MapSlot(null, "§6§oAvanceret"));
-
-        mapSlots.put(16, new MapSlot("skak", "§c§oExpert"));
-        mapSlots.put(25, new MapSlot("domino", "§c§oExpert"));
-        mapSlots.put(34, new MapSlot(null, "§c§oExpert"));
-
+        this.mapSlotList = MapUtil.getInstance().getMapSlots();
     }
 
     @Override
@@ -51,9 +39,9 @@ public class MapSelectorMenuSingleplayer extends GUI {
         }
         this.layout.put(49, GUIItem.BACK.getItem());
 
-        mapSlots.forEach((slot, mapSlot) -> {
-            ItemBuilder itemBuilder;
+        MapUtil.getInstance().getMapSlots().forEach(mapSlot -> {
 
+            ItemBuilder itemBuilder;
             if (mapSlot.getMapID() != null) {
 
                 Map map = MapUtil.getInstance().getMap(mapSlot.getMapID());
@@ -63,7 +51,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
 
                     itemBuilder = new ItemBuilder(Material.EMPTY_MAP);
                     itemBuilder.name("§f§n"+map.getMapName());
-                    itemBuilder.lore("§f- §7§o"+mapSlot.getDifficulty(), "", "§fTryk for at spille!");
+                    itemBuilder.lore("§7- §7§o"+mapSlot.getDifficulty().getColor()+mapSlot.getDifficulty().getName(), "", "§fTryk for at spille!");
                     if (map.getMapVisual().size() > 0) {
                         itemBuilder.addLore("");
                         itemBuilder.addLore(map.getMapVisual());
@@ -72,13 +60,12 @@ public class MapSelectorMenuSingleplayer extends GUI {
 
                 //Has a save
                 else {
-
                     GameSave save = GameUtil.getInstance().getSavedGame(player,map);
 
                     itemBuilder = new ItemBuilder(Material.EMPTY_MAP);
                     itemBuilder.name("§f§n"+map.getMapName());
                     itemBuilder.lore(
-                        "§f- §7§o"+mapSlot.getDifficulty(),
+                        "§7- §7§o"+mapSlot.getDifficulty().getColor()+mapSlot.getDifficulty().getName(),
                         "",
                         "§7[§aSAVE§7] "+save.getFormattedDate(),
                         "",
@@ -94,16 +81,16 @@ public class MapSelectorMenuSingleplayer extends GUI {
                     }
                 }
 
+            }
 
-
-            } else {
+            //Map has not been added
+            else {
                 itemBuilder = new ItemBuilder(Material.PAPER);
                 itemBuilder.name("§f§n???");
                 itemBuilder.lore("§f- "+mapSlot.getDifficulty(), "", "§fKommer snart..");
-
             }
 
-            this.layout.put(slot, itemBuilder.build());
+            this.layout.put(mapSlot.getMenuSlot(), itemBuilder.build());
         });
 
         super.render();
@@ -111,6 +98,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
 
     @Override
     public void click(int slot, ItemStack clickedItem, ClickType clickType, InventoryType inventoryType) {
+
         if (slot == 49) {
             new MapSelectorMenu(player).open();
             this.playClickSound();
@@ -118,11 +106,13 @@ public class MapSelectorMenuSingleplayer extends GUI {
         }
 
         //Open select difficulty menu
-        if (mapSlots.containsKey(slot)) {
-            MapSlot mapSlot = mapSlots.get(slot);
+        MapSlot mapSlot = MapUtil.getInstance().getMapSlot(slot);
+        if (mapSlot != null) {
             if (mapSlot.getMapID() == null) return;
+
             Map map = MapUtil.getInstance().getMap(mapSlot.getMapID());
 
+            //Does not have any saved games. Just open difficulty menu
             if (!GameUtil.getInstance().hasSavedGame(player,map)) {
                 new MapSelectorMenuDifficulty(player, map).open();
                 this.playClickSound();
@@ -139,21 +129,8 @@ public class MapSelectorMenuSingleplayer extends GUI {
             else if (clickType == ClickType.LEFT) {
                 this.playClickSound();
                 player.closeInventory();
-
                 GameUtil.getInstance().loadGame(player,map);
             }
-
-
         }
-
     }
-
-    @RequiredArgsConstructor
-    private class MapSlot {
-        @Getter
-        private final String mapID;
-        @Getter
-        private final String difficulty;
-    }
-
 }

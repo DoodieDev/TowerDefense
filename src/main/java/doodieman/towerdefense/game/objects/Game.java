@@ -18,6 +18,7 @@ import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.mapgrid.MapGridHandler;
 import doodieman.towerdefense.mapgrid.objects.GridLocation;
 import doodieman.towerdefense.maps.MapUtil;
+import doodieman.towerdefense.maps.enums.MapDifficulty;
 import doodieman.towerdefense.maps.objects.Map;
 import doodieman.towerdefense.playerdata.PlayerDataUtil;
 import doodieman.towerdefense.playerdata.objects.PlayerData;
@@ -58,6 +59,8 @@ public class Game {
     private final GridLocation gridLocation;
     @Getter
     private final GameInteractive gameInteractive;
+    @Getter
+    private final MapDifficulty mapDifficulty;
     @Getter
     private final World world;
     @Getter
@@ -102,6 +105,7 @@ public class Game {
         this.gameInteractive = new GameInteractive(player, this);
         this.mobPath = new ArrayList<>();
         this.world = MapUtil.getInstance().getGameWorld();
+        this.mapDifficulty = MapUtil.getInstance().getMapSlot(map.getMapID()).getDifficulty();
 
         //Grid location
         this.gridLocation = MapGridHandler.getInstance().generateLocation();
@@ -358,7 +362,7 @@ public class Game {
             this.startHologram = HologramsAPI.createHologram(TowerDefense.getInstance(),location);
             startHologram.appendTextLine("§a§nStartlinje");
             startHologram.appendTextLine("");
-            startHologram.appendTextLine("§7Map: §a"+map.getMapName());
+            startHologram.appendTextLine("§7Map: "+mapDifficulty.getColor()+map.getMapName());
             startHologram.appendTextLine("§7Sværhedsgrad: "+difficulty.getTextColor()+difficulty.getName());
             startHologram.appendTextLine("");
             this.roundTextLine = startHologram.appendTextLine("§7Runde: §f"+currentRound+"§7/§f"+difficulty.getRounds());

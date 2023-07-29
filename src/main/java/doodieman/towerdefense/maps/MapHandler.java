@@ -2,7 +2,9 @@ package doodieman.towerdefense.maps;
 
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.lobby.spawn.SpawnUtil;
+import doodieman.towerdefense.maps.enums.MapDifficulty;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.maps.objects.MapSlot;
 import doodieman.towerdefense.utils.FileUtils;
 import doodieman.towerdefense.utils.VoidWorldGenerator;
 import lombok.Getter;
@@ -25,9 +27,10 @@ public class MapHandler {
 
     @Getter
     private final MapUtil mapUtil;
-
     @Getter
     private final List<Map> loadedMaps = new ArrayList<>();
+    @Getter
+    private final List<MapSlot> mapSlotList = new ArrayList<>();
 
     public MapHandler() {
         this.mapUtil = new MapUtil(this);
@@ -35,6 +38,26 @@ public class MapHandler {
         this.deleteGameWorld();
         this.createGameWorld();
         this.loadMaps();
+
+        this.initializeMapSlots();
+    }
+
+    public void initializeMapSlots() {
+        this.mapSlotList.add(new MapSlot("eventyr",MapDifficulty.BEGINNER,10));
+        this.mapSlotList.add(new MapSlot("træstammen", MapDifficulty.BEGINNER, 19));
+        this.mapSlotList.add(new MapSlot("oerkenen", MapDifficulty.BEGINNER, 28));
+
+        this.mapSlotList.add(new MapSlot("haven", MapDifficulty.INTERMEDIATE,12));
+        this.mapSlotList.add(new MapSlot("majsmarken", MapDifficulty.INTERMEDIATE,21));
+        this.mapSlotList.add(new MapSlot("jordskælv", MapDifficulty.INTERMEDIATE,30));
+
+        this.mapSlotList.add(new MapSlot("udflugten", MapDifficulty.ADVANCED,14));
+        this.mapSlotList.add(new MapSlot("grønland", MapDifficulty.ADVANCED,23));
+        this.mapSlotList.add(new MapSlot(null, MapDifficulty.ADVANCED,32));
+
+        this.mapSlotList.add(new MapSlot("skak", MapDifficulty.EXPERT, 16));
+        this.mapSlotList.add(new MapSlot("domino", MapDifficulty.EXPERT, 25));
+        this.mapSlotList.add(new MapSlot(null, MapDifficulty.EXPERT, 34));
     }
 
     public void loadMaps() {
