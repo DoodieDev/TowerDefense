@@ -41,13 +41,13 @@ public class SandTower extends GameTurret {
     public List<GameMob> detect() {
         return this.getGame().getAliveMobs()
             .stream()
-            .filter(mob -> mob.getLocation().distance(this.getLocation()) <= this.getTurretType().getRange())
+            .filter(mob -> mob.getLocation().distance(this.getCenterLocation()) <= this.getTurretType().getRange())
             .collect(Collectors.toList());
     }
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.DIG_SAND,1f,0.8f);
+        getCenterLocation().getWorld().playSound(getLocation(), Sound.DIG_SAND,1f,0.8f);
 
         this.rotateTowardsMob(mob);
         mob.damage(getTurretType().getDamage());

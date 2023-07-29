@@ -41,13 +41,13 @@ public class TntTower extends GameTurret {
     public List<GameMob> detect() {
         return this.getGame().getAliveMobs()
             .stream()
-            .filter(mob -> mob.getLocation().distance(this.getLocation()) <= this.getTurretType().getRange())
+            .filter(mob -> mob.getLocation().distance(this.getCenterLocation()) <= this.getTurretType().getRange())
             .collect(Collectors.toList());
     }
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.EXPLODE,0.5f,1.3f);
+        getCenterLocation().getWorld().playSound(getLocation(), Sound.EXPLODE,0.5f,1.3f);
 
 
         this.rotateTowardsMob(mob);

@@ -41,13 +41,13 @@ public class FireTower extends GameTurret {
     public List<GameMob> detect() {
         return this.getGame().getAliveMobs()
             .stream()
-            .filter(mob -> mob.getLocation().distance(this.getLocation()) <= this.getTurretType().getRange())
+            .filter(mob -> mob.getLocation().distance(this.getCenterLocation()) <= this.getTurretType().getRange())
             .collect(Collectors.toList());
     }
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.CAT_PURR,0.5f,1.6f);
+        getCenterLocation().getWorld().playSound(getLocation(), Sound.CAT_PURR,0.5f,1.6f);
 
         this.rotateTowardsMob(mob);
         mob.damage(getTurretType().getDamage());

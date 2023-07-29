@@ -140,7 +140,6 @@ public class MapSelectorMenuSingleplayer extends GUI {
                 this.playClickSound();
                 player.closeInventory();
 
-                if (!GameUtil.getInstance().hasSavedGame(player,map)) return;
                 GameUtil.getInstance().loadGame(player,map);
             }
 

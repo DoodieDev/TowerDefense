@@ -41,13 +41,13 @@ public class SnowballTower extends GameTurret {
     public List<GameMob> detect() {
         return this.getGame().getAliveMobs()
             .stream()
-            .filter(mob -> mob.getLocation().distance(this.getLocation()) <= this.getTurretType().getRange())
+            .filter(mob -> mob.getLocation().distance(this.getCenterLocation()) <= this.getTurretType().getRange())
             .collect(Collectors.toList());
     }
 
     @Override
     public void shoot(GameMob mob) {
-        getLocation().getWorld().playSound(getLocation(), Sound.SHOOT_ARROW,0.5f,0.5f);
+        getCenterLocation().getWorld().playSound(getLocation(), Sound.SHOOT_ARROW,0.5f,0.5f);
 
 
         this.rotateTowardsMob(mob);

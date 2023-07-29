@@ -87,7 +87,7 @@ public abstract class GameTurret {
     }
 
     public void rotateTowardsMob(GameMob gameMob) {
-        this.setRotation(LocationUtil.getAngleToLocation(this.getLocation(),gameMob.getLocation()));
+        this.setRotation(LocationUtil.getAngleToLocation(this.getCenterLocation(),gameMob.getLocation()));
         this.updateArmorStands();
     }
 
@@ -112,6 +112,7 @@ public abstract class GameTurret {
                 //Call animation
                 if (animation)
                     this.getGame().getGameInteractive().getGameAnimations().onTurretPlacement(this);
+
                 this.game.setPastingTurret(false);
                 //TODO create hologram
             });
@@ -167,14 +168,16 @@ public abstract class GameTurret {
 
     //Paste the 3x3 redstoneblocks at the bottom
     public void pasteRedstoneBlocks() {
-        int xCorner1 = getZeroLocation().getBlockX() - 1;
-        int zCorner1 = getZeroLocation().getBlockZ() - 1;
-        int xCorner2 = getZeroLocation().getBlockX() + 1;
-        int zCorner2 = getZeroLocation().getBlockZ() + 1;
+
+        Location zero = this.getZeroLocation();
+        int xCorner1 = zero.getBlockX() - 1;
+        int zCorner1 = zero.getBlockZ() - 1;
+        int xCorner2 = zero.getBlockX() + 1;
+        int zCorner2 = zero.getBlockZ() + 1;
 
         for (int x = xCorner1; x <= xCorner2; x++) {
             for (int z = zCorner1; z <= zCorner2; z++) {
-                this.game.getWorld().getBlockAt(x,getZeroLocation().getBlockY(),z).setType(Material.REDSTONE_BLOCK);
+                this.game.getWorld().getBlockAt(x,zero.getBlockY(),z).setType(Material.REDSTONE_BLOCK);
             }
         }
     }
@@ -182,7 +185,7 @@ public abstract class GameTurret {
     //Paste all the armorstands
     public void pasteArmorStands() {
 
-        Location centerLocation = this.getZeroLocation().add(0.5,0,0.5);
+        Location centerLocation = this.getZeroLocation().clone();
         ConfigurationSection section = getConfigSection().getConfigurationSection("armorstands");
 
         for (String id : section.getKeys(false)) {
@@ -224,7 +227,7 @@ public abstract class GameTurret {
 
     //Update the armorstand positions.
     public void updateArmorStands() {
-        Location center = this.getZeroLocation().add(0.5,0,0.5);
+        Location center = this.getZeroLocation().add(0.5, 0, 0.5);
 
         for (GameTurretArmorstand turretArmorstand : this.getArmorStandList()) {
             if (turretArmorstand.getTags().contains("norotation")) continue;
@@ -273,4 +276,7 @@ public abstract class GameTurret {
         return config.getConfigurationSection("turrets."+turretType.getId());
     }
 
+    public Location getCenterLocation() {
+        return this.location.clone().add(0.5, 0, 0.5);
+    }
 }

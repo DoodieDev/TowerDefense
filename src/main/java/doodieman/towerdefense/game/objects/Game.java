@@ -160,9 +160,7 @@ public class Game {
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop(boolean removeSchematic) {
 
-        if (!roundActive && isGameActive) {
-            this.saveGame();
-        }
+        this.saveGame();
 
         this.roundActive = false;
         this.isGameActive = false;
@@ -376,6 +374,8 @@ public class Game {
 
 
     public void saveGame() {
+        if (roundActive) return;
+        if (!isGameActive) return;
         if (turrets.size() <= 0) return;
 
         PlayerData playerData = PlayerDataUtil.getData(player);
@@ -400,7 +400,9 @@ public class Game {
         for (GameTurret turret : this.turrets) {
             String turretPath = "turrets."+id+".";
 
-            section.set(turretPath+"offset", LocationUtil.vectorToString(this.getOffset(turret.getZeroLocation())));
+            String offsetString = LocationUtil.vectorToString(this.getOffset(turret.getLocation()));
+            TowerDefense.doodieDebug(player,"9 "+offsetString);
+            section.set(turretPath+"offset", offsetString);
             section.set(turretPath+"turretType", turret.getTurretType().getId());
 
             //TODO save more stats
@@ -432,10 +434,13 @@ public class Game {
             org.bukkit.util.Vector offset = LocationUtil.stringToVector(turretSection.getString("offset"));
             String turretTypeID = turretSection.getString("turretType");
 
+            TowerDefense.doodieDebug(player,"7 "+offset.getX()+", "+offset.getY()+", "+offset.getZ());
             TurretType turretType = TurretType.getByID(turretTypeID);
             Location turretLocation = this.getLocationFromOffset(offset);
+            TowerDefense.doodieDebug(player,"8 "+turretLocation.getX()+", "+turretLocation.getY()+", "+turretLocation.getZ());
 
             GameTurret turret = TurretUtil.getInstance().createTurret(this,turretType,turretLocation);
+            turret.setRotation(0);
             turret.render(false);
         }
     }

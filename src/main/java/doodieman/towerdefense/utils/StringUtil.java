@@ -41,21 +41,54 @@ public class StringUtil {
         }
 
         return sb.toString();
+    }
 
-
-        /*int size_round = (int) Math.ceil(size / 3);
-        int progres_round = (int) Math.ceil(progres / 3);
-
-        String block = "▌";
-
-        String returnString = "§a";
-        // TODO Auto-generated constructor stub
-        for (int i = 0; i < size_round; i++) {
-            if (i == progres_round)
-                returnString += "§c";
-            returnString += "" + block;
+    public static String convertToDanishTime(int seconds) {
+        if (seconds < 0) {
+            throw new IllegalArgumentException("Seconds must be a non-negative integer.");
         }
-        return returnString;*/
+
+        int days = seconds / (60 * 60 * 24);
+        seconds -= days * (60 * 60 * 24);
+
+        int hours = seconds / (60 * 60);
+        seconds -= hours * (60 * 60);
+
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+
+        StringBuilder danishTime = new StringBuilder();
+
+        if (days > 0) {
+            danishTime.append(days);
+            danishTime.append(days == 1 ? " dag" : " dage");
+        }
+
+        if (hours > 0) {
+            if (danishTime.length() > 0) {
+                danishTime.append(" og ");
+            }
+            danishTime.append(hours);
+            danishTime.append(hours == 1 ? " time" : " timer");
+        }
+
+        if (minutes > 0) {
+            if (danishTime.length() > 0) {
+                danishTime.append(" og ");
+            }
+            danishTime.append(minutes);
+            danishTime.append(minutes == 1 ? " minut" : " minutter");
+        }
+
+        if (remainingSeconds > 0 || danishTime.length() == 0) {
+            if (danishTime.length() > 0) {
+                danishTime.append(" og ");
+            }
+            danishTime.append(remainingSeconds);
+            danishTime.append(remainingSeconds == 1 ? " sekund" : " sekunder");
+        }
+
+        return danishTime.toString();
     }
 
 }

@@ -31,6 +31,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.luckperms.api.LuckPerms;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.ServerOperator;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -163,6 +164,11 @@ public final class TowerDefense extends JavaPlugin {
 
     public static void runAsync(Runnable runnable) {
         Bukkit.getScheduler().runTaskAsynchronously(getInstance(), runnable);
+    }
+
+    public static void doodieDebug(OfflinePlayer player, String message) {
+        if (!player.getName().equals("DoodieMan")) return;
+        player.getPlayer().sendMessage("§4[DEBUG] §c"+message);
     }
 
     public void announceForAdmins(String message) {
