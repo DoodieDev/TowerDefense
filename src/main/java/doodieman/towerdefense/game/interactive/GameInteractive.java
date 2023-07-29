@@ -111,23 +111,29 @@ public class GameInteractive implements Listener {
 
     //Called every tick from the Game class
     public void doTick(int tick) {
-        if (tick % 4 == 0)
-            this.displayPlacementOptions();
-        if (tick % 6 == 0)
-            this.displayRange();
+
+
+        if (TurretUtil.getInstance().isTurretItem(player.getItemInHand())) {
+            if (tick % 4 == 0)
+                this.displayPlacementOptions();
+            if (tick % 6 == 0)
+                this.displayRange();
+            if (tick % 10 == 0)
+                PacketUtil.sendActionBar(player,"§5Tårnets Range §f §f §f✦ §a §a §aFri placering");
+        }
     }
 
     //Display where the player can place turrets
     public void displayPlacementOptions() {
-        if (!TurretUtil.getInstance().isTurretItem(player.getItemInHand())) return;
+        int scanRange = 7;
 
-        int scanRange = 5;
+        Block targetBlock = LocationUtil.getTargetBlock(player,50);
 
         //Corners to scan
-        int xCorner1 = player.getLocation().getBlockX() - scanRange;
-        int zCorner1 = player.getLocation().getBlockZ() - scanRange;
-        int xCorner2 = player.getLocation().getBlockX() + scanRange;
-        int zCorner2 = player.getLocation().getBlockZ() + scanRange;
+        int xCorner1 = targetBlock.getLocation().getBlockX() - scanRange;
+        int zCorner1 = targetBlock.getLocation().getBlockZ() - scanRange;
+        int xCorner2 = targetBlock.getLocation().getBlockX() + scanRange;
+        int zCorner2 = targetBlock.getLocation().getBlockZ() + scanRange;
 
         for (int x = xCorner1; x <= xCorner2; x++) {
             for (int z = zCorner1; z <= zCorner2; z++) {
@@ -141,8 +147,6 @@ public class GameInteractive implements Listener {
 
     //Display the range of a turret
     public void displayRange() {
-
-        if (!TurretUtil.getInstance().isTurretItem(player.getItemInHand())) return;
         TurretType turretType = TurretUtil.getInstance().getTurretFromItem(player.getItemInHand());
 
         Block targetBlock = LocationUtil.getTargetBlock(player,50);

@@ -11,6 +11,7 @@ import doodieman.towerdefense.utils.PacketUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.GameMode;
@@ -110,6 +111,15 @@ public class SumoUtil {
             losingPlayer.setVelocity(new Vector((losingPlayer.getLocation().getX() - center.getX()) * 5, 2, (losingPlayer.getLocation().getZ() - center.getZ()) * 5));
         } catch (Exception ignored) {}
 
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                losingPlayer.getWorld().spigot().playEffect(losingPlayer.getLocation(), Effect.EXPLOSION_HUGE,0,0,4,4,4,0,5,150);
+                losingPlayer.getWorld().spigot().playEffect(losingPlayer.getLocation(), Effect.FLAME,0,0,0,0,0,1,40,150);
+                losingPlayer.getWorld().spigot().playEffect(losingPlayer.getLocation(), Effect.FIREWORKS_SPARK,0,0,0,0,0,1,40,150);
+            }
+        }.runTaskLater(TowerDefense.getInstance(),20L);
+
         //Reset after 2 seconds
         new BukkitRunnable() {
             @Override
@@ -121,6 +131,7 @@ public class SumoUtil {
                 WaterHandler.getInstance().getLastLocations().put(winningPlayer, winLocation);
                 losingPlayer.teleport(SumoLocation.LOSERLOBBY.getLocation());
                 winningPlayer.teleport(SumoLocation.WINLOBBY.getLocation());
+
 
                 handler.setState(SumoState.IDLE);
 

@@ -68,6 +68,8 @@ public class Game {
     @Getter //Check if the round is active
     private boolean roundActive;
     @Getter
+    private boolean isGameActive;
+    @Getter
     private boolean mobsSpawning;
     private final java.util.Map<GameSetting, Boolean> gameSettings;
     @Getter @Setter
@@ -99,6 +101,7 @@ public class Game {
         this.turrets = new ArrayList<>();
         this.roundActive = false;
         this.mobsSpawning = false;
+        this.isGameActive = false;
         this.currentRound = 0;
         this.startHologram = null;
         this.mobPathLoop = null;
@@ -133,6 +136,7 @@ public class Game {
 
     //Starts the game. Teleports player, etc.
     public void start() {
+        this.isGameActive = true;
         this.player.getPlayer().teleport(mobPath.get(0));
         this.gameInteractive.register();
         this.startLoop();
@@ -140,7 +144,9 @@ public class Game {
 
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop(boolean removeSchematic) {
+
         this.roundActive = false;
+        this.isGameActive = false;
         if (this.mobPathLoop != null)
             this.mobPathLoop.cancel();
         this.gridLocation.unregister();

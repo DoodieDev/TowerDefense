@@ -80,7 +80,7 @@ public class SheetsDataManager {
     //Loads all the SheetMob instances
     public void loadMobs() {
         int row = 1;
-        int length = 11;
+        int length = 12;
 
         while (this.mobSheet.getRow(row).getCell(0).getCellType() != Cell.CELL_TYPE_BLANK) {
 
@@ -105,7 +105,7 @@ public class SheetsDataManager {
         for (int row = startRow; row <= endRow; row++) {
             for (int column = startColumn; column <= endColumn; column++) {
                 Cell cell = sheet.getRow(row).getCell(column);
-                objects.add(this.getCellValue(cell));
+                objects.add(cell == null ? null : this.getCellValue(cell));
             }
         }
         return objects;

@@ -89,8 +89,8 @@ public class GameAnimations {
     //Animatino when a turret has been placed
     public void onTurretPlacement(GameTurret turret) {
 
-        int pointsPerRange = 20; // How many points in the circle per range. Example 5 points = 5 * pointsPerRange = 100 points
-        int rangePulses = 20; // How many times should it pulse until its the full range
+        int pointsPerRange = 10; // How many points in the circle per range. Example 5 points = 5 * pointsPerRange = 100 points
+        int rangePulses = 40; // How many times should it pulse until its the full range
 
         Location center = turret.getLocation();
         center.add(0.5,0,0.5);
@@ -107,13 +107,13 @@ public class GameAnimations {
                 int points = (int) Math.floor(range * pointsPerRange);
 
                 //Done. Stop the timer.
-                if (pulse > rangePulses + 30) {
+                if (pulse > rangePulses + 60) {
                     this.cancel();
                     return;
                 }
 
                 //At the final pulses. Do it slowly
-                if (pulse >= rangePulses && pulse % 10 != 0) {
+                if (pulse >= rangePulses && pulse % 20 != 0) {
                     pulse++;
                     return;
                 }
@@ -129,7 +129,7 @@ public class GameAnimations {
                 //Display the circle
                 for (int point = 0; point < points; point++) {
 
-                    double angle = point * (360f / points);
+                    double angle = (point * (360f / points)) + (pulse * 20f);
                     Location location = LocationUtil.getLocationInCircle(center,angle,range);
 
                     getPlayer().spigot().playEffect(location, Effect.WITCH_MAGIC,0,0,0,0,0,0,1,70);
@@ -137,12 +137,40 @@ public class GameAnimations {
 
                 pulse++;
             }
-        }.runTaskTimer(TowerDefense.getInstance(),0, 2L);
+        }.runTaskTimer(TowerDefense.getInstance(),0, 1L);
 
     }
 
     public void onDie() {
         PacketUtil.sendTitle(getPlayer(), "§cDu døde!", "§cØv bøv bussemand..", 20, 100, 20);
+        getPlayer().playSound(getPlayer().getLocation(),Sound.ENDERDRAGON_DEATH,0.5f,0);
+
+        //Dispaly explosions
+        int points = 20;
+        long pointDelay = 5L;
+
+        new BukkitRunnable() {
+            int point = 0;
+
+            @Override
+            public void run() {
+
+                //End
+                if (point >= points || !game.isGameActive()) {
+                    this.cancel();
+                    return;
+                }
+
+                double pathLength = point * (game.getMap().getPathLength() / points);
+                Location location = game.getRealLocation(game.getMap().getPathLocationAt(pathLength));
+
+                getPlayer().spigot().playEffect(location,Effect.EXPLOSION_HUGE, 0, 0,0,0,0,0,1,70);
+                getPlayer().playSound(getPlayer().getLocation(),Sound.EXPLODE,0.1f,1.3f);
+
+                point++;
+            }
+        }.runTaskTimer(TowerDefense.getInstance(),0L,pointDelay);
+
     }
 
     //Particles when a mob spawns
@@ -152,12 +180,11 @@ public class GameAnimations {
 
     //Particles when a mob gets to the goal
     public void mobFinished(GameMob mob, double damage) {
-
-        double newHealth = game.getHealth() - damage;
         Location location = mob.getLocation();
 
         getPlayer().spigot().playEffect(location, Effect.LAVA_POP,0,0,0.1f,0.1f,0.1f,0.2f,10,40);
-        PacketUtil.sendTitle(getPlayer(), "", "§f"+ StringUtil.formatNum(newHealth)+" §4❤", 0, 20, 0);
+
+        PacketUtil.sendTitle(getPlayer(), "", "§f-"+ StringUtil.formatNum(damage)+" §4❤", 0, 20, 0);
         getPlayer().playSound(getPlayer().getLocation(),Sound.ITEM_PICKUP,0.5f,0.8f);
     }
 
