@@ -400,8 +400,13 @@ public class Game {
         for (GameTurret turret : this.turrets) {
             String turretPath = "turrets."+id+".";
 
+
+            TowerDefense.doodieDebug(player,"9.0 "+turret.getLocation().getX()+" "+turret.getLocation().getY()+" "+turret.getLocation().getZ());
+            TowerDefense.doodieDebug(player,"9.25 "+zeroLocation.getX()+" "+zeroLocation.getY()+" "+zeroLocation.getZ());
             String offsetString = LocationUtil.vectorToString(this.getOffset(turret.getLocation()));
-            TowerDefense.doodieDebug(player,"9 "+offsetString);
+
+            TowerDefense.doodieDebug(player,"9.5 "+offsetString);
+
             section.set(turretPath+"offset", offsetString);
             section.set(turretPath+"turretType", turret.getTurretType().getId());
 
@@ -427,6 +432,7 @@ public class Game {
         Inventory inventory = InventoryUtil.fromBase64(section.getString("inventory"));
         for (int i = 0; i < inventory.getSize(); i++)
             player.getPlayer().getInventory().setItem(i,inventory.getItem(i));
+
         //Load turrets
         for (String id : section.getConfigurationSection("turrets").getKeys(false)) {
             ConfigurationSection turretSection = section.getConfigurationSection("turrets."+id);
@@ -435,8 +441,10 @@ public class Game {
             String turretTypeID = turretSection.getString("turretType");
 
             TowerDefense.doodieDebug(player,"7 "+offset.getX()+", "+offset.getY()+", "+offset.getZ());
+
             TurretType turretType = TurretType.getByID(turretTypeID);
             Location turretLocation = this.getLocationFromOffset(offset);
+
             TowerDefense.doodieDebug(player,"8 "+turretLocation.getX()+", "+turretLocation.getY()+", "+turretLocation.getZ());
 
             GameTurret turret = TurretUtil.getInstance().createTurret(this,turretType,turretLocation);

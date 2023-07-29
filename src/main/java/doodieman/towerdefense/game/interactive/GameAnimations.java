@@ -92,7 +92,7 @@ public class GameAnimations {
         int pointsPerRange = 10; // How many points in the circle per range. Example 5 points = 5 * pointsPerRange = 100 points
         int rangePulses = 40; // How many times should it pulse until its the full range
 
-        Location center = turret.getLocation();
+        Location center = turret.getLocation().clone();
         center.add(0.5,0,0.5);
         center.setY(game.getMobPath().get(0).getBlockY() + 0.25);
 

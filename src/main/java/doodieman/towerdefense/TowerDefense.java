@@ -168,7 +168,19 @@ public final class TowerDefense extends JavaPlugin {
 
     public static void doodieDebug(OfflinePlayer player, String message) {
         if (!player.getName().equals("DoodieMan")) return;
-        player.getPlayer().sendMessage("§4[DEBUG] §c"+message);
+
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        // The first two elements in the stack trace array are for Thread.getStackTrace() and printCallerClassAndLine()
+        // The third element (index 2) will provide information about the calling method
+        if (stackTrace.length >= 3) {
+            StackTraceElement callingMethod = stackTrace[2];
+            String className = callingMethod.getClassName();
+            int lineNumber = callingMethod.getLineNumber();
+            System.out.println("Called from Class: " + className + ", Line: " + lineNumber);
+            player.getPlayer().sendMessage("§4[DEBUG] §c("+className+":"+lineNumber+") §6"+message);
+        } else {
+            player.getPlayer().sendMessage("§4[DEBUG] §6"+message);
+        }
     }
 
     public void announceForAdmins(String message) {

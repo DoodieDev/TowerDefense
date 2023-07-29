@@ -185,7 +185,7 @@ public abstract class GameTurret {
     //Paste all the armorstands
     public void pasteArmorStands() {
 
-        Location centerLocation = this.getZeroLocation().clone();
+        Location centerLocation = this.getZeroLocation().add(0.5, 0, 0.5);
         ConfigurationSection section = getConfigSection().getConfigurationSection("armorstands");
 
         for (String id : section.getKeys(false)) {
@@ -233,7 +233,7 @@ public abstract class GameTurret {
             if (turretArmorstand.getTags().contains("norotation")) continue;
 
             ArmorStand armorStand = turretArmorstand.getArmorStand();
-            Location asLocation = armorStand.getLocation();
+            Location asLocation = armorStand.getLocation().clone();
 
             //Get the radius from center to the armorstand
             Location radiusLocation = asLocation.clone();
