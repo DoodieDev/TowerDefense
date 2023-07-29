@@ -92,12 +92,9 @@ public class GameListener implements Listener {
         TurretUtil turretUtil = handler.getTurretUtil();
         turretUtil.removeTurretItems(player, turretType, 1);
 
-        TowerDefense.doodieDebug(player, "1 "+blockLocation.getX()+", "+blockLocation.getY()+", "+blockLocation.getZ());
         GameTurret turret = turretUtil.createTurret(game, turretType, blockLocation);
         turret.setRotation(LocationUtil.getAngleToLocation(blockLocation,player.getLocation()));
         turret.render(true);
-
-
     }
 
     //Leave the game

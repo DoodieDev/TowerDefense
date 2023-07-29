@@ -1,5 +1,6 @@
 package doodieman.towerdefense.maps;
 
+import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.maps.objects.Map;
 import doodieman.towerdefense.maps.objects.MapSlot;
 import lombok.Getter;
@@ -40,12 +41,12 @@ public class MapUtil {
         return this.handler.getMapSlotList();
     }
 
-    public MapSlot getMapSlot(String mapID) {
-        return this.handler.getMapSlotList()
-            .stream()
-            .filter(mapSlot -> mapSlot.getMapID().equals(mapID))
-            .findFirst()
-            .get();
+    public MapSlot getMapSlot(String mapID) { ;
+        for (MapSlot mapSlot : handler.getMapSlotList()) {
+            if (mapSlot.getMapID() != null && mapSlot.getMapID().equalsIgnoreCase(mapID))
+                return mapSlot;
+        }
+        return null;
     }
 
     public MapSlot getMapSlot(int menuSlot) {
