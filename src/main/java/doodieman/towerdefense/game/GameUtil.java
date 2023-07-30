@@ -56,6 +56,7 @@ public class GameUtil {
                 onlinePlayer.setHealth(20);
                 onlinePlayer.setFoodLevel(20);
                 onlinePlayer.setGameMode(GameMode.SURVIVAL);
+                onlinePlayer.getEquipment().clear();
                 onlinePlayer.getInventory().clear();
                 onlinePlayer.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,Integer.MAX_VALUE,0,false,false));
                 //Start the game
@@ -88,6 +89,7 @@ public class GameUtil {
             @Override
             public void run() {
                 game.loadGame();
+                game.getGameInteractive().updateInventoryItems();
             }
         });
     }
@@ -102,7 +104,7 @@ public class GameUtil {
 
         if (removeSchematic) {
             LabyModUtil.sendCineScope(player.getPlayer(),50,0,0);
-            LabyModUtil.sendCineScope(player.getPlayer(),0,500,5);
+            LabyModUtil.sendCineScope(player.getPlayer(),0,1000,200);
         }
 
         player.getPlayer().sendMessage("");

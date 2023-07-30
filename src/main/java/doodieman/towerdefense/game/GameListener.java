@@ -196,5 +196,13 @@ public class GameListener implements Listener {
         event.setCancelled(true);
     }
 
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (!util.isInGame(player)) return;
+
+
+    }
+
 
 }

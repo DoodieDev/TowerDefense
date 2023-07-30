@@ -66,7 +66,10 @@ public class GameInteractive implements Listener {
 
         //Scoreboard
         this.scoreboard.createScoreboard();
+        this.updateInventoryItems();
+    }
 
+    public void updateInventoryItems() {
         //Settings item
         ItemBuilder settings = new ItemBuilder(Material.NETHER_STAR);
         settings.name("§f§nIndstillinger§r §7(Højreklik)");

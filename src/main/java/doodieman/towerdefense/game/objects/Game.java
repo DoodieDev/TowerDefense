@@ -35,11 +35,13 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
@@ -163,6 +165,14 @@ public class Game {
 
     //Stops the game. Removing schematic, teleport player to spawn, etc.
     public void stop(boolean removeSchematic) {
+
+        //Fix turret on head
+        ItemStack helmet = player.getPlayer().getEquipment().getHelmet();
+        if (helmet != null && helmet.getType() != Material.AIR) {
+            player.getPlayer().getInventory().addItem(helmet.clone());
+            player.getPlayer().getEquipment().setHelmet(new ItemStack(Material.AIR));
+            player.getPlayer().updateInventory();
+        }
 
         this.saveGame();
 
@@ -375,7 +385,6 @@ public class Game {
         this.healthTextLine.setText("§7Liv: §f"+StringUtil.formatNum(health)+"§4❤");
         this.goldTextLine.setText("§7Guld: §e"+ StringUtil.formatNum(gold) +"g");
     }
-
 
     public void saveGame() {
         if (roundActive) return;
