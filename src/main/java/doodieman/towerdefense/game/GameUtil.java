@@ -133,6 +133,8 @@ public class GameUtil {
         return this.handler.getActiveGames().get(player);
     }
 
+
+
     public boolean hasSavedGame(OfflinePlayer player, Map map) {
         PlayerData playerData = PlayerDataUtil.getData(player);
         FileConfiguration config = playerData.getFile();
@@ -143,4 +145,11 @@ public class GameUtil {
         return new GameSave(player,map);
     }
 
+
+    public void deleteSavedGame(OfflinePlayer player, Map map) {
+        PlayerData playerData = PlayerDataUtil.getData(player);
+        FileConfiguration config = playerData.getFile();
+        config.set("saves."+map.getMapID(), null);
+        playerData.save();
+    }
 }

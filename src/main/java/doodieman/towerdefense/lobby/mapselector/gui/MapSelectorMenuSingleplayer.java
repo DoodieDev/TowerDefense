@@ -27,18 +27,19 @@ public class MapSelectorMenuSingleplayer extends GUI {
 
     public MapSelectorMenuSingleplayer(Player player) {
         super(player, 6, "Vælg et map");
-
         this.mapSlotList = MapUtil.getInstance().getMapSlots();
     }
 
     @Override
     public void render() {
+
         //Bottom standard items
         for (int i = 45; i < 54; i++) {
             this.layout.put(i, GUIItem.GLASS_FILL.getItem());
         }
         this.layout.put(49, GUIItem.BACK.getItem());
 
+        //Loop all mapslots
         MapUtil.getInstance().getMapSlots().forEach(mapSlot -> {
 
             ItemBuilder itemBuilder;
@@ -72,9 +73,10 @@ public class MapSelectorMenuSingleplayer extends GUI {
                         "§7Gemt klokken: §f"+save.getFormattedTime().replace(":","§7:§f"),
                         "§7Runde: §f"+save.getRound()+"§7/§f"+save.getDifficulty().getRounds(),
                         "",
-                        "§f§oVenstreklik§f for at spille videre!",
-                        "§f§oHøjreklik§f for at starte forfra!"
+                        "§fTryk for at spille!"
                     );
+
+                    //Add the visual of the map
                     if (map.getMapVisual().size() > 0) {
                         itemBuilder.addLore("");
                         itemBuilder.addLore(map.getMapVisual());
@@ -99,6 +101,7 @@ public class MapSelectorMenuSingleplayer extends GUI {
     @Override
     public void click(int slot, ItemStack clickedItem, ClickType clickType, InventoryType inventoryType) {
 
+        //Go back to previous menu
         if (slot == 49) {
             new MapSelectorMenu(player).open();
             this.playClickSound();
@@ -119,18 +122,9 @@ public class MapSelectorMenuSingleplayer extends GUI {
                 return;
             }
 
-            //Left click - Start brand new
-            if (clickType == ClickType.RIGHT) {
-                new MapSelectorMenuDifficulty(player, map).open();
-                this.playClickSound();
-            }
-
-            //Right click - Load saved game
-            else if (clickType == ClickType.LEFT) {
-                this.playClickSound();
-                player.closeInventory();
-                GameUtil.getInstance().loadGame(player,map);
-            }
+            GameSave save = GameUtil.getInstance().getSavedGame(player,map);
+            new MapSelectorMenuSave(player,map,save).open();
+            this.playClickSound();
         }
     }
 }
