@@ -1,6 +1,11 @@
 package doodieman.towerdefense.simpleevents;
 
+import doodieman.towerdefense.game.GameUtil;
+import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.values.Difficulty;
 import doodieman.towerdefense.lobby.spawn.SpawnUtil;
+import doodieman.towerdefense.maps.MapUtil;
+import doodieman.towerdefense.maps.objects.Map;
 import doodieman.towerdefense.utils.LuckPermsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -27,8 +32,18 @@ public class GlobalListener implements Listener {
         else
             event.setJoinMessage("§8[§a+§8] "+LuckPermsUtil.getRankColor(player)+player.getName());
 
-        player.teleport(SpawnUtil.getSpawn());
-        player.setGameMode(GameMode.ADVENTURE);
+        if (player.hasPlayedBefore()) {
+            player.teleport(SpawnUtil.getSpawn());
+            player.setGameMode(GameMode.ADVENTURE);
+
+        } else {
+            Difficulty difficulty = Difficulty.EASY;
+            Map map = MapUtil.getInstance().getMap("eventyr");
+            Game game = GameUtil.getInstance().createGame(player, map, difficulty);
+            GameUtil.getInstance().prepareGame(game, null);
+        }
+
+
     }
 
     @EventHandler

@@ -85,11 +85,20 @@ public class GameUtil {
 
         Game game = this.createGame(player,map,difficulty);
 
+        //Prepare the game
         this.prepareGame(game, new BukkitRunnable() {
             @Override
             public void run() {
-                game.loadGame();
-                game.getGameInteractive().updateInventoryItems();
+
+                //Load the game data
+                game.loadGame(new BukkitRunnable() {
+
+                    @Override
+                    public void run() {
+                        game.getGameInteractive().updateInventoryItems();
+                    }
+
+                });
             }
         });
     }

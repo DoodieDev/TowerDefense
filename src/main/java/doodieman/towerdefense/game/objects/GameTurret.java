@@ -21,6 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -96,8 +97,7 @@ public abstract class GameTurret {
     }
 
     //Render the turret. (Schematic, hologram, etc)
-    public void render(boolean animation) {
-        this.game.setPastingTurret(true);
+    public void render(boolean animation, BukkitRunnable onFinish) {
 
         //Render the turret. First paste the schematic async.
         TowerDefense.runAsync(() -> {
@@ -113,7 +113,8 @@ public abstract class GameTurret {
                 if (animation)
                     this.getGame().getGameInteractive().getGameAnimations().onTurretPlacement(this);
 
-                this.game.setPastingTurret(false);
+                onFinish.run();
+
                 //TODO create hologram
             });
         });

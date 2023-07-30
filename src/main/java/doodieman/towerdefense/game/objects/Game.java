@@ -10,6 +10,7 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.game.GameUtil;
 import doodieman.towerdefense.game.interactive.GameInteractive;
 import doodieman.towerdefense.game.utils.TurretUtil;
 import doodieman.towerdefense.game.values.Difficulty;
@@ -28,12 +29,9 @@ import doodieman.towerdefense.sheetsdata.dataobjects.SheetMobType;
 import doodieman.towerdefense.sheetsdata.dataobjects.SheetRound;
 import doodieman.towerdefense.utils.InventoryUtil;
 import doodieman.towerdefense.utils.LocationUtil;
-import doodieman.towerdefense.utils.PacketUtil;
 import doodieman.towerdefense.utils.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -44,7 +42,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -332,6 +329,11 @@ public class Game {
 
         if (this.getGameSetting(GameSetting.AUTO_START) && !this.hasWonGame())
             this.startRound();
+
+        //If player has won or is dead, delete the save.
+        if (this.hasWonGame() || !this.isAlive()) {
+            GameUtil.getInstance().deleteSavedGame(player,map);
+        }
     }
 
     //Removes all the active mobs
@@ -388,7 +390,8 @@ public class Game {
 
     public void saveGame() {
         if (roundActive) return;
-        if (!isGameActive) return;
+        if (!isAlive()) return;
+        if (!isGameActive()) return;
         if (turrets.size() <= 0) return;
 
         PlayerData playerData = PlayerDataUtil.getData(player);
@@ -426,7 +429,9 @@ public class Game {
         playerData.save();
     }
 
-    public void loadGame() {
+    List<GameTurret> turretsToRender = new ArrayList<>();
+    public void loadGame(BukkitRunnable onFinish) {
+
         PlayerData playerData = PlayerDataUtil.getData(player);
         FileConfiguration config = playerData.getFile();
 
@@ -453,8 +458,32 @@ public class Game {
 
             GameTurret turret = TurretUtil.getInstance().createTurret(this,turretType,turretLocation);
             turret.setRotation(0);
-            turret.render(false);
+            turretsToRender.add(turret);
         }
+
+        //Render all the turrets with delay between
+        this.setPastingTurret(true);
+        this.turretsToRenderLoop(onFinish);
+    }
+
+    public void turretsToRenderLoop(BukkitRunnable onFinish) {
+
+        if (turretsToRender.size() <= 0) {
+            this.setPastingTurret(false);
+            onFinish.run();
+            return;
+        }
+
+        GameTurret turret = turretsToRender.get(0);
+        turretsToRender.remove(turret);
+
+        turret.render(false, new BukkitRunnable() {
+            @Override
+            public void run() {
+                //Call the function again
+                turretsToRenderLoop(onFinish);
+            }
+        });
     }
 
     /*

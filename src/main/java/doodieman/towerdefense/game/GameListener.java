@@ -32,6 +32,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameListener implements Listener {
 
@@ -94,7 +95,14 @@ public class GameListener implements Listener {
 
         GameTurret turret = turretUtil.createTurret(game, turretType, blockLocation);
         turret.setRotation(LocationUtil.getAngleToLocation(blockLocation,player.getLocation()));
-        turret.render(true);
+
+        game.setPastingTurret(true);
+        turret.render(true, new BukkitRunnable() {
+            @Override
+            public void run() {
+                game.setPastingTurret(false);
+            }
+        });
     }
 
     //Leave the game
