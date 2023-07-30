@@ -29,6 +29,18 @@ public class SumoHandler {
     @Getter @Setter
     private SumoState state = SumoState.IDLE;
 
+    @Getter
+    private final List<String> sumoMessages = Arrays.asList(
+        "§c{loser} §7blev destrueret af §a{winner}§7!",
+        "§c{loser} §7blev sendt til månen af §a{winner}§7!",
+        "§c{loser} §7er officielt dårligere end §a{winner}§7!",
+        "§c{loser}§7, hvordan føles det at tabe til §a{winner}§7?",
+        "§c{loser} §7<-- noob §7 §7 §7gamer --> §a{winner}§7!",
+        "§c{loser} §7glemte at klikke på musen, derfor vandt §a{winner}§7!",
+        "§c{loser} §7blev sendt i Netto af §a{winner}§7!",
+        "§c{loser} §7blev lavet forvandlet til en fugl af §a{winner}§7!"
+    );
+
     public SumoHandler() {
         this.listener = new SumoListener(this);
         this.util = new SumoUtil(this);

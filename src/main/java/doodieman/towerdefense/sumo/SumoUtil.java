@@ -8,6 +8,7 @@ import doodieman.towerdefense.sumo.objects.SumoLocation;
 import doodieman.towerdefense.sumo.objects.SumoPlayer;
 import doodieman.towerdefense.sumo.objects.SumoState;
 import doodieman.towerdefense.utils.PacketUtil;
+import doodieman.towerdefense.utils.WorldGuardUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -103,17 +104,23 @@ public class SumoUtil {
 
         handler.setState(SumoState.WINEFFECT);
 
-        //Launch the losing player
+        //Sumo message
+        int randomMessage = ThreadLocalRandom.current().nextInt(handler.getSumoMessages().size());
+        String message = "§7[§fSUMO§7] " + handler.getSumoMessages().get(randomMessage);
+        message = message.replace("{loser}",losingPlayer.getName());
+        message = message.replace("{winner}",winningPlayer.getName());
+
+        for (Player player : WorldGuardUtil.playersWithinRegion(Bukkit.getOnlinePlayers(), loserLocation.getWorld(), "sumobesked")) {
+            player.sendMessage(message);
+        }
+
+        //Losing player effect
         Bukkit.getWorld("world").strikeLightningEffect(losingPlayer.getLocation());
         Location center = SumoLocation.CENTER.getLocation();
-
-        //Catch the warning "Excessive velocity set detected: tried to set velocity of entity" that spams console.
         try {
             losingPlayer.setVelocity(new Vector((losingPlayer.getLocation().getX() - center.getX()) * 5, 2, (losingPlayer.getLocation().getZ() - center.getZ()) * 5));
         } catch (Exception ignored) {}
-
-
-
+        //Explode effect after 1 second
         new BukkitRunnable() {
             @Override
             public void run() {
