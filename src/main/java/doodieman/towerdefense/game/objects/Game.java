@@ -461,6 +461,8 @@ public class Game {
             turretsToRender.add(turret);
         }
 
+        this.updateStartHologram();
+
         //Render all the turrets with delay between
         this.setPastingTurret(true);
         this.turretsToRenderLoop(onFinish);

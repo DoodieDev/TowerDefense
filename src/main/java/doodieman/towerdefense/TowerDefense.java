@@ -177,7 +177,8 @@ public final class TowerDefense extends JavaPlugin {
             String className = callingMethod.getClassName();
             int lineNumber = callingMethod.getLineNumber();
             System.out.println("Called from Class: " + className + ", Line: " + lineNumber);
-            player.getPlayer().sendMessage("§4[DEBUG] §c("+className+":"+lineNumber+") §6"+message);
+            player.getPlayer().sendMessage("§4[DEBUG] "+className+":"+lineNumber+"");
+            player.getPlayer().sendMessage("§4>> §7"+message);
         } else {
             player.getPlayer().sendMessage("§4[DEBUG] §6"+message);
         }

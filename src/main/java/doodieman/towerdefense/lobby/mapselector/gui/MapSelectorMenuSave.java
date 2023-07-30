@@ -1,5 +1,7 @@
 package doodieman.towerdefense.lobby.mapselector.gui;
 
+import dk.manaxi.unikpay.api.Config;
+import dk.manaxi.unikpay.plugin.API.Internal;
 import doodieman.towerdefense.game.GameUtil;
 import doodieman.towerdefense.game.objects.GameSave;
 import doodieman.towerdefense.maps.objects.Map;
@@ -32,10 +34,12 @@ public class MapSelectorMenuSave extends GUI {
         }
         this.layout.put(31, GUIItem.BACK.getItem());
 
-        ItemBuilder newGame = new ItemBuilder(Material.EMERALD);
-        newGame.name("§a§nStart forfra");
-        newGame.lore("", "§fTryk for at starte forfra!", "", "§7Dette kan ikke fortrydes!");
+        //Start new game
+        ItemBuilder newGame = new ItemBuilder(Material.INK_SACK, 1, (byte) 14);
+        newGame.name("§6§nStart forfra");
+        newGame.lore("", "§fTryk for at starte forfra!", "", "§6Dette kan ikke fortrydes!");
 
+        //Continue saved game
         ItemBuilder continueGame = new ItemBuilder(Material.PAPER);
         continueGame.name("§f§nSpil videre");
         continueGame.lore(
@@ -48,9 +52,10 @@ public class MapSelectorMenuSave extends GUI {
             "§fTryk for at spille videre!"
         );
 
+        //Delete saved game
         ItemBuilder deleteSave = new ItemBuilder(Material.BARRIER);
         deleteSave.name("§c§nSlet dit save");
-        deleteSave.lore("", "§fTryk for at slette dit save!", "", "§7Dette kan ikke fortrydes!");
+        deleteSave.lore("", "§fTryk for at slette dit save!", "", "§cDette kan ikke fortrydes!");
 
         this.layout.put(10, newGame.build());
         this.layout.put(13, continueGame.build());
@@ -89,6 +94,7 @@ public class MapSelectorMenuSave extends GUI {
             new MapSelectorMenuSingleplayer(player).open();
             this.playClickSound();
         }
+        
     }
 
 }

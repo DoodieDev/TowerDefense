@@ -56,14 +56,27 @@ public class SumoHandler {
 
     private void startTimer() {
         new BukkitRunnable() {
+            int ingameTime = 0;
             @Override
             public void run() {
 
-                if (getState() != SumoState.IDLE) return;
-                if (waitingPlayers.size() < 2) return;
+                if (getState() == SumoState.IDLE) {
+                    if (waitingPlayers.size() < 2) return;
 
-                List<Player> randomPlayers = util.getRandomPlayers();
-                util.startGame(randomPlayers);
+                    ingameTime = 0;
+
+                    List<Player> randomPlayers = util.getRandomPlayers();
+                    util.startGame(randomPlayers);
+                }
+
+                else if (getState() == SumoState.FIGHTING) {
+                    if (ingameTime >= 60) {
+                        util.stopGame(ingamePlayers.get(0).getPlayer());
+                        return;
+                    }
+
+                    ingameTime++;
+                }
 
             }
         }.runTaskTimer(TowerDefense.getInstance(),0L,20L);
