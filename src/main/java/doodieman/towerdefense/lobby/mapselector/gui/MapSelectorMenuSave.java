@@ -94,7 +94,7 @@ public class MapSelectorMenuSave extends GUI {
             new MapSelectorMenuSingleplayer(player).open();
             this.playClickSound();
         }
-        
+
     }
 
 }

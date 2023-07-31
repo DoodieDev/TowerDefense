@@ -65,11 +65,13 @@ public class GameUtil {
                 LabyModUtil.sendCineScope(player.getPlayer(),0,1000,200);
 
                 //TEMPORARY
-                onlinePlayer.setAllowFlight(true);
-                onlinePlayer.sendMessage("");
-                onlinePlayer.sendMessage("§6§lFlytilstand aktiveret§6 eftersom serveren er under udvikling.");
-                onlinePlayer.sendMessage("§cHusk: Dette vil blive en VIP-fordel i fremtiden!");
-                onlinePlayer.sendMessage("");
+                if (onlinePlayer.hasPermission("sol.ingamefly")) {
+                    onlinePlayer.setAllowFlight(true);
+                    onlinePlayer.sendMessage("");
+                    onlinePlayer.sendMessage("§bFly-tilstand §7er blevet §aAktiveret§7!");
+                    onlinePlayer.sendMessage("");
+                }
+
                 if (onFinish != null)
                     onFinish.run();
             }

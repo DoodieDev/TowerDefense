@@ -145,7 +145,8 @@
         <dependency>
             <groupId>com.github.UnikPay</groupId>
             <artifactId>UnikPay</artifactId>
-            <version>subscription-ad3795bb08-1</version>
+            <version>95969c9734</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

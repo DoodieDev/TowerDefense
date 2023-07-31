@@ -3,6 +3,8 @@ package doodieman.towerdefense;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import doodieman.towerdefense.buycraft.BuycraftCommand;
+import doodieman.towerdefense.buycraft.BuycraftHandler;
 import doodieman.towerdefense.chat.ChatHandler;
 import doodieman.towerdefense.game.GameHandler;
 import doodieman.towerdefense.lobby.bench.BenchHandler;
@@ -66,6 +68,8 @@ public final class TowerDefense extends JavaPlugin {
     private SumoHandler sumoHandler;
     @Getter
     private SheetsDataManager sheetsDataManager;
+    @Getter
+    private BuycraftHandler buycraftHandler;
 
     /*
         external plugin dependencies
@@ -143,6 +147,7 @@ public final class TowerDefense extends JavaPlugin {
         this.mapSelectorHandler = new MapSelectorHandler();
         this.spawnHandler = new SpawnHandler();
         this.sumoHandler = new SumoHandler();
+        this.buycraftHandler = new BuycraftHandler();
 
         new WaterHandler();
         new BenchHandler();
@@ -156,6 +161,7 @@ public final class TowerDefense extends JavaPlugin {
         Bukkit.getPluginCommand("setspawn").setExecutor(new SetspawnCommand());
         Bukkit.getPluginCommand("spawn").setExecutor(new SpawnCommand());
         Bukkit.getPluginCommand("discord").setExecutor(new DiscordCommand());
+        Bukkit.getPluginCommand("buy").setExecutor(new BuycraftCommand(buycraftHandler));
     }
 
     public static void runSync(Runnable runnable) {
@@ -182,6 +188,11 @@ public final class TowerDefense extends JavaPlugin {
         } else {
             player.getPlayer().sendMessage("§4[DEBUG] §6"+message);
         }
+    }
+
+    public void announce(String message) {
+        Bukkit.getOnlinePlayers()
+            .forEach(player -> player.sendMessage("§6[§eSOL§6] §f"+message));
     }
 
     public void announceForAdmins(String message) {

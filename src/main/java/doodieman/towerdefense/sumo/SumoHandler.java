@@ -31,14 +31,14 @@ public class SumoHandler {
 
     @Getter
     private final List<String> sumoMessages = Arrays.asList(
-        "§c{loser} §7blev destrueret af §a{winner}§7!",
-        "§c{loser} §7blev sendt til månen af §a{winner}§7!",
-        "§c{loser} §7er officielt dårligere end §a{winner}§7!",
-        "§c{loser}§7, hvordan føles det at tabe til §a{winner}§7?",
-        "§c{loser} §7<-- noob §7 §7 §7gamer --> §a{winner}§7!",
-        "§c{loser} §7glemte at klikke på musen, derfor vandt §a{winner}§7!",
-        "§c{loser} §7blev sendt i Netto af §a{winner}§7!",
-        "§c{loser} §7blev lavet forvandlet til en fugl af §a{winner}§7!"
+        "§8{loser} §7blev destrueret af §e{winner}§7!",
+        "§8{loser} §7blev sendt til månen af §e{winner}§7!",
+        "§8{loser} §7er officielt dårligere end §e{winner}§7!",
+        "§8{loser}§7, hvordan føles det at tabe til §e{winner}§7?",
+        "§8{loser} §7<-- noob §7 §7 §7gamer --> §e{winner}§7!",
+        "§8{loser} §7glemte at klikke på musen, derfor vandt §e{winner}§7!",
+        "§8{loser} §7blev sendt i Netto af §e{winner}§7!",
+        "§8{loser} §7blev forvandlet til en fugl af §e{winner}§7!"
     );
 
     public SumoHandler() {

@@ -2,6 +2,7 @@ package doodieman.towerdefense.utils;
 
 import doodieman.towerdefense.TowerDefense;
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,7 +17,8 @@ public class LuckPermsUtil {
     public static String getRankColor(OfflinePlayer player) {
         User user = getLuckPermsUser(player.getUniqueId());
         String prefix = user.getCachedData().getMetaData().getPrefix();
-        return ChatColor.translateAlternateColorCodes('&',prefix.substring(0, 2));
+        return ChatColor.translateAlternateColorCodes('&',prefix.substring(prefix.length() - 2));
+
     }
 
     public static String getPrefix(String username) {
@@ -27,6 +29,11 @@ public class LuckPermsUtil {
         User user = getLuckPermsUser(player.getUniqueId());
         String prefix = user.getCachedData().getMetaData().getPrefix();
         return ChatColor.translateAlternateColorCodes('&', prefix);
+    }
+
+    public static String getGroupPrefix(String groupName) {
+        Group group = TowerDefense.getInstance().getLuckPerms().getGroupManager().getGroup(groupName);
+        return ChatColor.translateAlternateColorCodes('&', group.getCachedData().getMetaData().getPrefix());
     }
 
     //Use uuid instead of username!

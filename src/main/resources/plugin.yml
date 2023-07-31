@@ -1,7 +1,7 @@
 name: TowerDefense
 version: '${project.version}'
 main: doodieman.towerdefense.TowerDefense
-depend: [HolographicDisplays, Citizens, LuckPerms, WorldGuard]
+depend: [HolographicDisplays, Citizens, LuckPerms, WorldGuard, UnikPay]
 authors: [DoodieMan]
 commands:
   mapsetup:
@@ -22,3 +22,5 @@ commands:
     permission: "*"
   discord:
     aliases: [ discordserver, disc ]
+  buy:
+    aliases: [butik, store, buycraft]
