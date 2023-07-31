@@ -1,6 +1,7 @@
 package doodieman.towerdefense.lobby.mapselector;
 
 import doodieman.towerdefense.lobby.mapselector.gui.MapSelectorMenu;
+import doodieman.towerdefense.staff.StaffHandler;
 import doodieman.towerdefense.utils.CustomNpc;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 public class MapSelectorNPC extends CustomNpc {
 
     public MapSelectorNPC() {
-        super("mapselector", new Location(Bukkit.getWorld("world"), 1257.5, 61, 982.5));
+        super("mapselector", new Location(Bukkit.getWorld("world"), 1257.5, 61, 990.5));
         setLookClose(true);
         setNameplateVisible(false);
         setHologram(Arrays.asList("§f§lSOL", "", "§fVelkommen til vores", "§oTower Defense§f server!", "", "{animation: lars.yml}§f", "§ffor at komme igang!", "", "§7§nLars"));
@@ -25,6 +26,7 @@ public class MapSelectorNPC extends CustomNpc {
     @Override
     public void onRightClick(NPCRightClickEvent event) {
         Player player = event.getClicker();
+        if (StaffHandler.getInstance().isInStaffMode(player)) return;
         new MapSelectorMenu(player).open();
     }
 

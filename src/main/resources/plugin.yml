@@ -24,3 +24,14 @@ commands:
     aliases: [ discordserver, disc ]
   buy:
     aliases: [butik, store, buycraft]
+  staff:
+    permission: "staff.staffmode"
+    permission-message: "§cDet har du ikke adgang til!"
+  tp:
+    aliases: [teleport, tpo]
+    permission: "staff.teleport"
+    permission-message: "§cDet har du ikke adgang til!"
+  sc:
+    aliases: [staffchat, schat]
+    permission: "staff.staffchat"
+    permission-message: "§cDet har du ikke adgang til!"

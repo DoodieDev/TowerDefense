@@ -6,6 +6,7 @@ import doodieman.towerdefense.game.values.Difficulty;
 import doodieman.towerdefense.lobby.spawn.SpawnUtil;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
+import doodieman.towerdefense.staff.StaffHandler;
 import doodieman.towerdefense.utils.LuckPermsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -49,10 +50,12 @@ public class GlobalListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (Bukkit.getOnlinePlayers().size() > 20)
+
+        if (Bukkit.getOnlinePlayers().size() > 20 || StaffHandler.getInstance().isInStaffMode(player))
             event.setQuitMessage("");
         else
             event.setQuitMessage("§8[§c-§8] "+LuckPermsUtil.getRankColor(player)+player.getName());
+
     }
 
     @EventHandler

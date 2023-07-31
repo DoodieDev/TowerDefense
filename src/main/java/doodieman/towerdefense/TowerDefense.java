@@ -22,6 +22,10 @@ import doodieman.towerdefense.sheetsdata.SheetsDataManager;
 import doodieman.towerdefense.simplecommands.discord.DiscordCommand;
 import doodieman.towerdefense.simpleevents.GlobalListener;
 import doodieman.towerdefense.simpleevents.region.RegionListener;
+import doodieman.towerdefense.staff.StaffHandler;
+import doodieman.towerdefense.staff.commands.staff.StaffCommand;
+import doodieman.towerdefense.staff.commands.staffchat.StaffchatCommand;
+import doodieman.towerdefense.staff.commands.teleport.TeleportCommand;
 import doodieman.towerdefense.sumo.SumoHandler;
 import doodieman.towerdefense.turretsetup.TurretSetupHandler;
 import doodieman.towerdefense.turretsetup.command.TurretSetupCommand;
@@ -70,6 +74,8 @@ public final class TowerDefense extends JavaPlugin {
     private SheetsDataManager sheetsDataManager;
     @Getter
     private BuycraftHandler buycraftHandler;
+    @Getter
+    private StaffHandler staffHandler;
 
     /*
         external plugin dependencies
@@ -127,6 +133,7 @@ public final class TowerDefense extends JavaPlugin {
 
         this.gameHandler.exitAllGames();
         this.npcRegistry.deregisterAll();
+        this.staffHandler.exitAllStaffModes();
 
         HologramsAPI.getHolograms(this).forEach(Hologram::delete);
 
@@ -148,6 +155,7 @@ public final class TowerDefense extends JavaPlugin {
         this.spawnHandler = new SpawnHandler();
         this.sumoHandler = new SumoHandler();
         this.buycraftHandler = new BuycraftHandler();
+        this.staffHandler = new StaffHandler();
 
         new WaterHandler();
         new BenchHandler();
@@ -162,6 +170,9 @@ public final class TowerDefense extends JavaPlugin {
         Bukkit.getPluginCommand("spawn").setExecutor(new SpawnCommand());
         Bukkit.getPluginCommand("discord").setExecutor(new DiscordCommand());
         Bukkit.getPluginCommand("buy").setExecutor(new BuycraftCommand(buycraftHandler));
+        Bukkit.getPluginCommand("staff").setExecutor(new StaffCommand(staffHandler));
+        Bukkit.getPluginCommand("tp").setExecutor(new TeleportCommand());
+        Bukkit.getPluginCommand("sc").setExecutor(new StaffchatCommand());
     }
 
     public static void runSync(Runnable runnable) {

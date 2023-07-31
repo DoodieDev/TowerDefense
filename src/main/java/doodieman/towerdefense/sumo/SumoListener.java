@@ -6,6 +6,7 @@ import doodieman.towerdefense.lobby.bench.events.BenchLeaveEvent;
 import doodieman.towerdefense.lobby.bench.events.BenchSitEvent;
 import doodieman.towerdefense.simpleevents.region.RegionEnterEvent;
 import doodieman.towerdefense.simpleevents.region.RegionLeaveEvent;
+import doodieman.towerdefense.staff.StaffHandler;
 import doodieman.towerdefense.sumo.objects.SumoPlayer;
 import doodieman.towerdefense.sumo.objects.SumoState;
 import org.bukkit.Bukkit;
@@ -83,6 +84,7 @@ public class SumoListener implements Listener {
 
         Player player = event.getPlayer();
         if (SumoUtil.getInstance().isInGame(player) || player.isOp()) return;
+        if (StaffHandler.getInstance().isInStaffMode(player)) return;
 
         event.setCancelled(true);
         player.sendMessage("§cDu kan ikke bevæge dig ind i sumo zonen!");
