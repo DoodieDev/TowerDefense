@@ -1,4 +1,4 @@
-package doodieman.towerdefense.game.objects;
+package doodieman.towerdefense.game.turrets;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -13,21 +13,28 @@ import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.registry.WorldData;
 import doodieman.towerdefense.TowerDefense;
+import doodieman.towerdefense.game.objects.Game;
+import doodieman.towerdefense.game.objects.GameMob;
 import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.utils.LocationUtil;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class GameTurret {
 
@@ -41,6 +48,8 @@ public abstract class GameTurret {
     private double rotation;
     @Getter
     private final List<GameTurretArmorstand> armorStandList = new ArrayList<>();
+    @Getter
+    private final Map<Integer, MaterialData> savedBlocks = new HashMap<>();
 
     public GameTurret(Game game, TurretType turretType, Location location) {
         this.game = game;
@@ -65,11 +74,11 @@ public abstract class GameTurret {
         if (detected.size() == 0) return null;
 
         GameMob closest = detected.get(0);
-        double currentDistance = closest.currentLength;
+        double currentDistance = closest.getCurrentLength();
 
         for (GameMob mob : detected) {
 
-            double distance = mob.currentLength;
+            double distance = mob.getCurrentLength();
             if (distance <= currentDistance) continue;
 
             currentDistance = distance;
@@ -98,6 +107,8 @@ public abstract class GameTurret {
 
     //Render the turret. (Schematic, hologram, etc)
     public void render(boolean animation, BukkitRunnable onFinish) {
+
+        this.saveBlocks();
 
         //Render the turret. First paste the schematic async.
         TowerDefense.runAsync(() -> {
@@ -256,6 +267,62 @@ public abstract class GameTurret {
 
     }
 
+    //Save all the blocks down till y = 0
+    public void saveBlocks() {
+        Location loc = this.location.clone();
+        World world = loc.getWorld();
+
+        while (loc.getBlockY() >= 0) {
+            if (loc.getY() == this.location.getY()) {
+                this.savedBlocks.put(loc.getBlockY(), new MaterialData(0,(byte) 0));
+            } else {
+                Block block = world.getBlockAt(loc);
+                this.savedBlocks.put(loc.getBlockY(), new MaterialData(block.getType(),block.getData()));
+            }
+            loc.setY(loc.getBlockY() - 1);
+        }
+    }
+
+    //Restore the blocks from a save
+    public void restoreBlocks() {
+        Location loc = this.location.clone();
+        World world = loc.getWorld();
+
+        for (int yLevel : this.savedBlocks.keySet()) {
+            loc.setY(yLevel);
+            MaterialData data = this.savedBlocks.get(yLevel);
+            Block block = world.getBlockAt(loc);
+
+            block.setTypeId(data.getItemTypeId());
+            block.setData(data.getData());
+        }
+    }
+
+    public void removeTurret() {
+
+        //Remove armorstands
+        for (GameTurretArmorstand gameArmorStand : this.armorStandList)
+            gameArmorStand.getArmorStand().remove();
+
+        this.removeRedstoneBlocks();
+        this.restoreBlocks();
+        this.game.getTurrets().remove(this);
+    }
+
+    public void removeRedstoneBlocks() {
+        Location zero = this.getZeroLocation();
+        int xCorner1 = zero.getBlockX() - 1;
+        int zCorner1 = zero.getBlockZ() - 1;
+        int xCorner2 = zero.getBlockX() + 1;
+        int zCorner2 = zero.getBlockZ() + 1;
+
+        for (int x = xCorner1; x <= xCorner2; x++) {
+            for (int z = zCorner1; z <= zCorner2; z++) {
+                this.game.getWorld().getBlockAt(x,zero.getBlockY(),z).setType(Material.STONE);
+            }
+        }
+    }
+
     //Get real location from location in config.
     //Example: The turret is built and saved with different coordinates in a different world.
     //When its pasted in the real game world. The location varies.
@@ -279,5 +346,9 @@ public abstract class GameTurret {
 
     public Location getCenterLocation() {
         return this.location.clone().add(0.5, 0, 0.5);
+    }
+
+    public double getSellPrice() {
+        return Math.round(this.turretType.getPrice() / 3);
     }
 }

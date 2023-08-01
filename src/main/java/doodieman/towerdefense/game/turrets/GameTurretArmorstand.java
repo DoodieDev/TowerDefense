@@ -1,4 +1,4 @@
-package doodieman.towerdefense.game.objects;
+package doodieman.towerdefense.game.turrets;
 
 import doodieman.towerdefense.game.values.TurretType;
 import lombok.Getter;

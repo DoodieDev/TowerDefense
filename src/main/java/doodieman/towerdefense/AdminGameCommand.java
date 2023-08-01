@@ -2,7 +2,6 @@ package doodieman.towerdefense;
 
 import doodieman.towerdefense.game.GameUtil;
 import doodieman.towerdefense.game.objects.Game;
-import doodieman.towerdefense.game.objects.GameTurret;
 import doodieman.towerdefense.maps.MapUtil;
 import doodieman.towerdefense.maps.objects.Map;
 import doodieman.towerdefense.utils.StringUtil;
@@ -13,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

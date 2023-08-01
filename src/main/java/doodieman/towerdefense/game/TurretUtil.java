@@ -1,33 +1,19 @@
-package doodieman.towerdefense.game.utils;
+package doodieman.towerdefense.game;
 
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.world.registry.WorldData;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import doodieman.towerdefense.game.GameHandler;
 import doodieman.towerdefense.game.objects.Game;
-import doodieman.towerdefense.game.objects.GameTurret;
+import doodieman.towerdefense.game.turrets.GameTurret;
+import doodieman.towerdefense.game.turrets.GameTurretArmorstand;
 import doodieman.towerdefense.game.values.TurretType;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 public class TurretUtil {
@@ -124,6 +110,16 @@ public class TurretUtil {
         }
     }
 
+    //Get turret object from an armorstand
+    public GameTurret getTurretFromArmorStand(Game game, ArmorStand armorStand) {
+        for (GameTurret turret : game.getTurrets()) {
+            for (GameTurretArmorstand turretArmorstand : turret.getArmorStandList()) {
+                if (!turretArmorstand.getArmorStand().getUniqueId().equals(armorStand.getUniqueId())) continue;
+                return turret;
+            }
+        }
+        return null;
+    }
 
 
 

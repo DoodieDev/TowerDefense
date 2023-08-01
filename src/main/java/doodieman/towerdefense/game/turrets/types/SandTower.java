@@ -1,8 +1,8 @@
-package doodieman.towerdefense.game.objects.turrets;
+package doodieman.towerdefense.game.turrets.types;
 
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.objects.GameMob;
-import doodieman.towerdefense.game.objects.GameTurret;
+import doodieman.towerdefense.game.turrets.GameTurret;
 import doodieman.towerdefense.game.values.TurretType;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -10,12 +10,12 @@ import org.bukkit.Sound;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AngelTower extends GameTurret {
+public class SandTower extends GameTurret {
 
     long lastShot = 0L;
     long roundTick = 0L;
 
-    public AngelTower(Game game, TurretType turretType, Location location) {
+    public SandTower(Game game, TurretType turretType, Location location) {
         super(game, turretType, location);
     }
 
@@ -47,7 +47,7 @@ public class AngelTower extends GameTurret {
 
     @Override
     public void shoot(GameMob mob) {
-        getCenterLocation().getWorld().playSound(getLocation(), Sound.DIG_WOOL,1f,1f);
+        getCenterLocation().getWorld().playSound(getLocation(), Sound.DIG_SAND,1f,0.8f);
 
         this.rotateTowardsMob(mob);
         mob.damage(getTurretType().getDamage());

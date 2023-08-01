@@ -94,7 +94,7 @@ public class TurretStoreMenu extends GUI {
             //Give the turret item
             player.getInventory().addItem(turretType.getFormattedItem());
             player.playSound(player.getLocation(),Sound.ITEM_PICKUP, 1f, 0.9f);
-            player.sendMessage("§7Du købte et "+turretType.getTextColor()+"§n"+turretType.getName()+"§7 for §e"+StringUtil.formatNum(price)+"g§7!");
+            player.sendMessage("§7Du købte et "+turretType.getTextColor()+turretType.getName()+"§7 for §e"+StringUtil.formatNum(price)+"g§7!");
         }
 
     }

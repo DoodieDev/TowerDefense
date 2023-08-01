@@ -1,12 +1,10 @@
 package doodieman.towerdefense.game.interactive;
 
 import doodieman.towerdefense.TowerDefense;
-import doodieman.towerdefense.game.GameHandler;
-import doodieman.towerdefense.game.GameUtil;
 import doodieman.towerdefense.game.interactive.settings.SettingsMenu;
 import doodieman.towerdefense.game.interactive.turretstore.TurretStoreMenu;
 import doodieman.towerdefense.game.objects.Game;
-import doodieman.towerdefense.game.utils.TurretUtil;
+import doodieman.towerdefense.game.TurretUtil;
 import doodieman.towerdefense.game.values.ControlBlock;
 import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.utils.ItemBuilder;
@@ -30,12 +28,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameInteractive implements Listener {
 

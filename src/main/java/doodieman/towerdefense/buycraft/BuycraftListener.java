@@ -70,6 +70,7 @@ public class BuycraftListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        if (event.getClickedBlock() == null) return;
         Location location = event.getClickedBlock().getLocation();
 
         if (!WorldGuardUtil.isAtRegion(location,"buy")) return;

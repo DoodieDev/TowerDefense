@@ -31,7 +31,8 @@ public class GameMob {
     //Variables used for the pathfinding
     final double speed; //How fast the Mob moves
     final double pathLength; //How long the whole path is on the map, from start to finish
-    double currentLength; //How long has the mob traveled so far
+    @Getter
+    private double currentLength; //How long has the mob traveled so far
     int pointIndex; //Index in the 'path' list of locations
     Location currentPoint; //Current path location
     Location nextPoint; //Next path location (The one it's moving towards)

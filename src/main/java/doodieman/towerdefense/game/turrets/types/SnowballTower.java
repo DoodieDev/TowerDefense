@@ -1,8 +1,8 @@
-package doodieman.towerdefense.game.objects.turrets;
+package doodieman.towerdefense.game.turrets.types;
 
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.objects.GameMob;
-import doodieman.towerdefense.game.objects.GameTurret;
+import doodieman.towerdefense.game.turrets.GameTurret;
 import doodieman.towerdefense.game.values.TurretType;
 import org.bukkit.Location;
 import org.bukkit.Sound;

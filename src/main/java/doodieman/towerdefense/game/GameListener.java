@@ -2,14 +2,14 @@ package doodieman.towerdefense.game;
 
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.objects.Game;
-import doodieman.towerdefense.game.objects.GameTurret;
-import doodieman.towerdefense.game.utils.TurretUtil;
+import doodieman.towerdefense.game.turrets.GameTurret;
+import doodieman.towerdefense.game.turrets.menu.TurretMenu;
 import doodieman.towerdefense.game.values.TurretType;
 import doodieman.towerdefense.utils.LocationUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +28,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -114,6 +113,21 @@ public class GameListener implements Listener {
     }
 
 
+    @EventHandler
+    public void onInteractEntity(PlayerInteractAtEntityEvent event) {
+        Player player = event.getPlayer();
+        if (!util.isInGame(player)) return;
+        event.setCancelled(true);
+        if (!(event.getRightClicked() instanceof ArmorStand)) return;
+
+        ArmorStand armorStand = (ArmorStand) event.getRightClicked();
+        Game game = util.getActiveGame(player);
+        GameTurret turret = handler.getTurretUtil().getTurretFromArmorStand(game,armorStand);
+
+        if (turret == null) return;
+        new TurretMenu(player,turret).open();
+    }
+
     /*
         CANCEL EVENTS
     */
@@ -172,13 +186,6 @@ public class GameListener implements Listener {
         if (event.getAction() == Action.LEFT_CLICK_BLOCK)
             return;
 
-        event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onInteractEntity(PlayerInteractAtEntityEvent event) {
-        Player player = event.getPlayer();
-        if (!util.isInGame(player)) return;
         event.setCancelled(true);
     }
 

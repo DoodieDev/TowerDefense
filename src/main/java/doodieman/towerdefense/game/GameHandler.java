@@ -1,7 +1,6 @@
 package doodieman.towerdefense.game;
 
 import doodieman.towerdefense.game.objects.Game;
-import doodieman.towerdefense.game.utils.TurretUtil;
 import lombok.Getter;
 import org.bukkit.OfflinePlayer;
 

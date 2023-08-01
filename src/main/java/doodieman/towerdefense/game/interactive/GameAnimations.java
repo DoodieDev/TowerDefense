@@ -3,7 +3,7 @@ package doodieman.towerdefense.game.interactive;
 import doodieman.towerdefense.TowerDefense;
 import doodieman.towerdefense.game.objects.Game;
 import doodieman.towerdefense.game.objects.GameMob;
-import doodieman.towerdefense.game.objects.GameTurret;
+import doodieman.towerdefense.game.turrets.GameTurret;
 import doodieman.towerdefense.utils.LocationUtil;
 import doodieman.towerdefense.utils.PacketUtil;
 import doodieman.towerdefense.utils.StringUtil;
