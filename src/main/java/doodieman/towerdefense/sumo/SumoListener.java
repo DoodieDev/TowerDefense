@@ -35,7 +35,7 @@ public class SumoListener implements Listener {
         if (handler.getWaitingPlayers().contains(player)) return;
 
         handler.getWaitingPlayers().add(player);
-        player.sendMessage("§aDu er nu med i sumo-køen! Afvent det bliver din tur.");
+        player.sendMessage("§7[§fSUMO§7] §aDu er nu med i sumo-køen! Afvent det bliver din tur.");
     }
 
     @EventHandler
@@ -44,7 +44,7 @@ public class SumoListener implements Listener {
         if (!handler.getWaitingPlayers().contains(player)) return;
 
         handler.getWaitingPlayers().remove(player);
-        player.sendMessage("§cDu er ikke længere med i sumo-køen!");
+        player.sendMessage("§7[§fSUMO§7] §cDu er ikke længere med i sumo-køen!");
     }
 
     @EventHandler
@@ -87,7 +87,7 @@ public class SumoListener implements Listener {
         if (StaffHandler.getInstance().isInStaffMode(player)) return;
 
         event.setCancelled(true);
-        player.sendMessage("§cDu kan ikke bevæge dig ind i sumo zonen!");
+        player.sendMessage("§7[§fSUMO§7] §cDu kan ikke bevæge dig ind i sumo zonen!");
     }
 
     @EventHandler
