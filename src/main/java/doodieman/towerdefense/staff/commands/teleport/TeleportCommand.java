@@ -13,6 +13,11 @@ public class TeleportCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player player = (Player) sender;
 
+        if (!player.hasPermission("staff.teleport")) {
+            player.sendMessage("§cDet har du ikke adgang til!");
+            return true;
+        }
+
         //Not enough args
         if (args.length <= 0) {
             player.sendMessage("§cDu skal skrive en spiller!");
