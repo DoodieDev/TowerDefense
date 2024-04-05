@@ -88,16 +88,22 @@ public class GameInteractive implements Listener {
     public void updateRoundItemSlot() {
 
         if (game.isRoundActive()) {
-            ItemBuilder builder = new ItemBuilder(Material.BARRIER);
-            builder.name("§c§oRunden er aktiv");
-            player.getInventory().setItem(7, builder.build());
+            ItemBuilder builder = new ItemBuilder(Material.FEATHER);
+            builder.name("§f§nx2 Hastighed§7 (Højreklik)");
+            if (game.isDoubleRoundSpeed())
+                builder.makeGlowing();
 
-        } else if (!game.isAlive()) {
+            player.getInventory().setItem(7, builder.build());
+        }
+
+        else if (!game.isAlive()) {
             ItemBuilder builder = new ItemBuilder(Material.BARRIER);
             builder.name("§c§oDu er død");
             player.getInventory().setItem(7, builder.build());
 
-        } else if (game.hasWonGame()) {
+        }
+
+        else if (game.hasWonGame()) {
             ItemBuilder builder = new ItemBuilder(Material.BARRIER);
             builder.name("§c§oDu har klaret alle runder");
             player.getInventory().setItem(7, builder.build());
@@ -126,30 +132,48 @@ public class GameInteractive implements Listener {
             if (tick % 6 == 0)
                 this.displayRange();
             if (tick % 10 == 0)
-                PacketUtil.sendActionBar(player,"§5Tårnets Range §f §f §f✦ §a §a §aFri placering");
+                PacketUtil.sendActionBar(player,"§dTårnets range §f §f §fTårnets størrelse §a §a §aFri placering");
         }
     }
 
     //Display where the player can place turrets
     public void displayPlacementOptions() {
-        int scanRange = 7;
+        int scanRange = 5;
 
         Block targetBlock = LocationUtil.getTargetBlock(player,50);
 
+        int blockX = targetBlock.getLocation().getBlockX();
+        int blockZ = targetBlock.getLocation().getBlockZ();
+
         //Corners to scan
-        int xCorner1 = targetBlock.getLocation().getBlockX() - scanRange;
-        int zCorner1 = targetBlock.getLocation().getBlockZ() - scanRange;
-        int xCorner2 = targetBlock.getLocation().getBlockX() + scanRange;
-        int zCorner2 = targetBlock.getLocation().getBlockZ() + scanRange;
+        int xCorner1 = blockX - scanRange;
+        int zCorner1 = blockZ - scanRange;
+        int xCorner2 = blockX + scanRange;
+        int zCorner2 = blockZ + scanRange;
+
+        if (ControlBlock.isPlaceable(blockX,blockZ,game.getWorld()))
+            this.displayPlacement(blockX,blockZ, 0.15,15,Color.fromRGB(255,255,255), 1.4);
+        else
+            this.displayPlacement(blockX,blockZ, 0.15,15,Color.fromRGB(255,0,0), 1.4);
+
 
         for (int x = xCorner1; x <= xCorner2; x++) {
             for (int z = zCorner1; z <= zCorner2; z++) {
-                if (!ControlBlock.isPlaceable(x,z,game.getWorld())) continue;
 
-                this.displayPlacement(x,z,4, Color.fromRGB(51,255,0));
+                if (!ControlBlock.isPlaceable(x,z,game.getWorld())) {
+                    if (x != blockX || z != blockZ) continue;
+                    this.displayPlacement(x,z, 0.05,4, Color.fromRGB(255,0,0), 0.4);
+                }
+
+                else if (x == blockX && z == blockZ) {
+                    this.displayPlacement(x,z, 0.05,4, Color.fromRGB(255,255,255), 0.4);
+                }
+
+                else {
+                    this.displayPlacement(x,z, 0.05,3, Color.fromRGB(51,255,0), 0.4);
+                }
             }
         }
-
     }
 
     //Display the range of a turret
@@ -176,10 +200,9 @@ public class GameInteractive implements Listener {
     }
 
     //Display a placement square on the map
-    public void displayPlacement(int centerX, int centerZ, int particlesPerSide, Color color) {
-        double displayLevel = game.getMobPath().get(0).getBlockY() + 0.05;
+    public void displayPlacement(int centerX, int centerZ, double yOffset, int particlesPerSide, Color color, double range) {
+        double displayLevel = game.getMobPath().get(0).getBlockY() + yOffset;
 
-        double range = 0.4;
         double xCorner1 = (centerX+0.5) - range;
         double zCorner1 = (centerZ+0.5) - range;
         double xCorner2 = (centerX+0.5) + range;
@@ -273,7 +296,15 @@ public class GameInteractive implements Listener {
         }
 
         //Start round
-        if (player.getInventory().getHeldItemSlot() == 7 && !game.isRoundActive()) {
+        if (player.getInventory().getHeldItemSlot() == 7) {
+
+            //If round is active. - Change speed
+            if (game.isRoundActive()) {
+                game.setDoubleRoundSpeed(!game.isDoubleRoundSpeed());
+                this.updateRoundItemSlot();
+                player.playSound(player.getLocation(),Sound.ITEM_PICKUP,1f,1f);
+                return;
+            }
 
             //Game is over
             if (!game.isAlive()) {

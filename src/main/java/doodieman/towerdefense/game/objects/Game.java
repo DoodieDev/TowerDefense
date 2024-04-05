@@ -69,6 +69,7 @@ public class Game {
     private final List<Location> mobPath;
     BukkitTask mobPathLoop;
 
+
     //Normal game values being used globally
     @Getter
     private double health;
@@ -89,6 +90,8 @@ public class Game {
     private final java.util.Map<GameSetting, Boolean> gameSettings;
     @Getter @Setter
     private boolean isPastingTurret;
+    @Getter @Setter
+    private boolean doubleRoundSpeed;
 
     @Getter //Current round number
     private int currentRound;
@@ -125,6 +128,7 @@ public class Game {
         this.mobPathLoop = null;
         this.gameSettings = new HashMap<>();
         this.isPastingTurret = false;
+        this.doubleRoundSpeed = false;
     }
 
     //Prepares the game, pasting schematic, etc
@@ -206,7 +210,6 @@ public class Game {
     private void startLoop() {
 
         List<GameMob> mobsToRemove = new ArrayList<>();
-
         this.mobPathLoop = new BukkitRunnable() {
 
             int tick = 0;
@@ -220,11 +223,13 @@ public class Game {
                     //Move all the mobs on path
                     for (GameMob mob : aliveMobs) {
                         mob.move();
+
+                        //If mob is in goal. Remove the mob and damage player
                         if (mob.isInGoal())
                             mobsToRemove.add(mob);
                     }
 
-                    //Remove mobs in goal
+                    //Remove all mobs in goal
                     for (GameMob mob : mobsToRemove) {
                         double damage = Math.ceil(mob.getHealth());
 
@@ -234,13 +239,12 @@ public class Game {
                     }
                     mobsToRemove.clear();
 
-                    //Check if round is over
+                    //If round is over. Finish the round.
                     if (aliveMobs.size() <= 0 && !mobsSpawning && health > 0)
                         finishRound();
                 }
 
                 gameInteractive.doTick(tick);
-
                 tick++;
             }
         }.runTaskTimer(TowerDefense.getInstance(), 0L, 1L);
@@ -289,7 +293,8 @@ public class Game {
                 }
 
                 //Spawn mob
-                if (roundTick % round.getSpawnDelay() == 0 && mobsLeftToSpawn.size() > 0) {
+                double spawnDelay = isDoubleRoundSpeed() ? round.getSpawnDelay() / 2 : round.getSpawnDelay();
+                if (roundTick % spawnDelay == 0 && mobsLeftToSpawn.size() > 0) {
 
                     SheetMobCluster cluster = mobsLeftToSpawn.get(0);
                     cluster.setAmount(cluster.getAmount() - 1);
@@ -306,7 +311,6 @@ public class Game {
                             mobsSpawning = false;
                         }
                     }
-
                 }
 
                 //Update all turrets
@@ -389,6 +393,7 @@ public class Game {
         this.goldTextLine.setText("§7Guld: §e"+ StringUtil.formatNum(gold) +"g");
     }
 
+    //Save the game
     public void saveGame() {
         if (roundActive) return;
         if (!isAlive()) return;
@@ -430,7 +435,7 @@ public class Game {
         playerData.save();
     }
 
-    List<GameTurret> turretsToRender = new ArrayList<>();
+    //Load the game
     public void loadGame(BukkitRunnable onFinish) {
 
         PlayerData playerData = PlayerDataUtil.getData(player);
@@ -469,6 +474,8 @@ public class Game {
         this.turretsToRenderLoop(onFinish);
     }
 
+    //Render all the turrets from save
+    List<GameTurret> turretsToRender = new ArrayList<>();
     public void turretsToRenderLoop(BukkitRunnable onFinish) {
 
         if (turretsToRender.size() <= 0) {
@@ -547,4 +554,5 @@ public class Game {
     public void setGameSetting(GameSetting setting, boolean value) {
         this.gameSettings.put(setting,value);
     }
+
 }

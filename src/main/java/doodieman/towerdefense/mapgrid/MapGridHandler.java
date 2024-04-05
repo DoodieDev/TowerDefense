@@ -28,7 +28,6 @@ public class MapGridHandler {
         return gridLocations.stream()
             .anyMatch(gridLocation -> gridLocation.getX() == x && gridLocation.getZ() == z);
     }
-
     public GridLocation generateLocation() {
         int x = 0;
         int z = 0;
@@ -43,7 +42,6 @@ public class MapGridHandler {
         }
         return new GridLocation(x, z, this);
     }
-
 
 
 }

@@ -133,30 +133,31 @@ public class GameMob {
 
     //Moves the entity on the path, it moves (speed) blocks
     public void move() {
-        currentLength += speed;
+
+        double realSpeed = game.isDoubleRoundSpeed() ? speed * 2 : speed;
+        currentLength += realSpeed;
+
         double distanceLeft = entity.getLocation().distance(nextPoint);
         Location closerLocation;
+        boolean fixHeadRotation = false;
 
         //Turn on the path
-        if (distanceLeft < speed) {
+        if (distanceLeft < realSpeed) {
             pointIndex++;
             if (pointIndex >= path.size()-1) return;
             this.currentPoint = path.get(pointIndex);
             this.nextPoint = path.get(pointIndex+1);
+            closerLocation = moveCloser(entity.getLocation(), nextPoint, realSpeed - distanceLeft);
+            fixHeadRotation = true;
 
-            closerLocation = moveCloser(entity.getLocation(), nextPoint, speed - distanceLeft);
-
-        } else closerLocation = moveCloser(entity.getLocation(), nextPoint, speed);
+        } else closerLocation = moveCloser(entity.getLocation(), nextPoint, realSpeed);
 
         closerLocation.setYaw(currentPoint.getYaw());
         entity.teleport(closerLocation);
         entity.setFireTicks(0);
 
-        //Only fix head rotation every ~3 blocks, so it doesn't bug
-        /*
-        if (Math.round(currentLength) % 3 == 0)
+        if (fixHeadRotation)
             this.fixHeadRotation();
-        */
 
         this.updateHealthBar();
     }
@@ -170,9 +171,7 @@ public class GameMob {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(Rotation);
-        }
+        ((CraftPlayer) game.getPlayer()).getHandle().playerConnection.sendPacket(Rotation);
     }
 
     //Check if the mob is in goal

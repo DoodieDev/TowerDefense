@@ -6,6 +6,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import doodieman.towerdefense.buycraft.BuycraftCommand;
 import doodieman.towerdefense.buycraft.BuycraftHandler;
 import doodieman.towerdefense.chat.ChatHandler;
+import doodieman.towerdefense.discord.DiscordHandler;
 import doodieman.towerdefense.game.GameHandler;
 import doodieman.towerdefense.lobby.bench.BenchHandler;
 import doodieman.towerdefense.lobby.mapselector.MapSelectorHandler;
@@ -19,7 +20,7 @@ import doodieman.towerdefense.mapsetup.command.MapSetupCommand;
 import doodieman.towerdefense.mapsetup.MapSetupHandler;
 import doodieman.towerdefense.playerdata.PlayerDataHandler;
 import doodieman.towerdefense.sheetsdata.SheetsDataManager;
-import doodieman.towerdefense.simplecommands.discord.DiscordCommand;
+import doodieman.towerdefense.discord.DiscordCommand;
 import doodieman.towerdefense.simpleevents.GlobalListener;
 import doodieman.towerdefense.simpleevents.region.RegionListener;
 import doodieman.towerdefense.staff.StaffHandler;
@@ -160,6 +161,7 @@ public final class TowerDefense extends JavaPlugin {
         new WaterHandler();
         new BenchHandler();
         new RegionListener();
+        new DiscordHandler();
     }
 
     private void loadCommands() {

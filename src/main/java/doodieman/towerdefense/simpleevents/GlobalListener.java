@@ -55,7 +55,6 @@ public class GlobalListener implements Listener {
             event.setQuitMessage("");
         else
             event.setQuitMessage("§8[§c-§8] "+LuckPermsUtil.getRankColor(player)+player.getName());
-
     }
 
     @EventHandler

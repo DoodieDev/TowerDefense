@@ -205,6 +205,8 @@ public abstract class GameTurret {
             ConfigurationSection asSection = section.getConfigurationSection(id);
 
             Location realLocation = this.getRealLocation(LocationUtil.stringToLocation(asSection.getString("location")));
+
+
             ArmorStand armorStand = realLocation.getWorld().spawn(realLocation,ArmorStand.class);
 
             armorStand.setGravity(false);
@@ -349,6 +351,6 @@ public abstract class GameTurret {
     }
 
     public double getSellPrice() {
-        return Math.round(this.turretType.getPrice() / 3);
+        return Math.round(this.turretType.getPrice() / 2.5);
     }
 }

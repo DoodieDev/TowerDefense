@@ -1,4 +1,4 @@
-package doodieman.towerdefense.simplecommands.discord;
+package doodieman.towerdefense.discord;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
